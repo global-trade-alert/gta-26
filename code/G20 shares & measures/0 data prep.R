@@ -34,7 +34,7 @@ for (year in c("2009", "2020")){
                   lag.adjustment = str_remove(cutoff.date, "\\d{4}-")) ## lag adjustment unnecessary?
   
   table1 <- rbind(table1, master.sliced)
-}; rm(master.sliced, intervention.groups, parameter.choice.slicer)
+}; rm(master.sliced, parameter.choice.slicer)
 
 # Create column with implementation year
 table1$year.implemented <- sapply(table1$date.implemented, function(x){str_extract(x, "\\d{4}")})
