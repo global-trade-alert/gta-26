@@ -210,7 +210,7 @@ gta_plot_saver(plot = fig3,
 
 ### Figure 4
 # Prepare plotting data
-world.fig4 <- gta_plot_map_df(table4, countries = "country", values = "net.import.per.capita")
+world.fig4 <- gta_plot_map_df(table4, countries = "country", values = "import.per.capita")
 
 # Plot
 fig4 <- ggplot() +
@@ -219,9 +219,9 @@ fig4 <- ggplot() +
   coord_fixed() + # Important to fix world map proportions
   scale_x_continuous(limits=c(-13900000,17000000))+
   labs(x="", y="",caption="Source: Global Trade Alert.") + ### JF: use GTA data not COMTRADE -> caption adjusted
-  scale_fill_gradientn(name=str_wrap("Combined net import value in USD per capita",width = 40), 
+  scale_fill_gradientn(name=str_wrap("Combined import value in USD per capita", width = 40), 
                        na.value="#c6c6c6",
-                       limits=c(0, max(world.fig4$value, na.rm = T)),
+                       limits=c(0, round(max(world.fig4$value, na.rm = T))),
                        colors = c(gta_colour$qualitative[2], gta_colour$qualitative[1], "#0c3a52"),
                        breaks=c(round(seq(0, max(world.fig4$value, na.rm = T), max(world.fig4$value, na.rm=T) / 4))),
                        guide=guide_colorbar(barwidth=13, label.hjust = 0.5, title.position = "top"),
@@ -255,4 +255,3 @@ gta_plot_saver(plot = fig4,
                png = T,
                pdf = T,
                jpg = T)
-

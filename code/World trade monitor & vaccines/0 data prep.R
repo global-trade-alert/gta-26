@@ -73,6 +73,7 @@ table3$date <- c("Jan 18", "Feb 18", "Mar 18", "Apr 18", "May 18", "Jun 18", "Ju
 
 table3 <- pivot_longer(table3, cols = c("China", "ROW"), names_to = "exporter", values_to = "trade.value")
 
+
 ### Table 4
 # Get data (JF: use GTA data instead of COMTRADE)
 data4 <- data.frame()
@@ -121,9 +122,9 @@ table4 <- merge(table4, select(wb.population, name, un_code, population, year), 
 table4 <- merge(table4, select(aggregate(net.import ~ country, table4, sum), country, "total.net.import" = net.import), by = "country", all.x = T)
 table4 <- subset(table4, total.net.import > 0 & country != 568) ### ISO-3166-1 code 568 does not exist
 
-# Sum net import per capita per country
-table4$net.import.per.capita <- table4$net.import / table4$population
-table4 <- aggregate(net.import.per.capita ~ country, table4, sum)
+# Sum import per capita per country
+table4$import.per.capita <- table4$import / table4$population
+table4 <- aggregate(import.per.capita ~ country, table4, sum)
 
 ### Save data
 save(table1, table2, table3, table4, file = paste0(gta26.path, data.path, "world trade monitor & vaccines.Rdata"))
