@@ -18,6 +18,15 @@ cutoff.gta22=c("2018-04-24")  ## cut-off for GTA 22
 pop.shade = "#FFE400" # Colour for populist era shading and text
 pop.text = "#E5AE1C"
 
+transparent.policy.instruments <- c("Anti-circumvention", "Anti-dumping", "Anti-subsidy", "Export quota", "Export tariff quota", "Export tax", "Import monitoring",
+                                    "Import quota", "Import tariff", "Import tariff quota", "Instrument unclear", "Safeguard", "Sanitary and phytosanitary measure",
+                                    "Special safeguard", "Technical barrier to trade")
+subsidies.to.imp.competing.firms <- c("Capital injection and equity stakes (including bailouts)", "Consumption subsidy", "Financial assistance in foreign market",
+                                      "Financial grant", "Import incentive", "In-kind grant", "Interest payment subsidy", "Loan guarantee", "Price stabilisation",
+                                      "Production subsidy", "State aid, nes", "State loan", "Tax or social insurance relief")
+export.incentives <- c("Public procurement access", "Public procurement localisation", "Public procurement preference margin", "Public procurement, nes")
+other.interventions <- int.mast.types$intervention.type[!(int.mast.types$intervention.type %in% c(transparent.policy.instruments, subsidies.to.imp.competing.firms, export.incentives))]
+
 # g20.members=c("32", "36", "76", "124", "156", "251", "276", "699", "360", "381", "392", "484", "410", "643", "682", "710", "792", "826", "840")
 # g20.member.names <-  c("Argentina", "Australia", "Brazil", "Canada", "China", "France", "Germany", "India", "Indonesia", "Italy", "Japan", "Mexico", "South Korea", "Russia", "Saudi Arabia", "South Africa", "Turkey", "United Kingdom", "United States of America")
 # 
