@@ -33,7 +33,7 @@ source(paste0(gta26.path, "help files/GTA 26 cutoff and definitions.R"))
 gta_data_slicer()
 
 # Select only interventions published by 21 Oct
-master.sliced <- subset(master.sliced, month(date.published) <= 10 & day(date.published) <= 21)
+master.sliced <- subset(master.sliced, format(date.published, "%m-%d") <= format(as.Date("2020-10-21"), "%m-%d"))
 
 # Add a column with submission year
 master.sliced$year.submitted <- str_extract(master.sliced$date.published, "\\d{4}")
