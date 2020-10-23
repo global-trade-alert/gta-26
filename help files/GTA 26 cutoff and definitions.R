@@ -29,6 +29,11 @@ other.interventions <- int.mast.types$intervention.type[!(int.mast.types$interve
 hs.covid.food <- hs.codes$hs.code[hs.codes$is.covid.food]
 hs.covid.medical <- hs.codes$hs.code[hs.codes$is.covid.medical.equipment | hs.codes$is.covid.medical.supplies | hs.codes$is.covid.medicines]
 
+economic.support.measures <- list("Inward subsidy" = c(int.mast.types$intervention.type[int.mast.types$mast.chapter.id == "L"]),
+                                  "Export incentive and support in foreign markets" = c("Export-related non-tariff measure, nes", "Export subsidy", "Export tariff quota", "Other export incentive", "Tax-based export incentive", "Trade finance"),
+                                  "Localisation measure" = c("Local labour", "Local operations", "Local sourcing", "Localisation incentive"),
+                                  "Government procurement measure" = c(int.mast.types$intervention.type[int.mast.types$mast.chapter.id == "M"]))
+
 # g20.members=c("32", "36", "76", "124", "156", "251", "276", "699", "360", "381", "392", "484", "410", "643", "682", "710", "792", "826", "840")
 # g20.member.names <-  c("Argentina", "Australia", "Brazil", "Canada", "China", "France", "Germany", "India", "Indonesia", "Italy", "Japan", "Mexico", "South Korea", "Russia", "Saudi Arabia", "South Africa", "Turkey", "United Kingdom", "United States of America")
 # 
@@ -126,6 +131,6 @@ intervention.groups=rbind(data.frame(trade.flow="inward",
                                                          "Other export incentive",
                                                          "Tax-based export incentive",
                                                          "Trade finance"))
-                          )
+)
 
 
