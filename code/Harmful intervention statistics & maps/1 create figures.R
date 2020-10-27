@@ -48,6 +48,7 @@ map.function <- function(data, caption, plottitle, limits, breaks, labels, colou
   plot = ggplot() +
     geom_polygon(data= subset(data, country != "Antarctica"), aes(x = long, y = lat, group = group), fill="#dadada", size = 0.15, color = "white") +
     geom_polygon(data= subset(data, country != "Antarctica"), aes(x = long, y = lat, group = group, fill=value),na.rm = T, size = 0.15, color = "white") +
+    geom_polygon(data=subset(data, country == "Greenland"), aes(x=long, y=lat, group = group), fill="#dadada", size = 0.15, colour = "white") +
     coord_fixed() + # Important to fix world map proportions
     scale_x_continuous(limits=c(-13900000,17000000))+
     labs(x="", y="",caption=caption, subtitle = subtitle) +

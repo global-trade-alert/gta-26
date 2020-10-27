@@ -17,6 +17,11 @@ rm(list = ls())
 library(gtalibrary)
 library(tidyverse)
 library(openxlsx)
+library(ggplot2)
+library(ggrepel)
+library(gridExtra)
+library(scales)
+library(stringr)
 
 gta_setwd()
 gta26.path = "0 report production/GTA 26/"
