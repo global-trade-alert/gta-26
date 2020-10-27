@@ -1,6 +1,6 @@
 # setup
 
-cutoff.date <- c("2020-10-23")     ##cutoff for GTA 26
+cutoff.date <- c("2020-10-21")     ##cutoff for GTA 26
 cutoff.prior <- c("2019-11-15")     ## cut-off for GTA 25
 cutoff.gta24 <- c("2019-04-15") ## cut-off for GTA 24
 cutoff.gta23=c("2018-10-31")  ## cut-off for GTA 23
