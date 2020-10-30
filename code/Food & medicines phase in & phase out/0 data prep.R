@@ -82,19 +82,12 @@ table1$top.3.sector <- table1$top.3.sector / table1$total.interventions
 table1$total.interventions <- NULL
 
 # Indicate which were the top 3 sectors in the column names
-names(table1) <- c("year.implemented", "food", "medical",
-                   paste0("Top 1 sector (", top3.sectors[1], " - ", as.character(cpc.names$cpc.name[cpc.names$cpc == as.numeric(top3.sectors[1])]), ")"),
-                   paste0("Top 2 sector (", top3.sectors[2], " - ", as.character(cpc.names$cpc.name[cpc.names$cpc == as.numeric(top3.sectors[2])]), ")"),
-                   paste0("Top 3 sector (", top3.sectors[3], " - ", as.character(cpc.names$cpc.name[cpc.names$cpc == as.numeric(top3.sectors[3])]), ")"))
+names(table1) <- c("year.implemented", "food", "medical", paste0("Top 1 sector (", top3.sectors[1], ")"), paste0("Top 2 sector (", top3.sectors[2], ")"), paste0("Top 3 sector (", top3.sectors[3], ")"))
 
 
 ### Tables 2 & 3
 # Load the data
 table2 <- read.xlsx(paste0(gta26.path, "help files/GTA COVID trade barrier data - 201016.xlsx"), sheet = 1, detectDates = T)
-
-# Reduce to import reforms and export curbs
-table2 <- subset(table2, (`Initial.assessment.(change.relative.to.1.Jan.2020)`=="liberalising" & Is.import.policy==T) | (`Initial.assessment.(change.relative.to.1.Jan.2020)`=="restrictive" & Is.export.policy==T))
-
 
 # Aggregate into months
 data.table::setnames(table2, old = "Initial.assessment.(change.relative.to.1.Jan.2020)", new = "gta.evaluation")

@@ -57,7 +57,7 @@ fig1 <- ggplot(data=table1)+
                      labels=c("Food and agri-food", "COVID-19 medical kit and medicines", paste0("Top 1 sector (412 - ",subset(gtalibrary::cpc.names, cpc==412)$cpc.name,")"),
                               paste0("Top 2 sector (491 - ",subset(gtalibrary::cpc.names, cpc==491)$cpc.name,")"), paste0("Top 3 sector (429 - ",subset(gtalibrary::cpc.names, cpc==429)$cpc.name,")")))+
   labs(x = "", caption = "Source: Global Trade Alert.") +
-  guides(colour=guide_legend(title=NULL, ncol = 3, 
+  guides(colour=guide_legend(title=NULL, ncol = 2, 
                              label.hjust = 0, label.vjust = 0.5, 
                              title.position = "top", title.hjust = 0, 
                              direction = "horizontal", 
@@ -68,7 +68,8 @@ fig1 <- ggplot(data=table1)+
         panel.grid.minor.x = element_blank(),
         panel.grid.minor.y = element_blank(),
         plot.caption.position = "plot",
-        axis.text.x = element_text())
+        axis.text.x = element_text(),
+        legend.text = element_text(size = 10))
 
 fig1
 
