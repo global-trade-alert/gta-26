@@ -53,7 +53,9 @@ fig1 <- ggplot(data=table1)+
                      sec.axis = sec_axis(trans = ~., name=str_wrap("Percentage of implemented measures", 50), breaks=seq(0,0.2,0.025),labels=label_percent(accuracy = 1L)))+
   scale_x_continuous(name = NULL, breaks = c(2009:2020), labels = as.character(c(2009:2020))) +
   scale_color_manual(values=c("food"=gta_colour$qualitative[1],"medical"=gta_colour$qualitative[2],"Top 1 sector (412)"=gta_colour$qualitative[3],
-                              "Top 2 sector (491)"=gta_colour$qualitative[4], "Top 3 sector (429)"=gta_colour$qualitative[5]), labels=c("Food and agri-food", "COVID-19 medical kit and medicines", "Top 1 sector (412)", "Top 2 sector (491)", "Top 3 sector (429)"))+
+                              "Top 2 sector (491)"=gta_colour$qualitative[4], "Top 3 sector (429)"=gta_colour$qualitative[5]),
+                     labels=c("Food and agri-food", "COVID-19 medical kit and medicines", paste0("Top 1 sector (412 - ",subset(gtalibrary::cpc.names, cpc==412)$cpc.name,")"),
+                              paste0("Top 2 sector (491 - ",subset(gtalibrary::cpc.names, cpc==491)$cpc.name,")"), paste0("Top 3 sector (429 - ",subset(gtalibrary::cpc.names, cpc==429)$cpc.name,")")))+
   labs(x = "", caption = "Source: Global Trade Alert.") +
   guides(colour=guide_legend(title=NULL, ncol = 3, 
                              label.hjust = 0, label.vjust = 0.5, 
