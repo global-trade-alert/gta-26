@@ -18,8 +18,12 @@ source(paste0(gta26.path, "help files/GTA 26 cutoff and definitions.R"))
 
 ### Table 1
 # Get data
-gta_data_slicer(implementation.period = c(as.Date("2020-01-01"), as.Date(cutoff.date)),
-                keep.implementation.na = F)
+# gta_data_slicer(implementation.period = c(as.Date("2020-01-01"), as.Date(cutoff.date)),
+#                 keep.implementation.na = F)
+
+gta_data_slicer()
+master.sliced = subset(master.sliced, (date.announced>=as.Date("2020-01-01") & date.announced<=as.Date("2020-12-31")) | (date.implemented>=as.Date("2020-01-01") & date.implemented<=as.Date("2020-12-31")))
+
 
 # Aggregate per implementing country
 table1 <- select(aggregate(intervention.id ~ implementing.jurisdiction, master.sliced, function(x){length(unique(x))}), implementing.jurisdiction, "nr.of.interventions" = intervention.id)

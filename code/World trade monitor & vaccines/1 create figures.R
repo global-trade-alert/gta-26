@@ -13,7 +13,7 @@ rm(list = ls())
 #
 # 4. Please confirm the 6 digit UN COMTRADE code for human (not animal) vaccines is 300220. For the years 2015 until the latest year COMTRADE is available, please
 # identify the countries that are net importers of human vaccines. Please produce a map identifying those net importers and colour code the countries by the total
-# imports per capita of population. For this map please add a note at the bottom stating “Source: UN COMTRADE database used to extract data on HS code 300200.”
+# imports per capita of population. For this map please add a note at the bottom stating “Source: UN COMTRADE database used to extract data on HS code 300220.”
 
 library(gtalibrary)
 library(tidyverse)
@@ -175,10 +175,10 @@ gta_plot_saver(plot = fig2,
 # Plot
 fig3 <- ggplot(data = table3)+
   geom_bar(aes(x=forcats::fct_inorder(date, ordered = T), y=trade.value, fill=forcats::fct_reorder(exporter, desc(-trade.value))), width=.65, stat = "identity") +
-  labs(x="Month", y="", caption = "Source: Global Trade Alert.", title = "Trade delivered")+
-  scale_y_continuous(name=str_wrap("mUSD value of Mask Imports by the United States", 30), breaks=seq(0,4e9,5e8), labels=seq(0,4000,500),
-                     sec.axis = sec_axis(trans = ~., name=str_wrap("mUSD value of Mask Imports by the United States", 30), breaks=seq(0,4e9,5e8), labels=seq(0,4000,500)))+
-  scale_fill_manual(values=c("China" = gta_colour$qualitative[1], "ROW" = gta_colour$qualitative[2]), labels = c("China", "Rest of the world"))+
+  labs(x="Month", y="", caption = "Source: Global Trade Alert.", title = "Trade delivered, China delivered")+
+  scale_y_continuous(name=str_wrap("USDm value of Mask Imports by the United States", 30), breaks=seq(0,4e9,5e8), labels=seq(0,4000,500),
+                     sec.axis = sec_axis(trans = ~., name=str_wrap("USDm value of Mask Imports by the United States", 30), breaks=seq(0,4e9,5e8), labels=seq(0,4000,500)))+
+  scale_fill_manual(values=c("China" = gta_colour$qualitative[1], "ROW" = gta_colour$qualitative[2]), labels = c("From Rest of the world","From China"))+
   guides(guide_legend(title = NULL, label.hjust = 0, label.vjust = 0.5, title.position = "top", title.vjust = 0.5))+
   gta_theme(x.bottom.angle = 90, x.bottom.align = 1)+
   theme(axis.text.x.bottom = element_text(hjust=0.5, size=10),
@@ -210,7 +210,7 @@ gta_plot_saver(plot = fig3,
 
 ### Figure 4
 # Prepare plotting data
-world.fig4 <- gta_plot_map_df(table4, countries = "country", values = "import.per.capita")
+world.fig4 <- gta_plot_map_df(subset(table4, !(country %in% c(490))), countries = "country", values = "import.per.capita")
 
 # Plot
 fig4 <- ggplot() +
@@ -218,7 +218,7 @@ fig4 <- ggplot() +
   geom_polygon(data= subset(world.fig4, country != "Antarctica"), aes(x = long, y = lat, group = group, fill=value),na.rm = T, size = 0.15, color = "white") +
   coord_fixed() + # Important to fix world map proportions
   scale_x_continuous(limits=c(-13900000,17000000))+
-  labs(x="", y="",caption="Source: Global Trade Alert.") + ### JF: use GTA data not COMTRADE -> caption adjusted
+  labs(x="", y="",caption="Source: UN COMTRADE database used to extract data on HS code 300220. Population data from the World Bank.\nGrey-coloured countries are net exporters of vaccines.") + ### JF: use GTA data not COMTRADE -> caption adjusted ##PL: don't adjust caption, as data still from COMTRADE.
   scale_fill_gradientn(name=str_wrap("Combined import value in USD per capita", width = 40), 
                        na.value="#c6c6c6",
                        limits=c(0, round(max(world.fig4$value, na.rm = T))),

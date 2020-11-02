@@ -31,7 +31,8 @@ for (year in c("2009", "2020")){
                   keep.implementer = T,
                   implementation.period = c(as.Date(paste0(year, "-01-01")), as.Date(paste0(year, "-12-31"))),
                   keep.implementation.na = F,
-                  lag.adjustment = str_remove(cutoff.date, "\\d{4}-")) ## lag adjustment unnecessary?
+                  # lag.adjustment = str_remove(cutoff.date, "\\d{4}-") ## lag adjustment unnecessary? - asked Simon if we need this here.
+  )
   
   table1 <- rbind(table1, master.sliced)
 }; rm(master.sliced, parameter.choice.slicer)
@@ -55,15 +56,14 @@ table1 <- select(table1, implementing.jurisdiction, year.implemented, harmful.sh
 
 
 ### Tables 2 and 3
-gta_data_slicer(implementing.country = country.names$un_code[country.names$is.g20 == T],
-                keep.implementer = T,
+gta_data_slicer(# implementing.country = country.names$un_code[country.names$is.g20 == T],
+                # keep.implementer = T,
                 implementation.period = c(as.Date("2009-01-01"), as.Date("2009-12-31")),
-                keep.implementation.na = F,
-                lag.adjustment = str_remove(cutoff.date, "\\d{4}-")) ## lag adjustment unnecessary?
+                keep.implementation.na = F) ## lag adjustment unnecessary? -YES
 
 # Aggregate for affected country and evaluation
 master.sliced$gta.evaluation <- ifelse(master.sliced$gta.evaluation %in% c("Red", "Amber"), "harmful", "liberalising")
-table2 <- aggregate(intervention.id ~ i.un + gta.evaluation, master.sliced, function(x){length(unique(x))}); rm(master.sliced, parameter.choice.slicer)
+table2 <- aggregate(intervention.id ~ a.un + gta.evaluation, master.sliced, function(x){length(unique(x))}); rm(master.sliced, parameter.choice.slicer)
 
 
 ### Tables 4 and 5
@@ -71,11 +71,11 @@ table3 <- data.frame()
 for (evaluation in names(list("harmful" = c("Red", "Amber"), "liberalising" = "Green"))){
   gta_trade_coverage(coverage.period = c(2009, 2009),
                      gta.evaluation = unlist(list("harmful" = c("Red", "Amber"), "liberalising" = "Green")[evaluation]),
-                     exporters = country.names$un_code[country.names$is.g20 == T],
-                     keep.exporters = T,
+                     affected.flows = c("inward", "outward subsidy"),
+                     # exporters = country.names$un_code[country.names$is.g20 == T],
+                     # keep.exporters = T,
                      group.exporters = F,
-                     implementation.period = c(as.Date("2009-01-01"), as.Date("2009-12-31")),
-                     lag.adjustment = str_remove(cutoff.date, "\\d{4}-")) ## lag adjustment unnecessary?
+                     implementation.period = c(as.Date("2009-01-01"), as.Date("2009-12-31"))) ## lag adjustment unnecessary? - YES
   
   trade.coverage.estimates$gta.evaluation <- evaluation
   table3 <- rbind(table3, trade.coverage.estimates)

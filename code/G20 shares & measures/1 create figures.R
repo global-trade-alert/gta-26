@@ -114,22 +114,22 @@ gta_plot_saver(plot = fig1,
 
 ### Figures 2 and 3
 # Prepare plotting data
-world.fig2 <- gta_plot_map_df(subset(table2, gta.evaluation == "harmful"), countries="i.un",values="intervention.id")
-world.fig3 <- gta_plot_map_df(subset(table2, gta.evaluation == "liberalising"), countries="i.un",values="intervention.id")
+world.fig2 <- gta_plot_map_df(subset(table2, gta.evaluation == "harmful"), countries="a.un",values="intervention.id")
+world.fig3 <- gta_plot_map_df(subset(table2, gta.evaluation == "liberalising"), countries="a.un",values="intervention.id")
 
 # Plot
 fig2 <- map.function(data = world.fig2, caption = "Source: Global Trade Alert.", plottitle = NULL,
-                     limits = c(0, max(world.fig2$value, na.rm = T)), breaks = c(seq(0, max(world.fig2$value, na.rm = T), max(world.fig2$value, na.rm=T) / 4)),
-                     labels = c(seq(0, max(world.fig2$value, na.rm = T), max(world.fig2$value, na.rm=T) / 4)),
-                     colourvalues = c("#ffffff", gta_colour$amber[1], gta_colour$red[1], "#bf1b46", "#7d0c2a"),
-                     legend.name = "Number of harmful measures implemented in 2009", subtitle = NULL)
+                     limits = c(0, max(world.fig2$value, na.rm = T)), breaks = round(seq(0, max(world.fig2$value, na.rm = T), max(world.fig2$value, na.rm=T) / 4)),
+                     labels = round(seq(0, max(world.fig2$value, na.rm = T), max(world.fig2$value, na.rm=T) / 4)),
+                     colourvalues = c(gta_colour$amber[1], gta_colour$red[1], "#bf1b46", "#7d0c2a"),
+                     legend.name = "Number of harmful measures affected by in 2009", subtitle = NULL)
 fig2
 
 fig3 <- map.function(data = world.fig3, caption = "Source: Global Trade Alert.", plottitle = NULL,
-                     limits = c(0, max(world.fig3$value, na.rm = T)), breaks = c(seq(0, max(world.fig3$value, na.rm = T), max(world.fig3$value, na.rm=T) / 4)),
-                     labels = c(seq(0, max(world.fig3$value, na.rm = T), max(world.fig3$value, na.rm=T) / 4)),
-                     colourvalues = c("#ffffff", gta_colour$green[4], gta_colour$green[2], "#298535", "#1c6625"),
-                     legend.name = "Number of liberalising measures implemented in 2009", subtitle = NULL)
+                     limits = c(0, max(world.fig3$value, na.rm = T)), breaks = round(seq(0, max(world.fig3$value, na.rm = T), max(world.fig3$value, na.rm=T) / 4)),
+                     labels = round(seq(0, max(world.fig3$value, na.rm = T), max(world.fig3$value, na.rm=T) / 4)),
+                     colourvalues = c("#b5f5bd", gta_colour$green[4], gta_colour$green[2], "#298535", "#1c6625"),
+                     legend.name = "Number of liberalising measures affected by in 2009", subtitle = NULL)
 fig3
 
 fig2.and.fig3 <- grid.arrange(fig2, fig3, nrow = 2)
@@ -137,7 +137,7 @@ fig2.and.fig3 <- grid.arrange(fig2, fig3, nrow = 2)
 # Save the combined maps
 gta_plot_saver(plot = fig2.and.fig3,
                path = paste0(gta26.path, out.path),
-               name = "Figure 2 & 3 - Number of G20 measures map",
+               name = "Figure 2 & 3 - Number of harmful and liberalising measures maps",
                png = T,
                pdf = T,
                jpg = T,
@@ -156,17 +156,17 @@ world.fig5 <- gta_plot_map_df(subset(table3, gta.evaluation == "liberalising"), 
 
 # Plot
 fig4 <- map.function(data = world.fig4, caption = "Source: Global Trade Alert.", plottitle = NULL,
-                     limits = c(0, max(world.fig4$value, na.rm = T)), breaks = c(seq(0, max(world.fig4$value, na.rm = T), max(world.fig4$value, na.rm=T) / 4)),
+                     limits = c(0, 1), breaks = seq(0,1,0.25),
                      labels = scales::percent,
-                     colourvalues = c("#ffffff", gta_colour$amber[1], gta_colour$red[1], "#bf1b46", "#7d0c2a"),
-                     legend.name = "Share of trade affected by harmful measures implemented in 2009", subtitle = NULL)
+                     colourvalues = c( gta_colour$amber[1], gta_colour$red[1], "#bf1b46", "#7d0c2a"),
+                     legend.name = "Share of exports affected by harmful measures implemented in 2009", subtitle = NULL)
 fig4
 
 fig5 <- map.function(data = world.fig5, caption = "Source: Global Trade Alert.", plottitle = NULL,
-                     limits = c(0, max(world.fig5$value, na.rm = T)), breaks = c(seq(0, max(world.fig5$value, na.rm = T), max(world.fig5$value, na.rm=T) / 4)),
+                     limits = c(0, 1), breaks = seq(0,1,0.25),
                      labels = scales::percent,
-                     colourvalues = c("#ffffff", gta_colour$green[4], gta_colour$green[2], "#298535", "#1c6625"),
-                     legend.name = "Share of trade affected by liberalising measures implemented in 2009", subtitle = NULL)
+                     colourvalues = c(gta_colour$green[4], gta_colour$green[2], "#298535", "#1c6625"),
+                     legend.name = "Share of exports affected by liberalising measures implemented in 2009", subtitle = NULL)
 fig5
 
 fig4.and.fig5 <- grid.arrange(fig4, fig5, nrow = 2)
@@ -174,7 +174,7 @@ fig4.and.fig5 <- grid.arrange(fig4, fig5, nrow = 2)
 # Save the combined maps
 gta_plot_saver(plot = fig4.and.fig5,
                path = paste0(gta26.path, out.path),
-               name = "Figure 4 & 5 - Affected share of G20 trade map",
+               name = "Figure 4 & 5 - Affected share of trade maps",
                png = T,
                pdf = T,
                jpg = T,

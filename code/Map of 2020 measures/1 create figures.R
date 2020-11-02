@@ -40,7 +40,7 @@ fig1 <- ggplot() +
   geom_polygon(data=subset(world.fig1, country == "Greenland"), aes(x=long, y=lat, group = group), fill="#dadada", size = 0.15, colour = "white") +
   coord_fixed() + # Important to fix world map proportions
   scale_x_continuous(limits = c(-13900000,17000000))+
-  labs(x = "", y = "", caption = "Source: Global Trade Alert. Map relates only to policy interventions announced or implemented from 1 January 2020 to 21 October 2020.") +
+  labs(x = "", y = "", caption = "Source: Global Trade Alert. Map relates only to policy interventions announced or implemented from 1 January 2020 to 31 December 2020.") +
   scale_fill_manual(values = c("0" = "#b3e0fc", "1" = gta_colour$blue[4], "2" = gta_colour$blue[3], "3" = gta_colour$blue[2], "4" = gta_colour$blue[1], "5" = "#0f3f57"),
                     position="bottom", labels=c("0 measures", "1-9 measures", "10-50 measures", "50-100 measures", "more than 100 measures"), na.translate=F) +
   theme(axis.title.x=element_blank(),

@@ -89,6 +89,9 @@ names(table1) <- c("year.implemented", "food", "medical", paste0("Top 1 sector (
 # Load the data
 table2 <- read.xlsx(paste0(gta26.path, "help files/GTA COVID trade barrier data - 201016.xlsx"), sheet = 1, detectDates = T)
 
+# Keep only import liberalisations or export curbs
+table2 <- subset(table2, (`Initial.assessment.(change.relative.to.1.Jan.2020)`=="liberalising" & Is.import.policy==T) | (`Initial.assessment.(change.relative.to.1.Jan.2020)`=="restrictive" & Is.export.policy==T))
+
 # Aggregate into months
 data.table::setnames(table2, old = "Initial.assessment.(change.relative.to.1.Jan.2020)", new = "gta.evaluation")
 table2.food <- subset(table2, `Product:.Food` == T)

@@ -86,16 +86,19 @@ for (year in c(2015:2019)){
   data4 <- rbind(data4, trade.base.bilateral)
 }; rm(trade.base.bilateral, parameter.choice.trade.base)
 
+
+gta_trade_value_bilateral(importing.country = "United States of America",keep.importer = T,exporting.country = "China",keep.exporter = T,
+                          trade.data = 2018)
+
+
 # Aggregate exports and imports for each country
-table4 <- data.frame("country" = unique(c(data4$i.un, data4$a.un)),
-                     "year" = "2015, 2016, 2017, 2018, 2019")
-table4 <- cSplit(table4, splitCols = "year", sep = ", ", direction = "long")
+table4 <- data.frame("country" = unique(c(data4$i.un, data4$a.un)))
 
 # Add imports
-table4 <- merge(table4, select(aggregate(trade.value ~ i.un + year, data4, sum), "country" = i.un, year, "import" = trade.value), by = c("country", "year"), all.x = T)
+table4 <- merge(table4, select(aggregate(trade.value ~ i.un, data4, sum), "country" = i.un, "import" = trade.value), by = c("country"), all.x = T)
 
 # Add exports
-table4 <- merge(table4, select(aggregate(trade.value ~ a.un + year, data4, sum), "country" = a.un, year, "export" = trade.value), by = c("country", "year"), all.x = T)
+table4 <- merge(table4, select(aggregate(trade.value ~ a.un, data4, sum), "country" = a.un, "export" = trade.value), by = c("country"), all.x = T)
 
 # Replace NA with zero and add net imports
 table4[is.na(table4)] <- 0
@@ -105,26 +108,29 @@ table4$net.import <- table4$import - table4$export
 wb.population <- read.xlsx(paste0(gta26.path, "help files/WB population data.xlsx"), sheet = 1)
 wb.population <- select(wb.population, -Series.Name, -Series.Code)
 names(wb.population) <- c("name", "iso_code", as.character(2015:2020))
+wb.population <- wb.population[,1:3]
 wb.population[wb.population == ".."] <- NA
 
 # Convert to UN codes
 wb.population <- merge(wb.population, select(country.names, un_code, iso_code), by = "iso_code", all.x = T)
 
 # Pivot to join with prepared trade data
-wb.population <- pivot_longer(wb.population, cols = c(as.character(2015:2020)), names_to = "year", values_to = "population")
-wb.population$year <- as.numeric(wb.population$year)
+# wb.population <- pivot_longer(wb.population, cols = c(as.character(2015:2020)), names_to = "year", values_to = "population")
+names(wb.population)[3] <- "population"
+# wb.population$year <- as.numeric(wb.population$year)
 wb.population$population <- as.numeric(wb.population$population)
 
 # Merge trade and population data
-table4 <- merge(table4, select(wb.population, name, un_code, population, year), by.x = c("country", "year"), by.y = c("un_code", "year"), all.x = T)
+table4 <- merge(table4, select(wb.population, name, un_code, population), by.x = c("country"), by.y = c("un_code"), all.x = T)
 
 # Aggregate over all years as per SE: "Please use options B (Net importers when all the years are combined) and D (Total imports per capita summed up over the entire timeframe)"
-table4 <- merge(table4, select(aggregate(net.import ~ country, table4, sum), country, "total.net.import" = net.import), by = "country", all.x = T)
-table4 <- subset(table4, total.net.import > 0 & country != 568) ### ISO-3166-1 code 568 does not exist
+# table4 <- merge(table4, select(aggregate(net.import ~ country, table4, sum), country, "total.net.import" = net.import), by = "country", all.x = T)
+# table4 <- subset(table4, total.net.import > 0 & country != 568) ### ISO-3166-1 code 568 does not exist
+table4 <- subset(table4, net.import > 0 & country != 568) ### ISO-3166-1 code 568 does not exist
 
 # Sum import per capita per country
 table4$import.per.capita <- table4$import / table4$population
-table4 <- aggregate(import.per.capita ~ country, table4, sum)
+# table4 <- aggregate(import.per.capita ~ country, table4, sum)
 
 ### Save data
 save(table1, table2, table3, table4, file = paste0(gta26.path, data.path, "world trade monitor & vaccines.Rdata"))
