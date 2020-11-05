@@ -36,7 +36,7 @@ gta_data_slicer()
 master.sliced <- subset(master.sliced, format(date.published, "%m-%d") <= format(as.Date("2020-10-21"), "%m-%d"))
 
 # Add a column with submission year
-master.sliced$year.submitted <- str_extract(master.sliced$date.published, "\\d{4}")
+master.sliced$year.submitted <- year(master.sliced$date.published)
 
 # Aggregate per year
 table1 <- select(aggregate(intervention.id ~ year.submitted, master.sliced, function(x){length(unique(x))}), year.submitted, "nr.of.interventions" = intervention.id)
@@ -47,7 +47,7 @@ table1$avg.hours.between.int <- 7080 / table1$nr.of.interventions
 
 ### Tables 2 & 3
 # Get data
-gta_data_slicer(implementation.period = c(as.Date("2020-01-01"), as.Date("2020-12-31")),
+gta_data_slicer(implementation.period = c(as.Date("2020-01-01"), cutoff.date),
                 keep.implementation.na = F,
                 lag.adjustment = str_remove(cutoff.date, "\\d{4}-")) ### Not sure if lag-adjustment is necessary here
 
