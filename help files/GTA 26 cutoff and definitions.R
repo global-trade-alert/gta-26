@@ -30,7 +30,7 @@ hs.covid.food <- hs.codes$hs.code[hs.codes$is.covid.food]
 hs.covid.medical <- hs.codes$hs.code[hs.codes$is.covid.medical.equipment | hs.codes$is.covid.medical.supplies | hs.codes$is.covid.medicines]
 
 economic.support.measures <- list("Inward subsidy" = c(int.mast.types$intervention.type[int.mast.types$mast.chapter.id == "L"]),
-                                  "Export incentive and support in foreign markets" = c("Export-related non-tariff measure, nes", "Export subsidy", "Export tariff quota", "Other export incentive", "Tax-based export incentive", "Trade finance"),
+                                  "Export incentive and support in foreign markets" = int.mast.types$intervention.type[int.mast.types$is.export.promotion==T],
                                   "Localisation measure" = c("Local labour", "Local operations", "Local sourcing", "Localisation incentive"),
                                   "Government procurement measure" = c(int.mast.types$intervention.type[int.mast.types$mast.chapter.id == "M"]))
 
