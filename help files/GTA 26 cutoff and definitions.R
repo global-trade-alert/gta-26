@@ -19,7 +19,7 @@ pop.shade = "#FFE400" # Colour for populist era shading and text
 pop.text = "#E5AE1C"
 
 transparent.policy.instruments <- c("Anti-circumvention", "Anti-dumping", "Anti-subsidy", "Import monitoring", "Safeguard", "Special safeguard",
-                                    "Import tariff", "Import quota", "Export quota", "Export tax", "Export licensing requirement", "Import bans", "Export ban")
+                                    "Import tariff", "Import quota","Import tariff quota", "Import licensing requirement", "Export quota", "Export tax", "Export licensing requirement", "Import bans", "Export ban")
 subsidies.to.imp.competing.firms <- c("Capital injection and equity stakes (including bailouts)", "Consumption subsidy", "Financial assistance in foreign market",
                                       "Financial grant", "Import incentive", "In-kind grant", "Interest payment subsidy", "Loan guarantee", "Price stabilisation",
                                       "Production subsidy", "State aid, nes", "State loan", "Tax or social insurance relief")
