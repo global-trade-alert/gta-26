@@ -67,8 +67,7 @@ for (evaluation in names(list("harmful" = c("Red", "Amber"), "liberalising" = "G
   gta_trade_coverage(gta.evaluation = unlist(list("harmful" = c("Red", "Amber"), "liberalising" = "Green")[evaluation]),
                      coverage.period = c(2020,2020),
                      implementation.period = c(as.Date("2020-01-01"), cutoff.date),
-                     group.exporters = F,
-                     lag.adjustment = str_remove(cutoff.date, "\\d{4}-")) ### Not sure if lag-adjustment is necessary here
+                     group.exporters = F)
   
   trade.coverage.estimates$evaluation <- evaluation
   table3 <- rbind(table3, trade.coverage.estimates)
