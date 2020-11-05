@@ -48,8 +48,7 @@ table1$avg.hours.between.int <- 7080 / table1$nr.of.interventions
 ### Tables 2 & 3
 # Get data
 gta_data_slicer(implementation.period = c(as.Date("2020-01-01"), cutoff.date),
-                keep.implementation.na = F,
-                lag.adjustment = str_remove(cutoff.date, "\\d{4}-")) ### Not sure if lag-adjustment is necessary here
+                keep.implementation.na = F)
 
 # Separate GTA evaluation into harmful and liberalising
 master.sliced$gta.evaluation <- ifelse(master.sliced$gta.evaluation %in% c("Red", "Amber"), "harmful", "liberalising")
