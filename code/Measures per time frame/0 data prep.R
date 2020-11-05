@@ -59,7 +59,7 @@ master.sliced$year.submitted <- as.integer(str_extract(master.sliced$date.publis
 
 # Add column for SE intervention categories
 master.sliced$SE.int.type <- ifelse(master.sliced$intervention.type %in% transparent.policy.instruments, "transparent policy instruments", NA)
-master.sliced$SE.int.type[master.sliced$intervention.type %in% subsidies.to.imp.competing.firms] <- "subsidies to import competing firms"
+master.sliced$SE.int.type[master.sliced$intervention.type %in% subsidies.to.imp.competing.firms] <- "subsidies to import-competing firms"
 master.sliced$SE.int.type[master.sliced$intervention.type %in% export.incentives] <- "export incentives"
 master.sliced$SE.int.type[master.sliced$intervention.type %in% other.interventions] <- "other commercial policies"
 
