@@ -28,14 +28,14 @@ source(paste0(gta26.path, "help files/GTA 26 cutoff and definitions.R"))
 
 ### Table 1
 # Get data
-gta_data_slicer(implementation.period = c(as.Date("2009-01-01"), as.Date("2020-12-31")),
+gta_data_slicer(implementation.period = c(as.Date("2009-01-01"), cutoff.date),
                 keep.implementation.na = F)
 
 master.sliced$product.category <- "all"
 data1 <- master.sliced
 
 for (product.category in names(list("food" = hs.covid.food, "medical" = hs.covid.medical))){
-  gta_data_slicer(implementation.period = c(as.Date("2009-01-01"), as.Date("2020-12-31")),
+  gta_data_slicer(implementation.period = c(as.Date("2009-01-01"), cutoff.date),
                   keep.implementation.na = F,
                   hs.codes = unlist(list("food" = hs.covid.food, "medical" = hs.covid.medical)[product.category]),
                   keep.hs = T)
@@ -119,8 +119,8 @@ table2.food <- data.frame("int.type" = c("harmful", "liberalising"),
                                        length(unique(subset(table2.food, gta.evaluation == "liberalising" & Implementation.date <= as.Date("2020-10-31") & (Removal.date >= as.Date("2020-10-01") | is.na(Removal.date))))$Entry.ID)),
                           "Nov 20" = c(length(unique(subset(table2.food, gta.evaluation == "restrictive" & Implementation.date <= as.Date("2020-11-30") & (Removal.date >= as.Date("2020-11-01") | is.na(Removal.date)))$Entry.ID)),
                                        length(unique(subset(table2.food, gta.evaluation == "liberalising" & Implementation.date <= as.Date("2020-11-30") & (Removal.date >= as.Date("2020-11-01") | is.na(Removal.date))))$Entry.ID)),
-                          "Dec 20" = c(length(unique(subset(table2.food, gta.evaluation == "restrictive" & Implementation.date <= as.Date("2020-12-31") & (Removal.date >= as.Date("2020-12-01") | is.na(Removal.date)))$Entry.ID)),
-                                       length(unique(subset(table2.food, gta.evaluation == "liberalising" & Implementation.date <= as.Date("2020-12-31") & (Removal.date >= as.Date("2020-12-01") | is.na(Removal.date))))$Entry.ID)),
+                          "Dec 20" = c(length(unique(subset(table2.food, gta.evaluation == "restrictive" & Implementation.date <= cutoff.date & (Removal.date >= as.Date("2020-12-01") | is.na(Removal.date)))$Entry.ID)),
+                                       length(unique(subset(table2.food, gta.evaluation == "liberalising" & Implementation.date <= cutoff.date & (Removal.date >= as.Date("2020-12-01") | is.na(Removal.date))))$Entry.ID)),
                           "Jan 21" = c(length(unique(subset(table2.food, gta.evaluation == "restrictive" & Implementation.date <= as.Date("2021-01-31") & (Removal.date >= as.Date("2021-01-01") | is.na(Removal.date)))$Entry.ID)),
                                        length(unique(subset(table2.food, gta.evaluation == "liberalising" & Implementation.date <= as.Date("2021-01-31") & (Removal.date >= as.Date("2021-01-01") | is.na(Removal.date))))$Entry.ID)),
                           "Feb 21" = c(length(unique(subset(table2.food, gta.evaluation == "restrictive" & Implementation.date <= as.Date("2021-02-28") & (Removal.date >= as.Date("2021-02-01") | is.na(Removal.date)))$Entry.ID)),
@@ -174,8 +174,8 @@ table2.medical <- data.frame("int.type" = c("harmful", "liberalising"),
                                        length(unique(subset(table2.medical, gta.evaluation == "liberalising" & Implementation.date <= as.Date("2020-10-31") & (Removal.date >= as.Date("2020-10-01") | is.na(Removal.date))))$Entry.ID)),
                           "Nov 20" = c(length(unique(subset(table2.medical, gta.evaluation == "restrictive" & Implementation.date <= as.Date("2020-11-30") & (Removal.date >= as.Date("2020-11-01") | is.na(Removal.date)))$Entry.ID)),
                                        length(unique(subset(table2.medical, gta.evaluation == "liberalising" & Implementation.date <= as.Date("2020-11-30") & (Removal.date >= as.Date("2020-11-01") | is.na(Removal.date))))$Entry.ID)),
-                          "Dec 20" = c(length(unique(subset(table2.medical, gta.evaluation == "restrictive" & Implementation.date <= as.Date("2020-12-31") & (Removal.date >= as.Date("2020-12-01") | is.na(Removal.date)))$Entry.ID)),
-                                       length(unique(subset(table2.medical, gta.evaluation == "liberalising" & Implementation.date <= as.Date("2020-12-31") & (Removal.date >= as.Date("2020-12-01") | is.na(Removal.date))))$Entry.ID)),
+                          "Dec 20" = c(length(unique(subset(table2.medical, gta.evaluation == "restrictive" & Implementation.date <= cutoff.date & (Removal.date >= as.Date("2020-12-01") | is.na(Removal.date)))$Entry.ID)),
+                                       length(unique(subset(table2.medical, gta.evaluation == "liberalising" & Implementation.date <= cutoff.date & (Removal.date >= as.Date("2020-12-01") | is.na(Removal.date))))$Entry.ID)),
                           "Jan 21" = c(length(unique(subset(table2.medical, gta.evaluation == "restrictive" & Implementation.date <= as.Date("2021-01-31") & (Removal.date >= as.Date("2021-01-01") | is.na(Removal.date)))$Entry.ID)),
                                        length(unique(subset(table2.medical, gta.evaluation == "liberalising" & Implementation.date <= as.Date("2021-01-31") & (Removal.date >= as.Date("2021-01-01") | is.na(Removal.date))))$Entry.ID)),
                           "Feb 21" = c(length(unique(subset(table2.medical, gta.evaluation == "restrictive" & Implementation.date <= as.Date("2021-02-28") & (Removal.date >= as.Date("2021-02-01") | is.na(Removal.date)))$Entry.ID)),
