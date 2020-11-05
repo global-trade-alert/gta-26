@@ -55,7 +55,7 @@ gta_data_slicer(keep.implementation.na = F,
 master.sliced <- subset(master.sliced, date.published <= as.Date("2020-10-21"))
 
 # Add column for submission year
-master.sliced$year.submitted <- as.integer(str_extract(master.sliced$date.published, "\\d{4}"))
+master.sliced$year.submitted <- year(master.sliced$date.published)
 
 # Add column for SE intervention categories
 master.sliced$SE.int.type <- ifelse(master.sliced$intervention.type %in% transparent.policy.instruments, "transparent policy instruments", NA)
