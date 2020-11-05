@@ -23,7 +23,7 @@ transparent.policy.instruments <- c("Anti-circumvention", "Anti-dumping", "Anti-
 subsidies.to.imp.competing.firms <- c("Capital injection and equity stakes (including bailouts)", "Consumption subsidy", "Financial assistance in foreign market",
                                       "Financial grant", "Import incentive", "In-kind grant", "Interest payment subsidy", "Loan guarantee", "Price stabilisation",
                                       "Production subsidy", "State aid, nes", "State loan", "Tax or social insurance relief")
-export.incentives <- c("Public procurement access", "Public procurement localisation", "Public procurement preference margin", "Public procurement, nes")
+export.incentives <- int.mast.types$intervention.type[int.mast.types$is.export.promotion==T]
 other.interventions <- int.mast.types$intervention.type[!(int.mast.types$intervention.type %in% c(transparent.policy.instruments, subsidies.to.imp.competing.firms, export.incentives))]
 
 hs.covid.food <- hs.codes$hs.code[hs.codes$is.covid.food]
