@@ -68,16 +68,16 @@ gta_data_slicer(intervention.types = c("Anti-dumping", "Anti-subsidy", "Safeguar
                 keep.type = T)
 
 # Keep only announcement dates between 1 Jan and cutoff date
-table2 <- subset(master.sliced, format(date.announced, "%m-%d") <= format(as.Date(cutoff.date), "%m-%d"))
+table3 <- subset(master.sliced, format(date.announced, "%m-%d") <= format(as.Date(cutoff.date), "%m-%d"))
 
 # Aggregate "Safeguard" and "Special safeguard" into one type
-table2$intervention.type <- ifelse(table2$intervention.type %in% c("Safeguard", "Special safeguard"), "Safeguard", table2$intervention.type)
+table3$intervention.type <- ifelse(table3$intervention.type %in% c("Safeguard", "Special safeguard"), "Safeguard", table3$intervention.type)
 
 # Get rid of interventions announced before 2009
-table2 <- subset(table2, year(date.announced) >= 2009)
+table3 <- subset(table3, year(date.announced) >= 2009)
 
 # Aggregate for year implemented and intervention type
-table2 <- select(aggregate(intervention.id ~ year(date.announced) + intervention.type, table2, function(x){length(unique(x))}), "year.announced" = "year(date.announced)", intervention.type, "nr.of.interventions" = intervention.id)
+table3 <- select(aggregate(intervention.id ~ year(date.announced) + intervention.type, table3, function(x){length(unique(x))}), "year.announced" = "year(date.announced)", intervention.type, "nr.of.interventions" = intervention.id)
 
 
 ### Table 4
@@ -153,4 +153,4 @@ for(yr in 2015:2020){
 }
 
 ### Save data
-save(table1, table2, table3, table4, table5, file = paste0(gta26.path, data.path, "top MAST interventions.Rdata"))
+save(table1, table3, table4, table5, file = paste0(gta26.path, data.path, "top MAST interventions.Rdata"))
