@@ -43,9 +43,11 @@ load(paste0(gta26.path, data.path, "top MAST interventions.Rdata"))
 
 ### Save Excel files of the data
 write.xlsx(table1, file = paste0(gta26.path, out.path, "Figure 1 & 2 data.xlsx"))
-write.xlsx(table2, file = paste0(gta26.path, out.path, "Figure 3  data.xlsx"))
-write.xlsx(table3, file = paste0(gta26.path, out.path, "Figure 4 data.xlsx"))
-write.xlsx(table4, file = paste0(gta26.path, out.path, "Figure 5 data.xlsx"))
+write.xlsx(table3, file = paste0(gta26.path, out.path, "Figure 3  data.xlsx"))
+write.xlsx(table4, file = paste0(gta26.path, out.path, "Figure 4 data.xlsx"))
+write.xlsx(table5, file = paste0(gta26.path, out.path, "Figure 5 data.xlsx"))
+write.xlsx(table4lag, file = paste0(gta26.path, out.path, "Figure 4 data - lag adjusted.xlsx"))
+write.xlsx(table5lag, file = paste0(gta26.path, out.path, "Figure 5 data - lag adjusted.xlsx"))
 
 
 ### Functions
@@ -115,7 +117,8 @@ gta_plot_saver(plot = fig1,
                name = "Figure 1 - Percentage of harmful measures per MAST chapter",
                png = T,
                pdf = T,
-               jpg = T)
+               jpg = T,
+               eps = T)
 
 
 
@@ -153,13 +156,14 @@ gta_plot_saver(plot = fig1,
                name = "Figure 2 - Percentage of liberalising measures per MAST chapter",
                png = T,
                pdf = T,
-               jpg = T)
+               jpg = T,
+               eps = T)
 
 
 
 ### Figure 3
 # Plot
-fig3 <- ggplot(data = table2)+
+fig3 <- ggplot(data = table3)+
   geom_bar(aes(x=forcats::fct_inorder(as.character(year.announced), ordered = T), y=nr.of.interventions, fill=intervention.type), width=0.65, stat = "identity") +
   labs(x="", y="", caption = "Source: Global Trade Alert.")+
   scale_y_continuous(name=str_wrap("Number of measures recorded", 40), breaks=seq(0,300,25), labels=seq(0,300,25),
@@ -190,20 +194,24 @@ gta_plot_saver(plot = fig3,
                name = "Figure 3 - Number of different investigations introduced",
                png = T,
                pdf = T,
-               jpg = T)
+               jpg = T,
+               eps = T)
 
 
 
 ### Figure 4
-# Convert data to longer format
-table3 <- pivot_longer(table3, cols = names(table3)[-1], names_to = "year", names_prefix = "Trade coverage estimate for ", values_to = "trade.coverage")
+# # Convert data to longer format
+# table4 <- pivot_longer(table4, cols = names(table4)[-1], names_to = "year", names_prefix = "Trade coverage estimate for ", values_to = "trade.coverage")
+
+data.table::setnames(table4, old = "MAST chapter name", new = "mast.group")
+data.table::setnames(table4, old = "trade.share", new = "trade.coverage")
 
 # Plot
-for (i in c(1:6)){
-  eval(parse(text = paste0("p", i," <- bar.function(data = subset(table3, mast.group == '", unique(table3$mast.group)[i], "'), fill.colour = gta_colour$harmful[1], x.lab = '", unique(table3$mast.group)[i], "', y.lab = '', y.breaks = seq(0,0.2,0.02), y.limits = c(0,0.21))")))
+for (i in c(1:7)){
+  eval(parse(text = paste0("p", i," <- bar.function(data = subset(table4, mast.group == '", unique(table4$mast.group)[i], "'), fill.colour = gta_colour$harmful[1], x.lab = '", unique(table4$mast.group)[i], "', y.lab = '', y.breaks = seq(0,0.45,0.05), y.limits = c(0,0.45))")))
 }
 
-fig4 <- grid.arrange(p1, p2, p3, p4, p5, p6, nrow = 2, bottom = text_grob("Source: Global Trade Alert.", family = "Open Sans", color = "#3f3f3f", size = 10))
+fig4 <- grid.arrange(p1, p2, p3, p4, p5, p6, p7, nrow = 2, bottom = text_grob("Source: Global Trade Alert.", family = "Open Sans", color = "#3f3f3f", size = 10))
 
 gta_plot_saver(plot = fig4,
                path = paste0(gta26.path, out.path),
@@ -211,17 +219,42 @@ gta_plot_saver(plot = fig4,
                png = T,
                pdf = T,
                jpg = T,
+               eps = T,
+               width = 29,
+               height = 21)
+
+### Figure 4 - lag adjusted
+data.table::setnames(table4lag, old = "MAST chapter name", new = "mast.group")
+data.table::setnames(table4lag, old = "trade.share", new = "trade.coverage")
+
+# Plot
+for (i in c(1:7)){
+  eval(parse(text = paste0("p", i," <- bar.function(data = subset(table4lag, mast.group == '", unique(table4lag$mast.group)[i], "'), fill.colour = gta_colour$harmful[1], x.lab = '", unique(table4lag$mast.group)[i], "', y.lab = '', y.breaks = seq(0,0.40,0.05), y.limits = c(0,0.40))")))
+}
+
+fig4lag <- grid.arrange(p1, p2, p3, p4, p5, p6, p7, nrow = 2, bottom = text_grob("Source: Global Trade Alert.", family = "Open Sans", color = "#3f3f3f", size = 10))
+
+gta_plot_saver(plot = fig4lag,
+               path = paste0(gta26.path, out.path),
+               name = "Figure 4 - Trade covered by harmful interventions by MAST chapter - lag adjusted",
+               png = T,
+               pdf = T,
+               jpg = T,
+               eps = T,
                width = 29,
                height = 21)
 
 
 ### Figure 5
-# Convert data to longer format
-table4 <- pivot_longer(table4, cols = names(table4)[-1], names_to = "year", names_prefix = "Trade coverage estimate for ", values_to = "trade.coverage")
+# # Convert data to longer format
+# table4 <- pivot_longer(table5, cols = names(table5)[-1], names_to = "year", names_prefix = "Trade coverage estimate for ", values_to = "trade.coverage")
+
+data.table::setnames(table5, old = "MAST chapter name", new = "mast.group")
+data.table::setnames(table5, old = "trade.share", new = "trade.coverage")
 
 # Plot
 for (i in c(1:6)){
-  eval(parse(text = paste0("p", i," <- bar.function(data = subset(table4, mast.group == '", unique(table4$mast.group)[i], "'), fill.colour = gta_colour$liberalising[1], x.lab = '", unique(table4$mast.group)[i], "', y.lab = '', y.breaks = seq(0,0.11,0.01), y.limits = c(0,0.11))")))
+  eval(parse(text = paste0("p", i," <- bar.function(data = subset(table5, mast.group == '", unique(table5$mast.group)[i], "'), fill.colour = gta_colour$liberalising[1], x.lab = '", unique(table5$mast.group)[i], "', y.lab = '', y.breaks = seq(0,0.3,0.05), y.limits = c(0,0.3))")))
 }
 
 fig5 <- grid.arrange(p1, p2, p3, p4, p5, p6, nrow = 2, bottom = text_grob("Source: Global Trade Alert.", family = "Open Sans", color = "#3f3f3f", size = 10))
@@ -232,5 +265,28 @@ gta_plot_saver(plot = fig5,
                png = T,
                pdf = T,
                jpg = T,
+               eps = T,
+               width = 29,
+               height = 21)
+
+
+### Figure 5 - lag adjusted
+data.table::setnames(table5lag, old = "MAST chapter name", new = "mast.group")
+data.table::setnames(table5lag, old = "trade.share", new = "trade.coverage")
+
+# Plot
+for (i in c(1:6)){
+  eval(parse(text = paste0("p", i," <- bar.function(data = subset(table5lag, mast.group == '", unique(table5lag$mast.group)[i], "'), fill.colour = gta_colour$liberalising[1], x.lab = '", unique(table5lag$mast.group)[i], "', y.lab = '', y.breaks = seq(0,0.3,0.05), y.limits = c(0,0.3))")))
+}
+
+fig5lag <- grid.arrange(p1, p2, p3, p4, p5, p6, nrow = 2, bottom = text_grob("Source: Global Trade Alert.", family = "Open Sans", color = "#3f3f3f", size = 10))
+
+gta_plot_saver(plot = fig5lag,
+               path = paste0(gta26.path, out.path),
+               name = "Figure 5 - Trade covered by liberalising interventions by MAST chapter - lag adjusted",
+               png = T,
+               pdf = T,
+               jpg = T,
+               eps = T,
                width = 29,
                height = 21)
