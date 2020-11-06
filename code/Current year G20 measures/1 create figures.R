@@ -74,6 +74,11 @@ gta_plot_saver(plot = fig1,
 # Transform data to longer format
 table2 <- pivot_longer(table2, cols = c("nr.of.harmful.int", "nr.of.liberalising.int", "nr.of.cont.protection.int"), names_to = "intervention.type", values_to = "nr.of.interventions")
 
+# Abbreviate USA and UK
+table2$implementing.jurisdiction <- as.character(table2$implementing.jurisdiction)
+table2$implementing.jurisdiction[table2$implementing.jurisdiction == "United States of America"] <- "USA"
+table2$implementing.jurisdiction[table2$implementing.jurisdiction == "United Kingdom"] <- "UK"
+
 # Plot
 fig2 <- ggplot(data = table2)+
   geom_bar(aes(x=forcats::fct_reorder(implementing.jurisdiction, desc(-total.nr.of.interventions)), y=nr.of.interventions, fill=factor(intervention.type, levels=c("nr.of.cont.protection.int", "nr.of.liberalising.int", "nr.of.harmful.int"))), width=0.65, stat = "identity") +
@@ -117,6 +122,10 @@ gta_plot_saver(plot = fig2,
 # Transform the data to longer format
 table3 <- pivot_longer(table3, cols = names(table3)[-1], names_to = "intervention.type", values_to = "perc.of.interventions")
 table3$implementing.jurisdiction <- as.character(table3$implementing.jurisdiction)
+
+# Abbreviate USA and UK
+table3$implementing.jurisdiction[table3$implementing.jurisdiction == "United States of America"] <- "USA"
+table3$implementing.jurisdiction[table3$implementing.jurisdiction == "United Kingdom"] <- "UK"
 
 # Plot
 fig3 <- ggplot(data = table3)+
