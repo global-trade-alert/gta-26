@@ -20,6 +20,15 @@ rm(list = ls())
 #
 # 5. Please repeat 4 but for the implemented liberalising interventions.
 
+# 4lag. For the top 5 categories of implemented harmful policies identified in 1. above, as well as for all harmful policy intervention, please calculate the share
+# of world trade covered by these 6 categories for each year since 2015, confining the calculations to those policies implemented worldwide between 1 January and
+# 21 October of the year in question. Do not use duration adjusted calculations. For each category of policy intervention and for all harmful policy intervention,
+# please report each year’s findings next to one another in bar charts. Please organise the 6 sets of bar charts on to one page, ideally in landscape format
+# (using one or two rows of bar charts—you decide what looks best). Please prepare the charts using 2015 year weights (for international trade data) and for 2019
+# year weights—and compare them. If the results are very similar, then please send me the chart using the 2015 year weights.
+#
+# 5lag. Please repeat 4 but for the implemented liberalising interventions.
+
 library(gtalibrary)
 library(tidyverse)
 library(openxlsx)
@@ -346,5 +355,283 @@ for(yr in 2015:2020){
 }
 
 
+
+### Table 4 LAG ADJUSTED
+# Get data
+## NOTE: using this computationally expensive method instead of lag-adjustment to not conflict with SE: "Do not use duration adjusted calculations."
+mast.groups <- as.character(top5.mast.harmful[1:5])
+odd.chapters=c("FDI","MIG","CAP","P")
+
+table4lag <- data.frame()
+
+for(yr in 2015:2020){
+  print(yr)
+  # by MAST
+  gta_trade_coverage(gta.evaluation = c("Red", "Amber"),
+                     affected.flows = "inward",
+                     implementation.period = c(as.Date(paste0(yr,"-01-01")), as.Date(paste0(yr,"-", format(as.Date(cutoff.date), "%m-%d")))),
+                     coverage.period = c(yr, yr),
+                     mast.chapters = mast.groups[! mast.groups %in% odd.chapters],
+                     keep.mast = T,
+                     group.mast = F,
+                     intra.year.duration = F,
+                     lag.adjustment = format(as.Date(cutoff.date), "%m-%d"))
+  
+  if("trade.coverage.estimates" %in% ls()){
+    
+    trade.coverage.estimates$year=yr
+    table4lag <- rbind(table4lag, subset(select(trade.coverage.estimates, `MAST chapter ID`, `MAST chapter name`,year ,"trade.share"=names(trade.coverage.estimates)[grepl("Trade coverage",names(trade.coverage.estimates))]),
+                                         `MAST chapter ID`!="All included MAST chapters"))
+    
+    
+  } else{
+    
+    tce.replacement=data.frame(id=mast.groups[! mast.groups %in% odd.chapters],
+                               name=NA,
+                               year=yr,
+                               trade.share=0,
+                               stringsAsFactors = F)
+    names(tce.replacement)=c("MAST chapter ID","MAST chapter name","year","trade.share")
+    
+    table4lag <- rbind(table4lag,
+                       tce.replacement)
+    rm(tce.replacement)
+  }
+  
+  if("P" %in% mast.groups){
+    
+    rm(trade.coverage.estimates)
+    gta_trade_coverage(gta.evaluation = c("Red", "Amber"),
+                       affected.flows = "outward",
+                       implementation.period = c(as.Date(paste0(yr,"-01-01")), as.Date(paste0(yr,"-", format(as.Date(cutoff.date), "%m-%d")))),
+                       coverage.period = c(yr, yr),
+                       mast.chapters = "P",
+                       keep.mast = T,
+                       group.mast = T,
+                       intra.year.duration = F,
+                       lag.adjustment = format(as.Date(cutoff.date), "%m-%d"))
+    
+    
+    
+    if("trade.coverage.estimates" %in% ls()){
+      
+      trade.coverage.estimates$`MAST chapter ID`="P - barriers"
+      trade.coverage.estimates$`MAST chapter name`="P: Export barriers"
+      trade.coverage.estimates$year=yr
+      table4lag <- rbind(table4lag, subset(select(trade.coverage.estimates, `MAST chapter ID`, `MAST chapter name`,year ,"trade.share"=names(trade.coverage.estimates)[grepl("Trade coverage",names(trade.coverage.estimates))]),
+                                           `MAST chapter ID`!="All included MAST chapters"))
+      
+      
+    } else{
+      
+      tce.replacement=data.frame(id="P - barriers",
+                                 name="P: Export barriers",
+                                 year=yr,
+                                 trade.share=0,
+                                 stringsAsFactors = F)
+      names(tce.replacement)=c("MAST chapter ID","MAST chapter name","year","trade.share")
+      
+      table4lag <- rbind(table4lag,
+                         tce.replacement)
+      rm(tce.replacement)
+    }
+    
+    
+    
+    rm(trade.coverage.estimates)
+    gta_trade_coverage(gta.evaluation = c("Red", "Amber"),
+                       affected.flows = "outward subsidy",
+                       implementation.period = c(as.Date(paste0(yr,"-01-01")), as.Date(paste0(yr,"-", format(as.Date(cutoff.date), "%m-%d")))),
+                       coverage.period = c(yr, yr),
+                       mast.chapters = "P",
+                       keep.mast = T,
+                       group.mast = T,
+                       intra.year.duration = F,
+                       lag.adjustment = format(as.Date(cutoff.date), "%m-%d"))
+    
+    
+    
+    if("trade.coverage.estimates" %in% ls()){
+      
+      trade.coverage.estimates$`MAST chapter ID`="P - subsidy"
+      trade.coverage.estimates$`MAST chapter name`="P: Export incentives"
+      trade.coverage.estimates$year=yr
+      table4lag <- rbind(table4lag, subset(select(trade.coverage.estimates, `MAST chapter ID`, `MAST chapter name`,year ,"trade.share"=names(trade.coverage.estimates)[grepl("Trade coverage",names(trade.coverage.estimates))]),
+                                           `MAST chapter ID`!="All included MAST chapters"))
+      
+      
+      
+    } else{
+      
+      tce.replacement=data.frame(id="P - subsidy",
+                                 name="P: Export incentives",
+                                 year=yr,
+                                 trade.share=0,
+                                 stringsAsFactors = F)
+      names(tce.replacement)=c("MAST chapter ID","MAST chapter name","year","trade.share")
+      
+      table4lag <- rbind(table4lag,
+                         tce.replacement)
+      rm(tce.replacement)
+    }
+    
+  }
+  
+  # ALL
+  rm(trade.coverage.estimates)
+  gta_trade_coverage(gta.evaluation = c("Red", "Amber"),
+                     implementation.period = c(as.Date(paste0(yr,"-01-01")), as.Date(paste0(yr,"-", format(as.Date(cutoff.date), "%m-%d")))),
+                     coverage.period = c(yr, yr),
+                     intra.year.duration = F,
+                     lag.adjustment = format(as.Date(cutoff.date), "%m-%d"))
+  trade.coverage.estimates$`MAST chapter ID`="ALL"
+  trade.coverage.estimates$`MAST chapter name`="All harmful interventions"
+  trade.coverage.estimates$year=yr
+  table4lag <- rbind(table4lag, select(trade.coverage.estimates, `MAST chapter ID`, `MAST chapter name`, year , "trade.share"=names(trade.coverage.estimates)[grepl("Trade coverage",names(trade.coverage.estimates))]))
+  rm(trade.coverage.estimates)
+}
+
+
+
+### Table 5 LAG ADJUSTED
+# Get data
+## NOTE: using this computationally expensive method instead of lag-adjustment to not conflict with SE: "Do not use duration adjusted calculations."
+mast.groups <- as.character(top5.mast.liberalising[1:5])
+odd.chapters=c("FDI","MIG","CAP","P")
+
+table5lag=data.frame()
+
+for(yr in 2015:2020){
+  print(yr)
+  # by MAST
+  gta_trade_coverage(gta.evaluation = c("Green"),
+                     affected.flows = "inward",
+                     implementation.period = c(as.Date(paste0(yr,"-01-01")), as.Date(paste0(yr,"-", format(as.Date(cutoff.date), "%m-%d")))),
+                     coverage.period = c(yr, yr),
+                     mast.chapters = mast.groups[! mast.groups %in% odd.chapters],
+                     keep.mast = T,
+                     group.mast = F,
+                     intra.year.duration = F,
+                     lag.adjustment = format(as.Date(cutoff.date), "%m-%d"))
+  
+  if("trade.coverage.estimates" %in% ls()){
+    
+    trade.coverage.estimates$year=yr
+    table5lag <- rbind(table5lag, subset(select(trade.coverage.estimates, `MAST chapter ID`, `MAST chapter name`,year ,"trade.share"=names(trade.coverage.estimates)[grepl("Trade coverage",names(trade.coverage.estimates))]),
+                                         `MAST chapter ID`!="All included MAST chapters"))
+    
+    
+  } else{
+    
+    tce.replacement=data.frame(id=mast.groups[! mast.groups %in% odd.chapters],
+                               name=NA,
+                               year=yr,
+                               trade.share=0,
+                               stringsAsFactors = F)
+    names(tce.replacement)=c("MAST chapter ID","MAST chapter name","year","trade.share")
+    
+    table5lag <- rbind(table5lag,
+                       tce.replacement)
+    rm(tce.replacement)
+  }
+  
+  if("P" %in% mast.groups){
+    
+    rm(trade.coverage.estimates)
+    gta_trade_coverage(gta.evaluation = c("Green"),
+                       affected.flows = "outward",
+                       implementation.period = c(as.Date(paste0(yr,"-01-01")), as.Date(paste0(yr,"-", format(as.Date(cutoff.date), "%m-%d")))),
+                       coverage.period = c(yr, yr),
+                       mast.chapters = "P",
+                       keep.mast = T,
+                       group.mast = T,
+                       intra.year.duration = F,
+                       lag.adjustment = format(as.Date(cutoff.date), "%m-%d"))
+    
+    
+    
+    if("trade.coverage.estimates" %in% ls()){
+      
+      trade.coverage.estimates$`MAST chapter ID`="P - barriers"
+      trade.coverage.estimates$`MAST chapter name`="P: Export barriers"
+      trade.coverage.estimates$year=yr
+      table5lag <- rbind(table5lag, subset(select(trade.coverage.estimates, `MAST chapter ID`, `MAST chapter name`,year ,"trade.share"=names(trade.coverage.estimates)[grepl("Trade coverage",names(trade.coverage.estimates))]),
+                                           `MAST chapter ID`!="All included MAST chapters"))
+      
+      
+    } else{
+      
+      tce.replacement=data.frame(id="P - barriers",
+                                 name="P: Export barriers",
+                                 year=yr,
+                                 trade.share=0,
+                                 stringsAsFactors = F)
+      names(tce.replacement)=c("MAST chapter ID","MAST chapter name","year","trade.share")
+      
+      table5lag <- rbind(table5lag,
+                         tce.replacement)
+      rm(tce.replacement)
+    }
+    
+    
+    
+    rm(trade.coverage.estimates)
+    gta_trade_coverage(gta.evaluation = c("Green"),
+                       affected.flows = "outward subsidy",
+                       implementation.period = c(as.Date(paste0(yr,"-01-01")), as.Date(paste0(yr,"-", format(as.Date(cutoff.date), "%m-%d")))),
+                       coverage.period = c(yr, yr),
+                       mast.chapters = "P",
+                       keep.mast = T,
+                       group.mast = T,
+                       intra.year.duration = F,
+                       lag.adjustment = format(as.Date(cutoff.date), "%m-%d"))
+    
+    
+    
+    if("trade.coverage.estimates" %in% ls()){
+      
+      trade.coverage.estimates$`MAST chapter ID`="P - subsidy"
+      trade.coverage.estimates$`MAST chapter name`="P: Export incentives"
+      trade.coverage.estimates$year=yr
+      table5lag <- rbind(table5lag, subset(select(trade.coverage.estimates, `MAST chapter ID`, `MAST chapter name`,year ,"trade.share"=names(trade.coverage.estimates)[grepl("Trade coverage",names(trade.coverage.estimates))]),
+                                           `MAST chapter ID`!="All included MAST chapters"))
+      
+      
+      
+    } else{
+      
+      tce.replacement=data.frame(id="P - subsidy",
+                                 name="P: Export incentives",
+                                 year=yr,
+                                 trade.share=0,
+                                 stringsAsFactors = F)
+      names(tce.replacement)=c("MAST chapter ID","MAST chapter name","year","trade.share")
+      
+      table5lag <- rbind(table5lag,
+                         tce.replacement)
+      rm(tce.replacement)
+      
+    }
+    
+  }
+  
+  # ALL
+  rm(trade.coverage.estimates)
+  gta_trade_coverage(gta.evaluation = c("Green"),
+                     implementation.period = c(as.Date(paste0(yr,"-01-01")), as.Date(paste0(yr,"-", format(as.Date(cutoff.date), "%m-%d")))),
+                     coverage.period = c(yr, yr),
+                     intra.year.duration = F,
+                     lag.adjustment = format(as.Date(cutoff.date), "%m-%d"))
+  trade.coverage.estimates$`MAST chapter ID`="ALL"
+  trade.coverage.estimates$`MAST chapter name`="All harmful interventions"
+  trade.coverage.estimates$year=yr
+  table5lag <- rbind(table5lag, select(trade.coverage.estimates, `MAST chapter ID`, `MAST chapter name`, year , "trade.share"=names(trade.coverage.estimates)[grepl("Trade coverage",names(trade.coverage.estimates))]))
+  rm(trade.coverage.estimates)
+}
+
+
+
+
+
 ### Save data
-save(table1, table3, table4, table5, file = paste0(gta26.path, data.path, "top MAST interventions.Rdata"))
+save(table1, table3, table4, table5,table4lag, table5lag, file = paste0(gta26.path, data.path, "top MAST interventions.Rdata"))
