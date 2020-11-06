@@ -43,11 +43,11 @@ write.xlsx(table3, file = paste0(gta26.path, out.path, "Figure 3 data.xlsx"))
 
 ### Figure 1
 fig1 <- ggplot(data=table1)+
-  geom_line(aes(x=forcats::fct_inorder(as.character(year.published), ordered = T), y=total.nr.of.int, group=1), size=1, colour=gta_colour$qualitative[1])+
-  geom_line(aes(x=forcats::fct_inorder(as.character(year.published), ordered = T), y=harmful.perc*2800, group=1), size=1, colour=gta_colour$red[1]) +
-  scale_y_continuous(name=str_wrap("Total number of G20 commercial policy interventions worldwide documented by 21 October", 55),
-                     labels=seq(0,2800,400), limits = c(0,2800), breaks=seq(0,2800,400),
-                     sec.axis = sec_axis(trans = ~./2800, name=str_wrap("Percentage of G20 measures that harm trading partners", 55),
+  geom_line(aes(x=forcats::fct_inorder(as.character(year.implemented), ordered = T), y=total.nr.of.int, group=1), size=1, colour=gta_colour$qualitative[1])+
+  geom_line(aes(x=forcats::fct_inorder(as.character(year.implemented), ordered = T), y=harmful.perc*1400, group=1), size=1, colour=gta_colour$red[1]) +
+  scale_y_continuous(name=str_wrap("Total number of G20 commercial policy interventions worldwide implemented by 31 October", 55),
+                     labels=seq(0,1400,200), limits = c(0,1400), breaks=seq(0,1400,200),
+                     sec.axis = sec_axis(trans = ~./1400, name=str_wrap("Percentage of G20 measures that harm trading partners", 55),
                                          breaks=seq(0,1,0.1),labels=label_percent(accuracy = 1L)))+
   labs(x = "", caption = "Source: Global Trade Alert.")+
   gta_theme(x.bottom.angle = 90, x.bottom.align = 1) +
@@ -63,10 +63,11 @@ fig1
 
 gta_plot_saver(plot = fig1,
                path = paste0(gta26.path, out.path),
-               name = "Figure 1 - G20 interventions documented by 21 October",
+               name = "Figure 1 - G20 interventions implemented by 21 October",
                png = T,
                pdf = T,
-               jpg = T)
+               jpg = T,
+               eps = T)
 
 
 ### Figure 2
@@ -107,6 +108,7 @@ gta_plot_saver(plot = fig2,
                png = T,
                pdf = T,
                jpg = T,
+               eps = T,
                width = 21,
                height = 21)
 
@@ -124,7 +126,7 @@ fig3 <- ggplot(data = table3)+
                      sec.axis = sec_axis(trans = ~., name=str_wrap("Percentage of measures recorded", 40), breaks=seq(0,1,0.1), labels=label_percent(accuracy = 1L)))+
   scale_fill_manual(values=c("perc.of.lapsed.interventions" = gta_colour$qualitative[5], "perc.of.interventions.to.lapse.rest.of.year" = gta_colour$qualitative[4], "perc.of.interventions.to.lapse.2021" = gta_colour$qualitative[3],
                              "perc.of.interventions.to.lapse.after.2021" = gta_colour$qualitative[2], "perc.of.interventions.without.phaseout.date" = gta_colour$qualitative[1]),
-                    labels = c("lapsed until 21 Oct", "lapses during the rest of 2020", "lapses in 2021",     
+                    labels = c("lapsed until 31 Oct", "lapses during the rest of 2020", "lapses in 2021",     
                                "lapses after 2021", "has no phase-out date"))+
   gta_theme(x.bottom.angle = 90, x.bottom.align = 0)+
   guides(guide_legend(title = NULL, label.hjust = 0, label.vjust = 0.5, title.position = "top", title.vjust = 0.5, nrow = 2))+
@@ -148,5 +150,6 @@ gta_plot_saver(plot = fig3,
                png = T,
                pdf = T,
                jpg = T,
+               eps = T,
                height = 21,
                width = 25)
