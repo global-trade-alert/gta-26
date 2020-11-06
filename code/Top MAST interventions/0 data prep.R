@@ -44,6 +44,7 @@ top5.mast.harmful <- arrange(aggregate(intervention.id ~ mast.chapter, subset(ma
 top5.mast.liberalising <- arrange(aggregate(intervention.id ~ mast.chapter, subset(master.sliced, year(date.implemented) <= 2019 & gta.evaluation == "liberalising"), function(x){length(unique(x))}), desc(intervention.id))$mast.chapter[1:5]
 
 # Aggregate all other chapters into one
+master.sliced$mast.chapter=as.character(master.sliced$mast.chapter)
 master.sliced$mast.chapter[master.sliced$gta.evaluation == "harmful"] <- ifelse(master.sliced$mast.chapter[master.sliced$gta.evaluation == "harmful"] %in% top5.mast.harmful, master.sliced$mast.chapter[master.sliced$gta.evaluation == "harmful"], "Other")
 master.sliced$mast.chapter[master.sliced$gta.evaluation == "liberalising"] <- ifelse(master.sliced$mast.chapter[master.sliced$gta.evaluation == "liberalising"] %in% top5.mast.liberalising, master.sliced$mast.chapter[master.sliced$gta.evaluation == "liberalising"], "Other")
 
