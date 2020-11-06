@@ -68,7 +68,14 @@ table2 <- merge(select(aggregate(intervention.id ~ implementing.jurisdiction, su
 # data2 <- select(aggregate(intervention.id ~ implementing.jurisdiction, subset(data2, !label %in% c("preliminary duty", "definitive duty", "extended duty")), function(x){length(unique(x))}), implementing.jurisdiction, "nr.of.cont.protection.int.RE" = intervention.id)
 # table2 <- merge(table2, data2, by = "implementing.jurisdiction", all.x = T)
 
-data2 <- select(aggregate(intervention.id ~ implementing.jurisdiction, subset(master.sliced, mast.chapter == "D" & date.announced >= as.Date("2020-01-01") & date.announced <= as.Date(cutoff.date) & is.na(date.implemented)), function(x){length(unique(x))}), implementing.jurisdiction, "nr.of.cont.protection.int" = intervention.id)
+gta_data_slicer(implementing.country = country.names$un_code[country.names$is.g20],
+                keep.implementer = T,
+                mast.chapters = "D",
+                keep.mast = T,
+                announcement.period = c("2020-01-01", as.character(as.Date(cutoff.date))))
+
+
+data2 <- select(aggregate(intervention.id ~ implementing.jurisdiction, subset(master.sliced, is.na(date.implemented)), function(x){length(unique(x))}), implementing.jurisdiction, "nr.of.cont.protection.int" = intervention.id)
 table2 <- merge(table2, data2, by = "implementing.jurisdiction", all.x = T)
 
 # Merge the chapter D numbers with the rest
