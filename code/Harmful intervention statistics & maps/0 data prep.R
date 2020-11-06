@@ -30,10 +30,7 @@ source(paste0(gta26.path, "help files/GTA 26 cutoff and definitions.R"))
 
 ### Table 1
 # Get the data
-gta_data_slicer()
-
-# Select only interventions published by 21 Oct
-master.sliced <- subset(master.sliced, format(date.announced, "%m-%d") <= format(as.Date("2020-10-21"), "%m-%d"))
+gta_data_slicer(lag.adjustment = format(as.Date("2020-10-21"), "%m-%d"))
 
 # Add a column with submission year
 master.sliced$year.announced <- year(master.sliced$date.announced)
