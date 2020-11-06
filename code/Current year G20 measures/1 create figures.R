@@ -135,8 +135,8 @@ fig3 <- ggplot(data = table3)+
                      sec.axis = sec_axis(trans = ~., name=str_wrap("Percentage of measures recorded", 40), breaks=seq(0,1,0.1), labels=label_percent(accuracy = 1L)))+
   scale_fill_manual(values=c("perc.of.lapsed.interventions" = gta_colour$qualitative[5], "perc.of.interventions.to.lapse.rest.of.year" = gta_colour$qualitative[4], "perc.of.interventions.to.lapse.2021" = gta_colour$qualitative[3],
                              "perc.of.interventions.to.lapse.after.2021" = gta_colour$qualitative[2], "perc.of.interventions.without.phaseout.date" = gta_colour$qualitative[1]),
-                    labels = c("lapsed until 31 Oct", "lapses during the rest of 2020", "lapses in 2021",     
-                               "lapses after 2021", "has no phase-out date"))+
+                    labels = c("Lapsed by 31 October 2020", "Lapses in last two months of 2020", "Lapses in 2021",     
+                               "Lapses after 2021", "Has no phase-out date"))+
   gta_theme(x.bottom.angle = 90, x.bottom.align = 0)+
   guides(guide_legend(title = NULL, label.hjust = 0, label.vjust = 0.5, title.position = "top", title.vjust = 0.5, nrow = 2))+
   theme(axis.text.x.bottom = element_text(hjust=1, size=10),
