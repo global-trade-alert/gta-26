@@ -30,7 +30,9 @@ source(paste0(gta26.path, "help files/GTA 26 cutoff and definitions.R"))
 # Get data
 gta_data_slicer(implementing.country = country.names$un_code[country.names$is.g20],
                 keep.implementer = T,
-                lag.adjustment = format(as.Date(cutoff.date), "%m-%d"))
+                lag.adjustment = format(as.Date(cutoff.date), "%m-%d"),
+                implementation.period = c("2008-11-01", as.character(as.Date(cutoff.date))),
+                keep.implementation.na = F)
 
 
 # Aggregate per year and add percentage of harmful interventions
@@ -45,14 +47,16 @@ table1$nr.of.harmful.interventions <- NULL
 ### Table 2
 # Get data
 gta_data_slicer(implementing.country = country.names$un_code[country.names$is.g20],
-                keep.implementer = T)
+                keep.implementer = T,
+                implementation.period = c("2020-01-01", as.character(as.Date(cutoff.date))),
+                keep.implementation.na = F)
 
 # Convert gta.evaluation into harmful and liberalising
 master.sliced$gta.evaluation <- ifelse(master.sliced$gta.evaluation %in% c("Red", "Amber"), "harmful", "liberalising")
 
 # Aggregate the harmful and liberalising interventions for every country
-table2 <- merge(select(aggregate(intervention.id ~ implementing.jurisdiction, subset(master.sliced, gta.evaluation == "harmful" & !is.na(date.implemented) & date.implemented >= as.Date("2020-01-01") & date.implemented <= as.Date(cutoff.date)), function(x){length(unique(x))}), implementing.jurisdiction, "nr.of.harmful.int" = intervention.id),
-                select(aggregate(intervention.id ~ implementing.jurisdiction, subset(master.sliced, gta.evaluation == "liberalising" & !is.na(date.implemented) & date.implemented >= as.Date("2020-01-01") & date.implemented <= as.Date(cutoff.date)), function(x){length(unique(x))}), implementing.jurisdiction, "nr.of.liberalising.int" = intervention.id),
+table2 <- merge(select(aggregate(intervention.id ~ implementing.jurisdiction, subset(master.sliced, gta.evaluation == "harmful"), function(x){length(unique(x))}), implementing.jurisdiction, "nr.of.harmful.int" = intervention.id),
+                select(aggregate(intervention.id ~ implementing.jurisdiction, subset(master.sliced, gta.evaluation == "liberalising"), function(x){length(unique(x))}), implementing.jurisdiction, "nr.of.liberalising.int" = intervention.id),
                 by = "implementing.jurisdiction", all.x = T)
 
 # Aggregate chapter D investigations that have not resulted in duties imposed
