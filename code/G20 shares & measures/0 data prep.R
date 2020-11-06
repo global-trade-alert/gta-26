@@ -75,7 +75,7 @@ for (evaluation in names(list("harmful" = c("Red", "Amber"), "liberalising" = "G
                      # exporters = country.names$un_code[country.names$is.g20 == T],
                      # keep.exporters = T,
                      group.exporters = F,
-                     implementation.period = c(as.Date("2009-01-01"), as.Date("2009-12-31"))) ## lag adjustment unnecessary? - YES
+                     implementation.period = c(as.Date("2009-01-01"), as.Date("2009-12-31"))) ## lag adjustment unnecessary? - YES (as per SE)
   
   trade.coverage.estimates$gta.evaluation <- evaluation
   table3 <- rbind(table3, trade.coverage.estimates)

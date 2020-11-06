@@ -108,7 +108,8 @@ gta_plot_saver(plot = fig1,
                name = "Figure 1 - G20 shares of harmful measures",
                png = T,
                pdf = T,
-               jpg = T)
+               jpg = T,
+               eps = T)
 
 
 
@@ -141,6 +142,7 @@ gta_plot_saver(plot = fig2.and.fig3,
                png = T,
                pdf = T,
                jpg = T,
+               eps = T,
                height = 30,
                width = 27)
 
@@ -178,5 +180,6 @@ gta_plot_saver(plot = fig4.and.fig5,
                png = T,
                pdf = T,
                jpg = T,
+               eps = T,
                height = 30,
                width = 27)

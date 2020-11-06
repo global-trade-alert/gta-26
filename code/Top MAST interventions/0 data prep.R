@@ -57,8 +57,8 @@ master.sliced$mast.chapter=as.character(master.sliced$mast.chapter)
 master.sliced$mast.chapter[master.sliced$gta.evaluation == "harmful"] <- ifelse(master.sliced$mast.chapter[master.sliced$gta.evaluation == "harmful"] %in% top5.mast.harmful, master.sliced$mast.chapter[master.sliced$gta.evaluation == "harmful"], "Other")
 master.sliced$mast.chapter[master.sliced$gta.evaluation == "liberalising"] <- ifelse(master.sliced$mast.chapter[master.sliced$gta.evaluation == "liberalising"] %in% top5.mast.liberalising, master.sliced$mast.chapter[master.sliced$gta.evaluation == "liberalising"], "Other")
 
-any(!unique(master.sliced$mast.chapter[master.sliced$gta.evaluation == "harmful"]) %in% c(top5.mast.harmful, "Other")) ## Should be FALSE
-any(!unique(master.sliced$mast.chapter[master.sliced$gta.evaluation == "liberalising"]) %in% c(top5.mast.liberalising, "Other")) ## Should be FALSE
+any(!unique(master.sliced$mast.chapter[master.sliced$gta.evaluation == "harmful"]) %in% c(as.character(top5.mast.harmful), "Other")) ## Should be FALSE
+any(!unique(master.sliced$mast.chapter[master.sliced$gta.evaluation == "liberalising"]) %in% c(as.character(top5.mast.liberalising), "Other")) ## Should be FALSE
 
 # Aggregate per year
 master.sliced$year.implemented <- as.integer(year(master.sliced$date.implemented))
@@ -73,7 +73,7 @@ table1$nr.of.interventions <- NULL
 
 ### Table 3
 # Get data
-gta_data_slicer(intervention.types = c("Anti-dumping", "Anti-subsidy", "Safeguard", "Special safeguard"),
+gta_data_slicer(intervention.types = c("Anti-dumping", "Anti-subsidy", "Safeguard"),
                 keep.type = T)
 
 # Keep only announcement dates between 1 Jan and cutoff date
