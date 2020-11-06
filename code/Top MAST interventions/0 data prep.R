@@ -67,7 +67,7 @@ table1$nr.of.interventions <- NULL
 gta_data_slicer(intervention.types = c("Anti-dumping", "Anti-subsidy", "Safeguard", "Special safeguard"),
                 keep.type = T)
 
-# Keep only implementation dates between 1 Jan and cutoff date
+# Keep only announcement dates between 1 Jan and cutoff date
 table2 <- subset(master.sliced, format(date.announced, "%m-%d") <= format(as.Date(cutoff.date), "%m-%d"))
 
 # Aggregate "Safeguard" and "Special safeguard" into one type
