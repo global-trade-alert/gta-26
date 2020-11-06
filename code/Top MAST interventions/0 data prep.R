@@ -79,8 +79,8 @@ gta_data_slicer(intervention.types = c("Anti-dumping", "Anti-subsidy", "Safeguar
 # Keep only announcement dates between 1 Jan and cutoff date
 table3 <- subset(master.sliced, format(date.announced, "%m-%d") <= format(as.Date(cutoff.date), "%m-%d"))
 
-# Aggregate "Safeguard" and "Special safeguard" into one type
-table3$intervention.type <- ifelse(table3$intervention.type %in% c("Safeguard", "Special safeguard"), "Safeguard", table3$intervention.type)
+# # Aggregate "Safeguard" and "Special safeguard" into one type
+# table3$intervention.type <- ifelse(table3$intervention.type %in% c("Safeguard", "Special safeguard"), "Safeguard", table3$intervention.type)
 
 # Get rid of interventions announced before 2009
 table3 <- subset(table3, year(date.announced) >= 2009)
