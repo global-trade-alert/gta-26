@@ -45,7 +45,7 @@ for (product.category in names(list("food" = hs.covid.food, "medical" = hs.covid
 }
 
 # Add a column with the implementation year
-data1$year.implemented <- str_extract(data1$date.implemented, "\\d{4}")
+data1$year.implemented <- year(data1$date.implemented)
 
 # Identify the top 3 affected CPC sectors
 top3.sectors <- unique(cSplit(select(subset(data1, product.category == "all"), intervention.id, affected.sector), splitCols = "affected.sector", sep = ", ", direction = "long"))
