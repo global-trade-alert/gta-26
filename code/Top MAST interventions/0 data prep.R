@@ -130,7 +130,7 @@ table3$mast.group <- c("Other", paste0("Chapter ", top5.mast.harmful))
 # Get data
 ## NOTE: using this computationally expensive method instead of lag-adjustment to not conflict with SE: "Do not use duration adjusted calculations."
 mast.groups <- list("Top 1" = top5.mast.liberalising[1], "Top 2" = top5.mast.liberalising[2], "Top 3" = top5.mast.liberalising[3], "Top 4" = top5.mast.liberalising[4],
-                    "Top 5" = top5.mast.liberalising[5], "Other" = as.character(unique(int.mast.types$mast.chapter.id)[unique(!int.mast.types$mast.chapter.id %in% top5.mast.liberalising)]))
+                    "Top 5" = top5.mast.liberalising[5])
 
 table4 <- data.frame()
 for (mast in names(mast.groups)){
