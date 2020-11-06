@@ -34,9 +34,9 @@ gta_data_slicer(implementing.country = country.names$un_code[country.names$is.g2
 
 
 # Aggregate per year and add percentage of harmful interventions
-table1 <- merge(select(aggregate(intervention.id ~ year(date.published), master.sliced, function(x){length(unique(x))}), "year.published" = "year(date.published)", "total.nr.of.int" = intervention.id),
-                select(aggregate(intervention.id ~ year(date.published), subset(master.sliced, gta.evaluation %in% c("Red", "Amber")), function(x){length(unique(x))}), "year.published" = "year(date.published)", "nr.of.harmful.interventions" = intervention.id),
-                by = "year.published", all.x = T)
+table1 <- merge(select(aggregate(intervention.id ~ year(date.implemented), master.sliced, function(x){length(unique(x))}), "year.implemented" = "year(date.implemented)", "total.nr.of.int" = intervention.id),
+                select(aggregate(intervention.id ~ year(date.implemented), subset(master.sliced, gta.evaluation %in% c("Red", "Amber")), function(x){length(unique(x))}), "year.implemented" = "year(date.implemented)", "nr.of.harmful.interventions" = intervention.id),
+                by = "year.implemented", all.x = T)
 
 table1$harmful.perc <- table1$nr.of.harmful.interventions / table1$total.nr.of.int
 table1$nr.of.harmful.interventions <- NULL
