@@ -33,7 +33,7 @@ source(paste0(gta26.path, "help files/GTA 26 cutoff and definitions.R"))
 
 ### Tables 1 & 2
 # Get data
-gta_data_slicer(implementation.period = c(as.Date("2015-01-01"), as.Date("2020-12-31")),
+gta_data_slicer(implementation.period = c(as.Date("2015-01-01"), as.Date(cutoff.date)),
                 keep.implementation.na = F)
 
 # Convert GTA evaluation into two categories
@@ -66,8 +66,8 @@ table1$nr.of.interventions <- NULL
 gta_data_slicer(intervention.types = c("Anti-dumping", "Anti-subsidy", "Safeguard", "Special safeguard"),
                 keep.type = T)
 
-# Keep only implementation dates between 1 Jan and 21 Oct
-table2 <- subset(master.sliced, format(date.announced, "%m-%d") <= format(as.Date("2020-10-21"), "%m-%d"))
+# Keep only implementation dates between 1 Jan and cutoff date
+table2 <- subset(master.sliced, format(date.announced, "%m-%d") <= format(as.Date(cutoff.date), "%m-%d"))
 
 # Aggregate "Safeguard" and "Special safeguard" into one type
 table2$intervention.type <- ifelse(table2$intervention.type %in% c("Safeguard", "Special safeguard"), "Safeguard", table2$intervention.type)
@@ -88,7 +88,7 @@ mast.groups <- list("Top 1" = top5.mast.harmful[1], "Top 2" = top5.mast.harmful[
 table3 <- data.frame()
 for (mast in names(mast.groups)){
   gta_trade_coverage(gta.evaluation = c("Red", "Amber"),
-                     implementation.period = c(as.Date(paste0("2009-01-01")), as.Date(paste0("2009-10-21"))),
+                     implementation.period = c(as.Date(paste0("2009-01-01")), as.Date(cutoff.date)),
                      coverage.period = c(2009, 2009),
                      mast.chapters = unlist(mast.groups[mast]),
                      keep.mast = T,
@@ -103,7 +103,7 @@ data3 <- data.frame()
 for (year in c(2010:2020)){
   for (mast in names(mast.groups)){
     gta_trade_coverage(gta.evaluation = c("Red", "Amber"),
-                       implementation.period = c(as.Date(paste0(year, "-01-01")), as.Date(paste0(year, "-10-21"))),
+                       implementation.period = c(as.Date(paste0(year, "-01-01")), as.Date(paste0(year,"-", format(as.Date(cutoff.date), "%m-%d")))),
                        coverage.period = c(year, year),
                        mast.chapters = unlist(mast.groups[mast]),
                        keep.mast = T,
@@ -134,7 +134,7 @@ mast.groups <- list("Top 1" = top5.mast.liberalising[1], "Top 2" = top5.mast.lib
 table4 <- data.frame()
 for (mast in names(mast.groups)){
   gta_trade_coverage(gta.evaluation = "Green",
-                     implementation.period = c(as.Date(paste0("2009-01-01")), as.Date(paste0("2009-10-21"))),
+                     implementation.period = c(as.Date(paste0("2009-01-01")), as.Date(cutoff.date)),
                      coverage.period = c(2009, 2009),
                      mast.chapters = unlist(mast.groups[mast]),
                      keep.mast = T,
@@ -149,7 +149,7 @@ data4 <- data.frame()
 for (year in c(2010:2020)){
   for (mast in names(mast.groups)){
     gta_trade_coverage(gta.evaluation = "Green",
-                       implementation.period = c(as.Date(paste0(year, "-01-01")), as.Date(paste0(year, "-10-21"))),
+                       implementation.period = c(as.Date(paste0(year, "-01-01")), as.Date(paste0(year,"-", format(as.Date(cutoff.date), "%m-%d")))),
                        coverage.period = c(year, year),
                        mast.chapters = unlist(mast.groups[mast]),
                        keep.mast = T,
