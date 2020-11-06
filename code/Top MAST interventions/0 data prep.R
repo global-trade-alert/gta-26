@@ -348,7 +348,7 @@ for(yr in 2015:2020){
                      coverage.period = c(yr, yr),
                      intra.year.duration = F)
   trade.coverage.estimates$`MAST chapter ID`="ALL"
-  trade.coverage.estimates$`MAST chapter name`="All harmful interventions"
+  trade.coverage.estimates$`MAST chapter name`="All liberalising interventions"
   trade.coverage.estimates$year=yr
   table5 <- rbind(table5, select(trade.coverage.estimates, `MAST chapter ID`, `MAST chapter name`, year , "trade.share"=names(trade.coverage.estimates)[grepl("Trade coverage",names(trade.coverage.estimates))]))
   rm(trade.coverage.estimates)
@@ -623,7 +623,7 @@ for(yr in 2015:2020){
                      intra.year.duration = F,
                      lag.adjustment = format(as.Date(cutoff.date), "%m-%d"))
   trade.coverage.estimates$`MAST chapter ID`="ALL"
-  trade.coverage.estimates$`MAST chapter name`="All harmful interventions"
+  trade.coverage.estimates$`MAST chapter name`="All liberalising interventions"
   trade.coverage.estimates$year=yr
   table5lag <- rbind(table5lag, select(trade.coverage.estimates, `MAST chapter ID`, `MAST chapter name`, year , "trade.share"=names(trade.coverage.estimates)[grepl("Trade coverage",names(trade.coverage.estimates))]))
   rm(trade.coverage.estimates)
