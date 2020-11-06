@@ -100,9 +100,26 @@ for(yr in 2015:2020){
                      group.mast = F,
                      intra.year.duration = F)
   
-  trade.coverage.estimates$year=yr
-  table4 <- rbind(table4, subset(select(trade.coverage.estimates, `MAST chapter ID`, `MAST chapter name`,year ,"trade.share"=names(trade.coverage.estimates)[grepl("Trade coverage",names(trade.coverage.estimates))]),
-                                 `MAST chapter ID`!="All included MAST chapters"))
+  if("trade.coverage.estimates" %in% ls()){
+    
+    trade.coverage.estimates$year=yr
+    table4 <- rbind(table4, subset(select(trade.coverage.estimates, `MAST chapter ID`, `MAST chapter name`,year ,"trade.share"=names(trade.coverage.estimates)[grepl("Trade coverage",names(trade.coverage.estimates))]),
+                                   `MAST chapter ID`!="All included MAST chapters"))
+    
+    
+  } else{
+   
+    tce.replacement=data.frame(id=mast.groups[! mast.groups %in% odd.chapters],
+                               name=NA,
+                               year=yr,
+                               trade.share=0,
+                               stringsAsFactors = F)
+    names(tce.replacement)=c("MAST chapter ID","MAST chapter name","year","trade.share")
+    
+    table4 <- rbind(table4,
+                    tce.replacement)
+    rm(tce.replacement)
+  }
   
   if("P" %in% mast.groups){
     
@@ -116,11 +133,32 @@ for(yr in 2015:2020){
                        group.mast = T,
                        intra.year.duration = F)
     
-    trade.coverage.estimates$`MAST chapter ID`="P - barriers"
-    trade.coverage.estimates$`MAST chapter name`="P: Export barriers"
-    trade.coverage.estimates$year=yr
-    table4 <- rbind(table4, subset(select(trade.coverage.estimates, `MAST chapter ID`, `MAST chapter name`,year ,"trade.share"=names(trade.coverage.estimates)[grepl("Trade coverage",names(trade.coverage.estimates))]),
-                                   `MAST chapter ID`!="All included MAST chapters"))
+  
+ 
+    if("trade.coverage.estimates" %in% ls()){
+      
+      trade.coverage.estimates$`MAST chapter ID`="P - barriers"
+      trade.coverage.estimates$`MAST chapter name`="P: Export barriers"
+      trade.coverage.estimates$year=yr
+      table4 <- rbind(table4, subset(select(trade.coverage.estimates, `MAST chapter ID`, `MAST chapter name`,year ,"trade.share"=names(trade.coverage.estimates)[grepl("Trade coverage",names(trade.coverage.estimates))]),
+                                     `MAST chapter ID`!="All included MAST chapters"))
+      
+      
+    } else{
+      
+      tce.replacement=data.frame(id="P - barriers",
+                                 name="P: Export barriers",
+                                 year=yr,
+                                 trade.share=0,
+                                 stringsAsFactors = F)
+      names(tce.replacement)=c("MAST chapter ID","MAST chapter name","year","trade.share")
+      
+      table4 <- rbind(table4,
+                      tce.replacement)
+      rm(tce.replacement)
+    }
+    
+    
     
     rm(trade.coverage.estimates)
     gta_trade_coverage(gta.evaluation = c("Red", "Amber"),
@@ -132,11 +170,31 @@ for(yr in 2015:2020){
                        group.mast = T,
                        intra.year.duration = F)
     
-    trade.coverage.estimates$`MAST chapter ID`="P - subsidy"
-    trade.coverage.estimates$`MAST chapter name`="P: Export incentives"
-    trade.coverage.estimates$year=yr
-    table4 <- rbind(table4, subset(select(trade.coverage.estimates, `MAST chapter ID`, `MAST chapter name`,year ,"trade.share"=names(trade.coverage.estimates)[grepl("Trade coverage",names(trade.coverage.estimates))]),
-                                   `MAST chapter ID`!="All included MAST chapters"))
+
+    
+    if("trade.coverage.estimates" %in% ls()){
+      
+      trade.coverage.estimates$`MAST chapter ID`="P - subsidy"
+      trade.coverage.estimates$`MAST chapter name`="P: Export incentives"
+      trade.coverage.estimates$year=yr
+      table4 <- rbind(table4, subset(select(trade.coverage.estimates, `MAST chapter ID`, `MAST chapter name`,year ,"trade.share"=names(trade.coverage.estimates)[grepl("Trade coverage",names(trade.coverage.estimates))]),
+                                     `MAST chapter ID`!="All included MAST chapters"))
+      
+      
+      
+    } else{
+      
+      tce.replacement=data.frame(id="P - subsidy",
+                                 name="P: Export incentives",
+                                 year=yr,
+                                 trade.share=0,
+                                 stringsAsFactors = F)
+      names(tce.replacement)=c("MAST chapter ID","MAST chapter name","year","trade.share")
+      
+      table4 <- rbind(table4,
+                      tce.replacement)
+      rm(tce.replacement)
+    }
     
   }
   
@@ -175,13 +233,29 @@ for(yr in 2015:2020){
                      group.mast = F,
                      intra.year.duration = F)
   
-  trade.coverage.estimates$year=yr
-  table5 <- rbind(table5, subset(select(trade.coverage.estimates, `MAST chapter ID`, `MAST chapter name`,year ,"trade.share"=names(trade.coverage.estimates)[grepl("Trade coverage",names(trade.coverage.estimates))]),
-                                 `MAST chapter ID`!="All included MAST chapters"))
-  
+  if("trade.coverage.estimates" %in% ls()){
+    
+    trade.coverage.estimates$year=yr
+    table5 <- rbind(table5, subset(select(trade.coverage.estimates, `MAST chapter ID`, `MAST chapter name`,year ,"trade.share"=names(trade.coverage.estimates)[grepl("Trade coverage",names(trade.coverage.estimates))]),
+                                   `MAST chapter ID`!="All included MAST chapters"))
+    
+    
+  } else{
+    
+    tce.replacement=data.frame(id=mast.groups[! mast.groups %in% odd.chapters],
+                               name=NA,
+                               year=yr,
+                               trade.share=0,
+                               stringsAsFactors = F)
+    names(tce.replacement)=c("MAST chapter ID","MAST chapter name","year","trade.share")
+    
+    table5 <- rbind(table5,
+                    tce.replacement)
+    rm(tce.replacement)
+  }
   
   if("P" %in% mast.groups){
-  
+    
     rm(trade.coverage.estimates)
     gta_trade_coverage(gta.evaluation = c("Green"),
                        affected.flows = "outward",
@@ -192,11 +266,32 @@ for(yr in 2015:2020){
                        group.mast = T,
                        intra.year.duration = F)
     
-    trade.coverage.estimates$`MAST chapter ID`="P - barriers"
-    trade.coverage.estimates$`MAST chapter name`="P: Export barriers"
-    trade.coverage.estimates$year=yr
-    table5 <- rbind(table5, subset(select(trade.coverage.estimates, `MAST chapter ID`, `MAST chapter name`,year ,"trade.share"=names(trade.coverage.estimates)[grepl("Trade coverage",names(trade.coverage.estimates))]),
-                                   `MAST chapter ID`!="All included MAST chapters"))
+    
+    
+    if("trade.coverage.estimates" %in% ls()){
+      
+      trade.coverage.estimates$`MAST chapter ID`="P - barriers"
+      trade.coverage.estimates$`MAST chapter name`="P: Export barriers"
+      trade.coverage.estimates$year=yr
+      table5 <- rbind(table5, subset(select(trade.coverage.estimates, `MAST chapter ID`, `MAST chapter name`,year ,"trade.share"=names(trade.coverage.estimates)[grepl("Trade coverage",names(trade.coverage.estimates))]),
+                                     `MAST chapter ID`!="All included MAST chapters"))
+      
+      
+    } else{
+      
+      tce.replacement=data.frame(id="P - barriers",
+                                 name="P: Export barriers",
+                                 year=yr,
+                                 trade.share=0,
+                                 stringsAsFactors = F)
+      names(tce.replacement)=c("MAST chapter ID","MAST chapter name","year","trade.share")
+      
+      table5 <- rbind(table5,
+                      tce.replacement)
+      rm(tce.replacement)
+    }
+    
+    
     
     rm(trade.coverage.estimates)
     gta_trade_coverage(gta.evaluation = c("Green"),
@@ -208,13 +303,32 @@ for(yr in 2015:2020){
                        group.mast = T,
                        intra.year.duration = F)
     
-    trade.coverage.estimates$`MAST chapter ID`="P - subsidy"
-    trade.coverage.estimates$`MAST chapter name`="P: Export incentives"
-    trade.coverage.estimates$year=yr
-    table5 <- rbind(table5, subset(select(trade.coverage.estimates, `MAST chapter ID`, `MAST chapter name`,year ,"trade.share"=names(trade.coverage.estimates)[grepl("Trade coverage",names(trade.coverage.estimates))]),
-                                   `MAST chapter ID`!="All included MAST chapters"))
     
     
+    if("trade.coverage.estimates" %in% ls()){
+      
+      trade.coverage.estimates$`MAST chapter ID`="P - subsidy"
+      trade.coverage.estimates$`MAST chapter name`="P: Export incentives"
+      trade.coverage.estimates$year=yr
+      table5 <- rbind(table5, subset(select(trade.coverage.estimates, `MAST chapter ID`, `MAST chapter name`,year ,"trade.share"=names(trade.coverage.estimates)[grepl("Trade coverage",names(trade.coverage.estimates))]),
+                                     `MAST chapter ID`!="All included MAST chapters"))
+      
+      
+      
+    } else{
+      
+      tce.replacement=data.frame(id="P - subsidy",
+                                 name="P: Export incentives",
+                                 year=yr,
+                                 trade.share=0,
+                                 stringsAsFactors = F)
+      names(tce.replacement)=c("MAST chapter ID","MAST chapter name","year","trade.share")
+      
+      table5 <- rbind(table5,
+                      tce.replacement)
+      rm(tce.replacement)
+      
+    }
     
   }
   
@@ -228,9 +342,9 @@ for(yr in 2015:2020){
   trade.coverage.estimates$`MAST chapter name`="All harmful interventions"
   trade.coverage.estimates$year=yr
   table5 <- rbind(table5, select(trade.coverage.estimates, `MAST chapter ID`, `MAST chapter name`, year , "trade.share"=names(trade.coverage.estimates)[grepl("Trade coverage",names(trade.coverage.estimates))]))
-  
   rm(trade.coverage.estimates)
 }
+
 
 ### Save data
 save(table1, table3, table4, table5, file = paste0(gta26.path, data.path, "top MAST interventions.Rdata"))
