@@ -28,14 +28,14 @@ source(paste0(gta26.path, "help files/GTA 26 cutoff and definitions.R"))
 
 ### Table 1
 # Get data
-gta_data_slicer(implementation.period = c(as.Date("2009-01-01"), cutoff.date),
+gta_data_slicer(implementation.period = c(as.Date("2009-01-01"), as.Date(cutoff.date)),
                 keep.implementation.na = F)
 
 master.sliced$product.category <- "all"
 data1 <- master.sliced
 
 for (product.category in names(list("food" = hs.covid.food, "medical" = hs.covid.medical))){
-  gta_data_slicer(implementation.period = c(as.Date("2009-01-01"), cutoff.date),
+  gta_data_slicer(implementation.period = c(as.Date("2009-01-01"), as.Date(cutoff.date)),
                   keep.implementation.na = F,
                   hs.codes = unlist(list("food" = hs.covid.food, "medical" = hs.covid.medical)[product.category]),
                   keep.hs = T)
