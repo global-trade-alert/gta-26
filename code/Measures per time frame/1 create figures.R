@@ -41,16 +41,19 @@ write.xlsx(table2, file = paste0(gta26.path, out.path, "Figure 2 data.xlsx"))
 
 ### Figure 1
 # Transform the data for plotting
-table1 <- pivot_longer(table1, cols = c("worldwide", "G20"), names_to = "region", values_to = "nr.of.measures")
+table1 <- pivot_longer(table1, cols = c("Non-G20", "G20"), names_to = "region", values_to = "nr.of.measures")
+
+# Order the factor
+table1$period <- factor(table1$period, levels = c("1 Nov 2015 to 31 Oct 2020", "1 Nov 2010 to 31 Oct 2015", "1 Nov 2009 to 31 Oct 2010", "before 31 Oct 2009"))
 
 # Plot
 fig1 <- ggplot(data = table1)+
-  geom_bar(aes(x=region, y=nr.of.measures, fill=forcats::fct_reorder(period, desc(nr.of.measures))), width=0.65, stat = "identity") +
+  geom_bar(aes(x=region, y=nr.of.measures, fill=period), width=0.65, stat = "identity") +
   labs(x="", y="", caption = "Source: Global Trade Alert.")+
-  scale_y_continuous(name=str_wrap("Number of measures recorded", 30), breaks=seq(0,30000,2000), labels=seq(0,30000,2000),
-                     sec.axis = sec_axis(trans = ~., name=str_wrap("Number of measures recorded", 30), breaks=seq(0,30000,2000), labels=seq(0,30000,2000)))+
-  scale_fill_manual(values=c("before 21 Oct 2009" = gta_colour$qualitative[3], "22 Oct 2009 to 21 Oct 2010" = gta_colour$qualitative[4], "22 Oct 2010 to 21 Oct 2015" = gta_colour$qualitative[1],
-                             "22 Oct 2015 to 21 Oct 2020" = gta_colour$qualitative[2]), labels = c("22 Oct 2015 to 21 Oct 2020", "22 Oct 2010 to 21 Oct 2015", "22 Oct 2009 to 21 Oct 2010", "before 21 Oct 2009"))+
+  scale_y_continuous(name=str_wrap("Number of measures recorded", 30), breaks=seq(0,2200,200), labels=seq(0,2200,200),
+                     sec.axis = sec_axis(trans = ~., name=str_wrap("Number of measures recorded", 30), breaks=seq(0,2200,200), labels=seq(0,2200,200)))+
+  scale_fill_manual(values=c("before 31 Oct 2009" = gta_colour$qualitative[4], "1 Nov 2009 to 31 Oct 2010" = gta_colour$qualitative[3], "1 Nov 2010 to 31 Oct 2015" = gta_colour$qualitative[1],
+                             "1 Nov 2015 to 31 Oct 2020" = gta_colour$qualitative[2]), labels = c("1 Nov 2015 to 31 Oct 2020", "1 Nov 2010 to 31 Oct 2015", "1 Nov 2009 to 31 Oct 2010", "Before 31 Oct 2009"))+
   gta_theme()+
   guides(guide_legend(title = NULL, label.hjust = 0, label.vjust = 0.5, title.position = "top", title.vjust = 0.5, ncol = 2, nrow = 2))+
   theme(axis.text.x.bottom = element_text(hjust=0.5, size=10),
@@ -77,6 +80,7 @@ gta_plot_saver(plot = fig1,
                png = T,
                pdf = T,
                jpg = T,
+               eps = T,
                width = 21,
                height = 21)
 
@@ -87,8 +91,8 @@ fig2 <- ggplot(data = table2)+
   labs(x="", y="", caption = "Source: Global Trade Alert.")+
   scale_y_continuous(name=str_wrap("Percentage of recorded measures", 40), breaks=seq(0,1,0.1), labels=percent,
                      sec.axis = sec_axis(trans = ~., name=str_wrap("Percentage of recorded measures", 40), breaks=seq(0,1,0.1), labels=percent))+
-  scale_fill_manual(values=c("export incentives" = gta_colour$qualitative[1], "other commercial policies" = gta_colour$qualitative[2], "subsidies to import competing firms" = gta_colour$qualitative[3],
-                             "transparent policy instruments" = gta_colour$qualitative[4]), labels = c("export incentives", "other commercial policies", "subsidies to import competing firms", "transparent policy instruments"))+
+  scale_fill_manual(values=c("export incentives" = gta_colour$qualitative[1], "other commercial policies" = gta_colour$qualitative[2], "subsidies to import-competing firms" = gta_colour$qualitative[3],
+                             "transparent policy instruments" = gta_colour$qualitative[4]), labels = c("export incentives", "other commercial policies", "subsidies to import-competing firms", "transparent policy instruments"))+
   gta_theme(x.bottom.angle = 90, x.bottom.align = 1)+
   guides(guide_legend(title = NULL, label.hjust = 0, label.vjust = 0.5, title.position = "top", title.vjust = 0.5, ncol = 2, nrow = 2))+
   theme(axis.text.x.bottom = element_text(hjust=0.5, size=10),
@@ -115,5 +119,6 @@ gta_plot_saver(plot = fig2,
                png = T,
                pdf = T,
                jpg = T,
+               eps = T,
                width = 25,
                height = 21)

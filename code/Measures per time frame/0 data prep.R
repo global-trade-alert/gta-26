@@ -5,6 +5,10 @@ rm(list = ls())
 # 30 October 2009, from 1 November 2009 to 30 October 2010, from 1 November 2010 to 30 October 2015, from 1 November 2015 to 30 October 2020. On the same stacked
 # bar chart please add another column for the measures implemented by the G20, again for the same time periods. Please add a note at the bottom stating
 # “Source: Global Trade Alert.” 
+# ### ADDED 06.11.: I come back to figure 1. Now I remember better what I wanted. The figure should only refer to measures with announcement dates in 2009.
+# The idea is to capture when the measures found in 2009 entered into the GTA database. So the four periods (in the current legend) should refer to the submission
+# dates. As a result each stacked bar (one for the G20 and one for the world) should show how many 2009 measures were documented before the end of October 2009,
+# between 1 November 2009 and 30 October 2010, and so on and so on.
 #
 # 2. Please prepare a stacked column along the following lines. This chart only relates to measures implemented during 2009. Define the set of transparent policy
 # instruments as all import tariff changes, all trade defence changes, all import quotas, all export quotas, all export taxes, all import bans, all import quotas,
@@ -27,7 +31,8 @@ source(paste0(gta26.path, "help files/GTA 26 cutoff and definitions.R"))
 
 ### Table 1
 # Load data
-gta_data_slicer(keep.implementation.na = F)
+gta_data_slicer(announcement.period = c(as.Date("2009-01-01"), as.Date("2009-12-31")),
+                keep.implementation.na = F)
 
 # Create an auxiliary variable to keep track of the submission time frames
 master.sliced$period <- ifelse(master.sliced$date.published <= as.Date("2009-10-31"), 1, 0) ### Using 31 Oct since else it would not be included
@@ -39,7 +44,7 @@ master.sliced <- subset(master.sliced, period != 0)
 
 # Assemble into worldwide and G20
 table1 <- data.frame("period" = c(1:4))
-table1 <- merge(table1, select(aggregate(intervention.id ~ period, master.sliced, function(x){length(unique(x))}), period, "worldwide" = intervention.id))
+table1 <- merge(table1, select(aggregate(intervention.id ~ period, subset(master.sliced, i.atleastone.G20 == 0), function(x){length(unique(x))}), period, "Non-G20" = intervention.id))
 table1 <- merge(table1, select(aggregate(intervention.id ~ period, subset(master.sliced, i.atleastone.G20 == 1), function(x){length(unique(x))}), period, "G20" = intervention.id))
 
 # Make periods more readable
