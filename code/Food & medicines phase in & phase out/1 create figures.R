@@ -78,7 +78,8 @@ gta_plot_saver(plot = fig1,
                name = "Figure 1 - Yearly percentage of food and medical interventions",
                png = T,
                pdf = T,
-               jpg = T)
+               jpg = T,
+               eps = T)
 
 
 ### Figure 2
@@ -110,6 +111,7 @@ gta_plot_saver(plot = fig2,
                png = T,
                pdf = T,
                jpg = T,
+               eps = T,
                width = 21,
                height = 21)
 
@@ -143,5 +145,6 @@ gta_plot_saver(plot = fig3,
                png = T,
                pdf = T,
                jpg = T,
+               eps = T,
                width = 21,
                height = 21)
