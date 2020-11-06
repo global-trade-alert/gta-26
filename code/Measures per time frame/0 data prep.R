@@ -1,18 +1,18 @@
 rm(list = ls())
 
 ### REQUEST:
-# 1. Please prepare a stacked bar chart for each year 2009 with the number of measures recorded in the GTA database worldwide by 21 October 2009, from
-# 22 October 2009 to 21 October 2010, from 22 October 2010 to 21 October 2015, from 22 October 2015 to 21 October 2020. On the same stacked bar chart
-# please add another column for the measures implemented by the G20, again for the same time periods. Please add a note at the bottom stating
-# “Source: Global Trade Alert.”
+# 1. Please prepare a stacked bar chart for each year of policies implemented during 2009 with the number of measures recorded in the GTA database worldwide by
+# 30 October 2009, from 1 November 2009 to 30 October 2010, from 1 November 2010 to 30 October 2015, from 1 November 2015 to 30 October 2020. On the same stacked
+# bar chart please add another column for the measures implemented by the G20, again for the same time periods. Please add a note at the bottom stating
+# “Source: Global Trade Alert.” 
 #
-# 2. Please prepare a stacked column along the following lines. This chart only relates to measures implemented during 2009. Define the set of transparent
-# policy instruments as all import tariff changes, all trade defence changes, all import quotas, all export quotas, all export taxes, all export licensing
-# requirements, all import bans, all import quotas, and all export bans and all export quotas. Define subsidies to import competing firms as all measures
-# in chapter L of the MAST classification. Define export incentives as all the measures in Chapter M except any export restriction or other export limit.
-# Define other commercial policies as any policy intervention not in these three above categories. Please plot from 2009 to 2020 the 100% stacked columns
-# showing the information reported in GTA database of these 4 classes of policy intervention that have been documented up to 31 December of each year
-# (21 October for the year 2020). I have identified in bold text the legend labels to be used. Please add a note at the bottom stating “Source: Global Trade Alert.”
+# 2. Please prepare a stacked column along the following lines. This chart only relates to measures implemented during 2009. Define the set of transparent policy
+# instruments as all import tariff changes, all trade defence changes, all import quotas, all export quotas, all export taxes, all import bans, all import quotas,
+# and all export bans. Define subsidies to import competing firms as all measures in chapter L of the MAST classification. Define export incentives as all the
+# measures in Chapter P except any export restriction or other export limit. Define other commercial policies as any policy intervention not in these three above
+# categories. Please plot from 2009 to 2020 the 100% stacked columns showing the information reported in GTA database of these 4 classes of policy intervention that
+# have been documented up to 31 December of each year (30 October for the year 2020). I have identified in bold text the legend labels to be used. Please add a note
+# at the bottom stating “Source: Global Trade Alert.”
 
 library(gtalibrary)
 library(tidyverse)
@@ -30,10 +30,10 @@ source(paste0(gta26.path, "help files/GTA 26 cutoff and definitions.R"))
 gta_data_slicer(keep.implementation.na = F)
 
 # Create an auxiliary variable to keep track of the submission time frames
-master.sliced$period <- ifelse(master.sliced$date.published <= as.Date("2009-10-21"), 1, 0)
-master.sliced$period[master.sliced$date.published > as.Date("2009-10-21") & master.sliced$date.published <= as.Date("2010-10-21")] <- 2
-master.sliced$period[master.sliced$date.published > as.Date("2010-10-21") & master.sliced$date.published <= as.Date("2015-10-21")] <- 3
-master.sliced$period[master.sliced$date.published > as.Date("2015-10-21") & master.sliced$date.published <= as.Date("2020-10-21")] <- 4
+master.sliced$period <- ifelse(master.sliced$date.published <= as.Date("2009-10-31"), 1, 0) ### Using 31 Oct since else it would not be included
+master.sliced$period[master.sliced$date.published > as.Date("2009-10-31") & master.sliced$date.published <= as.Date("2010-10-31")] <- 2
+master.sliced$period[master.sliced$date.published > as.Date("2010-10-31") & master.sliced$date.published <= as.Date("2015-10-31")] <- 3
+master.sliced$period[master.sliced$date.published > as.Date("2015-10-31") & master.sliced$date.published <= as.Date("2020-10-31")] <- 4
 
 master.sliced <- subset(master.sliced, period != 0)
 
@@ -43,7 +43,7 @@ table1 <- merge(table1, select(aggregate(intervention.id ~ period, master.sliced
 table1 <- merge(table1, select(aggregate(intervention.id ~ period, subset(master.sliced, i.atleastone.G20 == 1), function(x){length(unique(x))}), period, "G20" = intervention.id))
 
 # Make periods more readable
-table1$period <- c("before 21 Oct 2009", "22 Oct 2009 to 21 Oct 2010", "22 Oct 2010 to 21 Oct 2015", "22 Oct 2015 to 21 Oct 2020")
+table1$period <- c("before 31 Oct 2009", "1 Nov 2009 to 31 Oct 2010", "1 Nov 2010 to 31 Oct 2015", "1 Nov 2015 to 31 Oct 2020")
 
 
 ### Table 2
@@ -51,8 +51,8 @@ table1$period <- c("before 21 Oct 2009", "22 Oct 2009 to 21 Oct 2010", "22 Oct 2
 gta_data_slicer(keep.implementation.na = F,
                 implementation.period = c(as.Date("2009-01-01"), as.Date("2009-12-31"))) ## Did SE really mean only implementation in 2009?
 
-# Disregard submissions after 2020-10-21
-master.sliced <- subset(master.sliced, date.published <= as.Date("2020-10-21"))
+# Disregard submissions after 2020-10-31
+master.sliced <- subset(master.sliced, date.published <= as.Date("2020-10-31"))
 
 # Add column for submission year
 master.sliced$year.submitted <- year(master.sliced$date.published)
