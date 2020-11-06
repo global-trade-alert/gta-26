@@ -77,7 +77,8 @@ bar.function <- function(data, x=year, y=value, group=group, colours, labels, ti
                  name=filename,
                  png=T,
                  pdf=T,
-                 jpg=T)
+                 jpg=T,
+                 eps = T)
 }
 
 
@@ -123,7 +124,8 @@ gta_plot_saver(plot = fig1,
                name = "Figure 1 - WTM volume of trade - developed regions",
                png = T,
                pdf = T,
-               jpg = T)
+               jpg = T,
+               eps = T)
 
 
 ### Figure 2
@@ -168,7 +170,8 @@ gta_plot_saver(plot = fig2,
                name = "Figure 2 - WTM volume of trade - developing regions",
                png = T,
                pdf = T,
-               jpg = T)
+               jpg = T,
+               eps = T)
 
 
 ### Figure 3
@@ -205,7 +208,8 @@ gta_plot_saver(plot = fig3,
                name = "Figure 3 - US mask imports - China vs ROW",
                png = T,
                pdf = T,
-               jpg = T)
+               jpg = T,
+               eps = T)
 
 
 ### Figure 4
@@ -254,4 +258,5 @@ gta_plot_saver(plot = fig4,
                name = "Figure 4 - Vaccine import map",
                png = T,
                pdf = T,
-               jpg = T)
+               jpg = T,
+               eps = T)
