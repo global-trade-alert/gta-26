@@ -83,8 +83,7 @@ table3 <- select(aggregate(intervention.id ~ year(date.announced) + intervention
 ### Table 4
 # Get data
 ## NOTE: using this computationally expensive method instead of lag-adjustment to not conflict with SE: "Do not use duration adjusted calculations."
-mast.groups <- list("Top 1" = top5.mast.harmful[1], "Top 2" = top5.mast.harmful[2], "Top 3" = top5.mast.harmful[3], "Top 4" = top5.mast.harmful[4],
-                    "Top 5" = top5.mast.harmful[5])
+mast.groups <- as.character(top5.mast.harmful[1:5])
 
 table4 <- data.frame()
 
@@ -120,8 +119,7 @@ for(yr in 2015:2020){
 ### Table 5
 # Get data
 ## NOTE: using this computationally expensive method instead of lag-adjustment to not conflict with SE: "Do not use duration adjusted calculations."
-mast.groups <- list("Top 1" = top5.mast.liberalising[1], "Top 2" = top5.mast.liberalising[2], "Top 3" = top5.mast.liberalising[3], "Top 4" = top5.mast.liberalising[4],
-                    "Top 5" = top5.mast.liberalising[5])
+mast.groups <- as.character(top5.mast.liberalising[1:5])
 
 table5=data.frame()
 
