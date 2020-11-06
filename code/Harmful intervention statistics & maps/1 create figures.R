@@ -5,7 +5,7 @@ rm(list = ls())
 # worldwide documented by 21 October. On the second axis: please plot the average number of hours between policy intervention announcements (calculated as the ratio
 # of 7080 divided by the total number of commercial policy interventions documented by 21 October). For the primary axis title use the text highlighted in bold. For
 # the secondary axis title please use “Average number of hours between each commercial policy intervention.” Please add a note at the bottom stating
-# “Source: Global Trade Alert.”
+# “Source: Global Trade Alert.” ### SE 06.11.: Use announcement date
 #
 # 2. Map of number of times each country was hit by red and amber measures implemented during 2020.
 #
@@ -88,13 +88,13 @@ map.function <- function(data, caption, plottitle, limits, breaks, labels, colou
 
 ### Figure 1
 fig1 <- ggplot(data=table1)+
-  geom_line(aes(x=year.submitted, y=nr.of.interventions, group=1), size=1, colour=gta_colour$qualitative[1])+
+  geom_line(aes(x=year.announced, y=nr.of.interventions, group=1), size=1, colour=gta_colour$qualitative[1])+
   # geom_text(aes(x=month.group, y=index, label=index), vjust=1, colour="#555555", size=2.5)+
-  geom_line(aes(x=year.submitted, y=avg.hours.between.int*200, group=1), size=1, colour=gta_colour$qualitative[3]) +
-  scale_y_continuous(name=str_wrap("Total number of commercial policy interventions worldwide documented by 21 October", 50),
-                     labels=seq(0,4000,500), limits = c(0,4000), breaks=seq(0,4000,500),
-                     sec.axis = sec_axis(trans = ~./200, name=str_wrap("Average number of hours between each commercial policy intervention", 50),
-                                         breaks=seq(0,20,2),labels=seq(0,20,2)))+
+  geom_line(aes(x=year.announced, y=avg.hours.between.int*600, group=1), size=1, colour=gta_colour$qualitative[3]) +
+  scale_y_continuous(name=str_wrap("Total number of commercial policy interventions worldwide announced by 21 October", 50),
+                     labels=seq(0,3000,300), limits = c(0,3000), breaks=seq(0,3000,300),
+                     sec.axis = sec_axis(trans = ~./600, name=str_wrap("Average number of hours between each commercial policy intervention", 50),
+                                         breaks=seq(0,5,0.5),labels=seq(0,5,0.5)))+
   labs(x = "", caption = "Source: Global Trade Alert.")+
   gta_theme(x.bottom.angle = 90, x.bottom.align = 1) +
   theme(legend.position = "bottom",

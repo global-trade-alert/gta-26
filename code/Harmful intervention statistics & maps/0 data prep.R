@@ -5,7 +5,7 @@ rm(list = ls())
 # worldwide documented by 21 October. On the second axis: please plot the average number of hours between policy intervention announcements (calculated as the ratio
 # of 7080 divided by the total number of commercial policy interventions documented by 21 October). For the primary axis title use the text highlighted in bold. For
 # the secondary axis title please use “Average number of hours between each commercial policy intervention.” Please add a note at the bottom stating
-# “Source: Global Trade Alert.”
+# “Source: Global Trade Alert.” ### SE 06.11.: Use announcement date
 #
 # 2. Map of number of times each country was hit by red and amber measures implemented during 2020.
 #
@@ -33,21 +33,24 @@ source(paste0(gta26.path, "help files/GTA 26 cutoff and definitions.R"))
 gta_data_slicer()
 
 # Select only interventions published by 21 Oct
-master.sliced <- subset(master.sliced, format(date.published, "%m-%d") <= format(as.Date("2020-10-21"), "%m-%d"))
+master.sliced <- subset(master.sliced, format(date.announced, "%m-%d") <= format(as.Date("2020-10-21"), "%m-%d"))
 
 # Add a column with submission year
-master.sliced$year.submitted <- year(master.sliced$date.published)
+master.sliced$year.announced <- year(master.sliced$date.announced)
 
 # Aggregate per year
-table1 <- select(aggregate(intervention.id ~ year.submitted, master.sliced, function(x){length(unique(x))}), year.submitted, "nr.of.interventions" = intervention.id)
+table1 <- select(aggregate(intervention.id ~ year.announced, master.sliced, function(x){length(unique(x))}), year.announced, "nr.of.interventions" = intervention.id)
 
 # Add column for average hours between policy interventions
 table1$avg.hours.between.int <- 7080 / table1$nr.of.interventions
 
+# Drop years before 2009
+table1 <- subset(table1, year.announced >= 2009)
+
 
 ### Tables 2 & 3
 # Get data
-gta_data_slicer(implementation.period = c(as.Date("2020-01-01"), cutoff.date),
+gta_data_slicer(implementation.period = c(as.Date("2020-01-01"), as.Date(cutoff.date)),
                 keep.implementation.na = F)
 
 # Separate GTA evaluation into harmful and liberalising
@@ -66,7 +69,7 @@ table3 <- data.frame()
 for (evaluation in names(list("harmful" = c("Red", "Amber"), "liberalising" = "Green"))){
   gta_trade_coverage(gta.evaluation = unlist(list("harmful" = c("Red", "Amber"), "liberalising" = "Green")[evaluation]),
                      coverage.period = c(2020,2020),
-                     implementation.period = c(as.Date("2020-01-01"), cutoff.date),
+                     implementation.period = c(as.Date("2020-01-01"), as.Date(cutoff.date)),
                      group.exporters = F)
   
   trade.coverage.estimates$evaluation <- evaluation
