@@ -86,44 +86,35 @@ table2 <- select(aggregate(intervention.id ~ year(date.announced) + intervention
 mast.groups <- list("Top 1" = top5.mast.harmful[1], "Top 2" = top5.mast.harmful[2], "Top 3" = top5.mast.harmful[3], "Top 4" = top5.mast.harmful[4],
                     "Top 5" = top5.mast.harmful[5])
 
-table3 <- data.frame()
-for (mast in names(mast.groups)){
+table4 <- data.frame()
+
+for(yr in 2015:2020){
+  print(yr)
+  # by MAST
   gta_trade_coverage(gta.evaluation = c("Red", "Amber"),
-                     implementation.period = c(as.Date(paste0("2009-01-01")), as.Date(cutoff.date)),
-                     coverage.period = c(2009, 2009),
-                     mast.chapters = unlist(mast.groups[mast]),
+                     implementation.period = c(as.Date(paste0(yr,"-01-01")), as.Date(paste0(yr,"-", format(as.Date(cutoff.date), "%m-%d")))),
+                     coverage.period = c(yr, yr),
+                     mast.chapters = unlist(mast.groups),
                      keep.mast = T,
-                     group.mast = T,
-                     trade.data = 2019)
+                     group.mast = F,
+                     intra.year.duration = F)
   
-  trade.coverage.estimates$mast.group <- mast
-  table3 <- rbind(table3, trade.coverage.estimates)
+  trade.coverage.estimates$year=yr
+  table4 <- rbind(table4, subset(select(trade.coverage.estimates, `MAST chapter ID`, `MAST chapter name`,year ,"trade.share"=names(trade.coverage.estimates)[grepl("Trade coverage",names(trade.coverage.estimates))]),
+                                 `MAST chapter ID`!="All included MAST chapters"))
+  
+  # ALL
+  gta_trade_coverage(gta.evaluation = c("Red", "Amber"),
+                     implementation.period = c(as.Date(paste0(yr,"-01-01")), as.Date(paste0(yr,"-", format(as.Date(cutoff.date), "%m-%d")))),
+                     coverage.period = c(yr, yr),
+                     intra.year.duration = F)
+  trade.coverage.estimates$`MAST chapter ID`="ALL"
+  trade.coverage.estimates$`MAST chapter name`="All harmful interventions"
+  trade.coverage.estimates$year=yr
+  table4 <- rbind(table4, select(trade.coverage.estimates, `MAST chapter ID`, `MAST chapter name`, year , "trade.share"=names(trade.coverage.estimates)[grepl("Trade coverage",names(trade.coverage.estimates))]))
+  
 }
 
-data3 <- data.frame()
-for (year in c(2010:2020)){
-  for (mast in names(mast.groups)){
-    gta_trade_coverage(gta.evaluation = c("Red", "Amber"),
-                       implementation.period = c(as.Date(paste0(year, "-01-01")), as.Date(paste0(year,"-", format(as.Date(cutoff.date), "%m-%d")))),
-                       coverage.period = c(year, year),
-                       mast.chapters = unlist(mast.groups[mast]),
-                       keep.mast = T,
-                       group.mast = T,
-                       trade.data = 2019)
-    
-    trade.coverage.estimates$mast.group <- mast
-    data3 <- rbind(data3, trade.coverage.estimates)
-  }
-  table3 <- merge(table3, select(data3, -"Importing country", -"Exporting country", -"Number of interventions affecting exported product"), by = c("mast.group"), all.x = T)
-  data3 <- data.frame()
-  print(paste0("Done with year: ", year))
-}; rm(data3)
-
-# Drop unnecessary columns
-table3 <- select(table3, -"Importing country", -"Exporting country", -"Number of interventions affecting exported product")
-
-# Add chapter names back in
-table3$mast.group <- c("Other", paste0("Chapter ", top5.mast.harmful))
 
 
 ### Table 5
@@ -132,44 +123,34 @@ table3$mast.group <- c("Other", paste0("Chapter ", top5.mast.harmful))
 mast.groups <- list("Top 1" = top5.mast.liberalising[1], "Top 2" = top5.mast.liberalising[2], "Top 3" = top5.mast.liberalising[3], "Top 4" = top5.mast.liberalising[4],
                     "Top 5" = top5.mast.liberalising[5])
 
-table4 <- data.frame()
-for (mast in names(mast.groups)){
-  gta_trade_coverage(gta.evaluation = "Green",
-                     implementation.period = c(as.Date(paste0("2009-01-01")), as.Date(cutoff.date)),
-                     coverage.period = c(2009, 2009),
-                     mast.chapters = unlist(mast.groups[mast]),
+table5=data.frame()
+
+for(yr in 2015:2020){
+  print(yr)
+  # by MAST
+  gta_trade_coverage(gta.evaluation = c("Green"),
+                     implementation.period = c(as.Date(paste0(yr,"-01-01")), as.Date(paste0(yr,"-", format(as.Date(cutoff.date), "%m-%d")))),
+                     coverage.period = c(yr, yr),
+                     mast.chapters = unlist(mast.groups),
                      keep.mast = T,
-                     group.mast = T,
-                     trade.data = 2019)
+                     group.mast = F,
+                     intra.year.duration = F)
   
-  trade.coverage.estimates$mast.group <- mast
-  table4 <- rbind(table4, trade.coverage.estimates)
+  trade.coverage.estimates$year=yr
+  table5 <- rbind(table5, subset(select(trade.coverage.estimates, `MAST chapter ID`, `MAST chapter name`,year ,"trade.share"=names(trade.coverage.estimates)[grepl("Trade coverage",names(trade.coverage.estimates))]),
+                                 `MAST chapter ID`!="All included MAST chapters"))
+  
+  # ALL
+  gta_trade_coverage(gta.evaluation = c("Green"),
+                     implementation.period = c(as.Date(paste0(yr,"-01-01")), as.Date(paste0(yr,"-", format(as.Date(cutoff.date), "%m-%d")))),
+                     coverage.period = c(yr, yr),
+                     intra.year.duration = F)
+  trade.coverage.estimates$`MAST chapter ID`="ALL"
+  trade.coverage.estimates$`MAST chapter name`="All harmful interventions"
+  trade.coverage.estimates$year=yr
+  table5 <- rbind(table5, select(trade.coverage.estimates, `MAST chapter ID`, `MAST chapter name`, year , "trade.share"=names(trade.coverage.estimates)[grepl("Trade coverage",names(trade.coverage.estimates))]))
+  
 }
-
-data4 <- data.frame()
-for (year in c(2010:2020)){
-  for (mast in names(mast.groups)){
-    gta_trade_coverage(gta.evaluation = "Green",
-                       implementation.period = c(as.Date(paste0(year, "-01-01")), as.Date(paste0(year,"-", format(as.Date(cutoff.date), "%m-%d")))),
-                       coverage.period = c(year, year),
-                       mast.chapters = unlist(mast.groups[mast]),
-                       keep.mast = T,
-                       group.mast = T,
-                       trade.data = 2019)
-    
-    trade.coverage.estimates$mast.group <- mast
-    data4 <- rbind(data4, trade.coverage.estimates)
-  }
-  table4 <- merge(table4, select(data4, -"Importing country", -"Exporting country", -"Number of interventions affecting exported product"), by = c("mast.group"), all.x = T)
-  data4 <- data.frame()
-  print(paste0("Done with year: ", year))
-}
-
-# Drop unnecessary columns
-table4 <- select(table4, -"Importing country", -"Exporting country", -"Number of interventions affecting exported product")
-
-# Add chapter names back in
-table4$mast.group <- c("Other", paste0("Chapter ", top5.mast.liberalising))
 
 ### Save data
-save(table1, table2, table3, table4, file = paste0(gta26.path, data.path, "top MAST interventions.Rdata"))
+save(table1, table2, table3, table4, table5, file = paste0(gta26.path, data.path, "top MAST interventions.Rdata"))
