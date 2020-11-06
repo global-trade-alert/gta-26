@@ -135,6 +135,7 @@ for(yr in 2015:2020){
     rm(trade.coverage.estimates)
     gta_trade_coverage(gta.evaluation = c("Red", "Amber"),
                        affected.flows = "outward",
+                       implementer.role = "exporter",
                        implementation.period = c(as.Date(paste0(yr,"-01-01")), as.Date(paste0(yr,"-", format(as.Date(cutoff.date), "%m-%d")))),
                        coverage.period = c(yr, yr),
                        mast.chapters = "P",
@@ -268,6 +269,7 @@ for(yr in 2015:2020){
     rm(trade.coverage.estimates)
     gta_trade_coverage(gta.evaluation = c("Green"),
                        affected.flows = "outward",
+                       implementer.role = "exporter",
                        implementation.period = c(as.Date(paste0(yr,"-01-01")), as.Date(paste0(yr,"-", format(as.Date(cutoff.date), "%m-%d")))),
                        coverage.period = c(yr, yr),
                        mast.chapters = "P",
@@ -403,6 +405,7 @@ for(yr in 2015:2020){
     rm(trade.coverage.estimates)
     gta_trade_coverage(gta.evaluation = c("Red", "Amber"),
                        affected.flows = "outward",
+                       implementer.role = "exporter",
                        implementation.period = c(as.Date(paste0(yr,"-01-01")), as.Date(paste0(yr,"-", format(as.Date(cutoff.date), "%m-%d")))),
                        coverage.period = c(yr, yr),
                        mast.chapters = "P",
@@ -540,6 +543,7 @@ for(yr in 2015:2020){
     rm(trade.coverage.estimates)
     gta_trade_coverage(gta.evaluation = c("Green"),
                        affected.flows = "outward",
+                       implementer.role = "exporter",
                        implementation.period = c(as.Date(paste0(yr,"-01-01")), as.Date(paste0(yr,"-", format(as.Date(cutoff.date), "%m-%d")))),
                        coverage.period = c(yr, yr),
                        mast.chapters = "P",
