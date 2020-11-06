@@ -84,7 +84,7 @@ table2 <- select(aggregate(intervention.id ~ year(date.announced) + intervention
 # Get data
 ## NOTE: using this computationally expensive method instead of lag-adjustment to not conflict with SE: "Do not use duration adjusted calculations."
 mast.groups <- list("Top 1" = top5.mast.harmful[1], "Top 2" = top5.mast.harmful[2], "Top 3" = top5.mast.harmful[3], "Top 4" = top5.mast.harmful[4],
-                    "Top 5" = top5.mast.harmful[5], "Other" = as.character(unique(int.mast.types$mast.chapter.id)[unique(!int.mast.types$mast.chapter.id %in% top5.mast.harmful)]))
+                    "Top 5" = top5.mast.harmful[5])
 
 table3 <- data.frame()
 for (mast in names(mast.groups)){
