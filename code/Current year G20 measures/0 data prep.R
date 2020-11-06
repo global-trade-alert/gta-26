@@ -32,7 +32,7 @@ gta_data_slicer(implementing.country = country.names$un_code[country.names$is.g2
                 keep.implementer = T)
 
 # Keep only interventions documented by 21 Oct
-master.sliced <- subset(master.sliced, format(as.Date(date.published), "%m-%d") <= "10-21")
+master.sliced <- subset(master.sliced, format(as.Date(date.published), "%m-%d") <= format(as.Date(cutoff.date), "%m-%d")))
 
 # Aggregate per year and add percentage of harmful interventions
 table1 <- merge(select(aggregate(intervention.id ~ year(date.published), master.sliced, function(x){length(unique(x))}), "year.published" = "year(date.published)", "total.nr.of.int" = intervention.id),
