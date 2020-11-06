@@ -88,13 +88,13 @@ map.function <- function(data, caption, plottitle, limits, breaks, labels, colou
 
 ### Figure 1
 fig1 <- ggplot(data=table1)+
-  geom_line(aes(x=year.announced, y=nr.of.interventions, group=1), size=1, colour=gta_colour$qualitative[1])+
+  geom_line(aes(x=forcats::fct_inorder(as.character(year.announced), ordered = T), y=nr.of.interventions, group=1), size=1, colour=gta_colour$qualitative[1])+
   # geom_text(aes(x=month.group, y=index, label=index), vjust=1, colour="#555555", size=2.5)+
-  geom_line(aes(x=year.announced, y=avg.hours.between.int*600, group=1), size=1, colour=gta_colour$qualitative[3]) +
+  geom_line(aes(x=forcats::fct_inorder(as.character(year.announced), ordered = T), y=avg.hours.between.int*100, group=1), size=1, colour=gta_colour$qualitative[3]) +
   scale_y_continuous(name=str_wrap("Total number of commercial policy interventions worldwide announced by 21 October", 50),
-                     labels=seq(0,3000,300), limits = c(0,3000), breaks=seq(0,3000,300),
-                     sec.axis = sec_axis(trans = ~./600, name=str_wrap("Average number of hours between each commercial policy intervention", 50),
-                                         breaks=seq(0,5,0.5),labels=seq(0,5,0.5)))+
+                     labels=seq(0,2000,200), limits = c(0,2000), breaks=seq(0,2000,200),
+                     sec.axis = sec_axis(trans = ~./100, name=str_wrap("Average number of hours between each commercial policy intervention", 50),
+                                         breaks=seq(0,20,2),labels=seq(0,20,2)))+
   labs(x = "", caption = "Source: Global Trade Alert.")+
   gta_theme(x.bottom.angle = 90, x.bottom.align = 1) +
   theme(legend.position = "bottom",
@@ -114,7 +114,8 @@ gta_plot_saver(plot = fig1,
                name = "Figure 1 - Worldwide interventions published & intervention frequency",
                png = T,
                pdf = T,
-               jpg = T)
+               jpg = T,
+               eps = T)
 
 
 ### Figures 2 & 3
@@ -146,6 +147,7 @@ gta_plot_saver(plot = fig2.and.fig3,
                png = T,
                pdf = T,
                jpg = T,
+               eps = T,
                height = 30,
                width = 27)
 
@@ -179,5 +181,6 @@ gta_plot_saver(plot = fig4.and.fig5,
                png = T,
                pdf = T,
                jpg = T,
+               eps = T,
                height = 30,
                width = 27)
