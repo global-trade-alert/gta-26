@@ -6,6 +6,7 @@ rm(list = ls())
 # of 7080 divided by the total number of commercial policy interventions documented by 21 October). For the primary axis title use the text highlighted in bold. For
 # the secondary axis title please use “Average number of hours between each commercial policy intervention.” Please add a note at the bottom stating
 # “Source: Global Trade Alert.” ### SE 06.11.: Use announcement date
+# SE 07.11.: Please update figure 1 in chapter 4 using the new cutoff date of 30 October.
 #
 # 2. Map of number of times each country was hit by red and amber measures implemented during 2020.
 #
@@ -30,7 +31,7 @@ source(paste0(gta26.path, "help files/GTA 26 cutoff and definitions.R"))
 
 ### Table 1
 # Get the data
-gta_data_slicer(lag.adjustment = format(as.Date("2020-10-21"), "%m-%d"))
+gta_data_slicer(lag.adjustment = format(as.Date(cutoff.date), "%m-%d"))
 
 # Add a column with submission year
 master.sliced$year.announced <- year(master.sliced$date.announced)
@@ -39,7 +40,7 @@ master.sliced$year.announced <- year(master.sliced$date.announced)
 table1 <- select(aggregate(intervention.id ~ year.announced, master.sliced, function(x){length(unique(x))}), year.announced, "nr.of.interventions" = intervention.id)
 
 # Add column for average hours between policy interventions
-table1$avg.hours.between.int <- 7080 / table1$nr.of.interventions
+table1$avg.hours.between.int <- 7320 / table1$nr.of.interventions
 
 # Drop years before 2009
 table1 <- subset(table1, year.announced >= 2009)

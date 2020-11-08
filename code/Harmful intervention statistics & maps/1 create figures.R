@@ -91,10 +91,10 @@ fig1 <- ggplot(data=table1)+
   geom_line(aes(x=forcats::fct_inorder(as.character(year.announced), ordered = T), y=nr.of.interventions, group=1), size=1, colour=gta_colour$qualitative[1])+
   # geom_text(aes(x=month.group, y=index, label=index), vjust=1, colour="#555555", size=2.5)+
   geom_line(aes(x=forcats::fct_inorder(as.character(year.announced), ordered = T), y=avg.hours.between.int*100, group=1), size=1, colour=gta_colour$qualitative[3]) +
-  scale_y_continuous(name=str_wrap("Total number of commercial policy interventions worldwide announced by 21 October", 50),
-                     labels=seq(0,2000,200), limits = c(0,2000), breaks=seq(0,2000,200),
+  scale_y_continuous(name=str_wrap("Total number of commercial policy interventions worldwide announced by 31 October", 50),
+                     labels=seq(0,2100,300), limits = c(0,2100), breaks=seq(0,2100,300),
                      sec.axis = sec_axis(trans = ~./100, name=str_wrap("Average number of hours between each commercial policy intervention", 50),
-                                         breaks=seq(0,20,2),labels=seq(0,20,2)))+
+                                         breaks=seq(0,21,3),labels=seq(0,21,3)))+
   labs(x = "", caption = "Source: Global Trade Alert.")+
   gta_theme(x.bottom.angle = 90, x.bottom.align = 1) +
   theme(legend.position = "bottom",
@@ -124,14 +124,14 @@ world.fig2 <- gta_plot_map_df(subset(table2, gta.evaluation == "harmful"), count
 world.fig3 <- gta_plot_map_df(subset(table2, gta.evaluation == "liberalising"), countries="affected.un",values="nr.of.interventions")
 
 # Plot
-fig2 <- map.function(data = world.fig2, caption = "Source: Global Trade Alert.", plottitle = NULL,
+fig2 <- map.function(data = world.fig2, caption = "Source: Global Trade Alert. Countries marked in grey had zero export exposure to reforms implemented during 2020", plottitle = NULL,
                      limits = c(0, max(world.fig2$value, na.rm = T)), breaks = c(seq(0, max(world.fig2$value, na.rm = T), max(world.fig2$value, na.rm=T) / 4)),
                      labels = c(round(seq(0, max(world.fig2$value, na.rm = T), max(world.fig2$value, na.rm=T) / 4))),
                      colourvalues = c(gta_colour$amber[4], gta_colour$amber[1], gta_colour$red[1], "#bf1b46", "#7d0c2a"),
                      legend.name = "Number of harmful measures affected by in 2020", subtitle = NULL)
 fig2
 
-fig3 <- map.function(data = world.fig3, caption = "Source: Global Trade Alert.", plottitle = NULL,
+fig3 <- map.function(data = world.fig3, caption = "Source: Global Trade Alert. Countries marked in grey had zero export exposure to reforms implemented during 2020", plottitle = NULL,
                      limits = c(0, max(world.fig3$value, na.rm = T)), breaks = c(seq(0, max(world.fig3$value, na.rm = T), max(world.fig3$value, na.rm=T) / 4)),
                      labels = c(round(seq(0, max(world.fig3$value, na.rm = T), max(world.fig3$value, na.rm=T) / 4))),
                      colourvalues = c(gta_colour$green[4], gta_colour$green[2], "#298535", "#1c6625"),
@@ -158,14 +158,14 @@ world.fig4 <- gta_plot_map_df(subset(table3, evaluation == "harmful"), countries
 world.fig5 <- gta_plot_map_df(subset(table3, evaluation == "liberalising"), countries="un_code",values="trade.coverage")
 
 # Plot
-fig4 <- map.function(data = world.fig4, caption = "Source: Global Trade Alert.", plottitle = NULL,
+fig4 <- map.function(data = world.fig4, caption = "Source: Global Trade Alert. Countries marked in grey had zero export exposure to reforms implemented during 2020", plottitle = NULL,
                      limits = c(0, max(world.fig4$value, na.rm = T)), breaks = c(seq(0, max(world.fig4$value, na.rm = T), max(world.fig4$value, na.rm=T) / 4)),
                      labels = scales::percent,
                      colourvalues = c(gta_colour$amber[4], gta_colour$amber[1], gta_colour$red[1], "#bf1b46", "#7d0c2a"),
                      legend.name = "Share of exports affected by harmful measures implemented in 2020", subtitle = NULL)
 fig4
 
-fig5 <- map.function(data = world.fig5, caption = "Source: Global Trade Alert.", plottitle = NULL,
+fig5 <- map.function(data = world.fig5, caption = "Source: Global Trade Alert. Countries marked in grey had zero export exposure to reforms implemented during 2020", plottitle = NULL,
                      limits = c(0, max(world.fig5$value, na.rm = T)), breaks = c(seq(0, max(world.fig5$value, na.rm = T), max(world.fig5$value, na.rm=T) / 4)),
                      labels = scales::percent,
                      colourvalues = c(gta_colour$green[4], gta_colour$green[2], "#298535", "#1c6625"),
