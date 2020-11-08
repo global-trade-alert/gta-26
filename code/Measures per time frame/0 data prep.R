@@ -17,6 +17,21 @@ rm(list = ls())
 # categories. Please plot from 2009 to 2020 the 100% stacked columns showing the information reported in GTA database of these 4 classes of policy intervention that
 # have been documented up to 31 December of each year (30 October for the year 2020). I have identified in bold text the legend labels to be used. Please add a note
 # at the bottom stating “Source: Global Trade Alert.”
+#
+# 3. (Added on 7.11.) Using the same four categories of policies, and restricting the measures to those implemented in 2009 (harmful and liberalising) can you
+# please prepared a 2-D Area 100% Stacked chart that shows the distribution of implemented policies documented in the GTA database that were in the database on the
+# following dates:
+# 
+# 31 December 2009
+# 31 December 2010
+# ...and 31 December of every year up to 2019
+# 30 October 2020
+# 
+# This chart will reveal the changes in the cumulative totals of measures reported in the GTA on the dates in question--the last chart you produced showed the flows
+# by year. 
+# 
+# In terms of labels please do not write 31 December 2009, instead use the shorter text "End 2009". Please use similar labels for the X axis for the years 2010
+# to 2019. For 2020 please use the label "30 October 2020".
 
 library(gtalibrary)
 library(tidyverse)
@@ -85,5 +100,35 @@ table2$percentage.per.year <- table2$intervention.id / table2$total.per.year
 # Drop unnecessary columns
 table2 <- select(table2, year.submitted, SE.int.type, percentage.per.year)
 
+
+### Figure 3
+# Get data
+gta_data_slicer(keep.implementation.na = F,
+                implementation.period = c(as.Date("2009-01-01"), as.Date("2009-12-31")))
+
+# Disregard submissions after 2020-10-31
+master.sliced <- subset(master.sliced, date.published <= as.Date(cutoff.date))
+
+# Add column for SE intervention categories
+master.sliced$SE.int.type <- ifelse(master.sliced$intervention.type %in% transparent.policy.instruments, "transparent policy instruments", NA)
+master.sliced$SE.int.type[master.sliced$intervention.type %in% subsidies.to.imp.competing.firms] <- "subsidies to import-competing firms"
+master.sliced$SE.int.type[master.sliced$intervention.type %in% export.incentives] <- "export incentives"
+master.sliced$SE.int.type[master.sliced$intervention.type %in% other.interventions] <- "other commercial policies"
+
+any(is.na(master.sliced$SE.int.type)) ## Should be FALSE
+
+# Add column for reporting periods
+master.sliced$period.published <- paste0("End ", year(master.sliced$date.published))
+master.sliced$period.published[master.sliced$period.published == "End 2020"] <- "31 October 2020"
+
+# Aggregate for category and reporting period
+table3 <- select(aggregate(intervention.id ~ SE.int.type + period.published, master.sliced, function(x){length(unique(x))}), "intervention.type" = SE.int.type, period.published, "perc.of.interventions" = intervention.id)
+
+# Convert to percentages
+table3 <- merge(table3, select(aggregate(perc.of.interventions ~ period.published, table3, sum), period.published, "total.nr.interventions" = perc.of.interventions), by = "period.published", all.x = T)
+table3$perc.of.interventions <- table3$perc.of.interventions / table3$total.nr.interventions
+table3$total.nr.interventions <- NULL
+
+
 ### Save data
-save(table1, table2, file = paste0(gta26.path, data.path, "measures per time frame.Rdata"))
+save(table1, table2, table3, file = paste0(gta26.path, data.path, "measures per time frame.Rdata"))
