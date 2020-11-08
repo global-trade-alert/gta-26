@@ -16,6 +16,26 @@ rm(list = ls())
 #
 # 5. Map of share of nation’s exports that faced green measures implemented during 2020. If you can format this map and the map directly above into the same
 # graphic (one vertically above the other), then great.
+#
+# Added 07.11.: I have been thinking the results that you've tabulated and produced charts for. What is striking this year is that the global averages are potentially
+# misleading as there is a huge diversity in outcomes across nations. I am going to figure out how to explain that in the report and the following charts
+# would help in this regard.
+#
+# 6. For the data in the figure 2 & 3 excel file, please produce two kernel distributions across nations of the number of times their commercial interests have been
+# (a) hit or (b) benefited from foreign reforms. If possible, please put both kernels on the same chart.
+# 
+# 7. Please repeat the same request immediately above for the harmful and liberalising export exposure statistics in the attached file called figure 4 & 5. 
+# 
+# 8. Next, using the data in figure 4 & 5 please plot the % of exports facing harmful measures (on the Y axis) against the % of exports facing beneficial
+# measures (on the X axis). Please make the size of the dot associated with each nation proportional to the logarithm of total goods exports of that nation in
+# the last year for which we have trade data before the pandemic (either 2018 or 2019). 
+# 
+# 9. Please produce another version of the same plot (mentioned directly above) where the size of the dot associated with each nation is the logarithm of the per
+# capita GDP.
+# 
+# 10. Please produce another version of the same plot (mentioned two paragraphs above) where the dot is red for a G20 member.
+# 
+# 11. Please produce another version of the same plot (mentioned three paragraphs above) where the dot is red for a Least Developed country. 
 
 library(gtalibrary)
 library(tidyverse)
@@ -25,6 +45,7 @@ library(gridExtra)
 library(scales)
 library(stringr)
 library(openxlsx)
+library(ggforce)
 
 gta_setwd()
 gta26.path = "0 report production/GTA 26/"
@@ -41,6 +62,10 @@ load(paste0(gta26.path, data.path, "harmful intervention statistics & maps.Rdata
 write.xlsx(table1, file = paste0(gta26.path, out.path, "Figure 1 data.xlsx"))
 write.xlsx(table2, file = paste0(gta26.path, out.path, "Figure 2 & 3 data.xlsx"))
 write.xlsx(table3, file = paste0(gta26.path, out.path, "Figure 4 & 5 data.xlsx"))
+write.xlsx(table8, file = paste0(gta26.path, out.path, "Figure 8 data.xlsx"))
+write.xlsx(table9, file = paste0(gta26.path, out.path, "Figure 9 data.xlsx"))
+write.xlsx(table10, file = paste0(gta26.path, out.path, "Figure 10 data.xlsx"))
+write.xlsx(table11, file = paste0(gta26.path, out.path, "Figure 11 data.xlsx"))
 
 
 ### Functions
@@ -184,3 +209,242 @@ gta_plot_saver(plot = fig4.and.fig5,
                eps = T,
                height = 30,
                width = 27)
+
+
+
+### Figure 6
+# Make sure all combinations are represented
+temp <- data.frame("affected.name" = unique(table3$exporter),
+                   "gta.evaluation" = "harmful, liberalising")
+temp <- cSplit(temp, "gta.evaluation", ", ", "long")
+temp <- merge(temp, select(country.names, "affected.name" = name, "affected.un" = un_code), by = "affected.name", all.x = T)
+
+table2 <- merge(temp, select(table2, affected.name, gta.evaluation, nr.of.interventions), by = c("affected.name", "gta.evaluation"), all.x = T); rm(temp)
+table2[is.na(table2)] <- 0
+
+# Plot
+fig6 <- ggplot(table2, aes(x=nr.of.interventions, color = gta.evaluation)) +
+  geom_density() +
+  labs(x = "Nr. of interventions announced", y = "Density", caption = "Source: Global Trade Alert.") +
+  scale_color_manual(values=c(gta_colour$harmful[1], gta_colour$liberalising[1])) +
+  guides(colour=guide_legend(title="GTA evaluation", 
+                             label.hjust = 0, label.vjust = 0.5, 
+                             title.position = "top", title.hjust = 0, 
+                             direction = "horizontal", 
+                             label.position = "right"))+
+  gta_theme() +
+  theme(legend.position = "bottom")
+
+fig6
+
+gta_plot_saver(plot = fig6,
+               path = paste0(gta26.path, out.path),
+               name = "Figure 6 - Kernel density for number of announced interventions",
+               png = T,
+               pdf = T,
+               jpg = T,
+               eps = T)
+
+
+### Figure 7
+# Make sure all combinations are represented
+temp <- data.frame("exporter" = unique(table3$exporter),
+                   "evaluation" = "harmful, liberalising")
+temp <- cSplit(temp, "evaluation", ", ", "long")
+temp <- merge(temp, select(country.names, "exporter" = name, un_code), by = "exporter", all.x = T)
+
+table3 <- merge(temp, select(table3, exporter, evaluation, trade.coverage), by = c("exporter", "evaluation"), all.x = T); rm(temp)
+table3[is.na(table3)] <- 0
+
+# Plot
+fig7 <- ggplot(table3, aes(x=trade.coverage, color = evaluation)) +
+  geom_density() +
+  labs(x = "Share of trade covered", y = "Density", caption = "Source: Global Trade Alert.") +
+  scale_color_manual(values=c(gta_colour$harmful[1], gta_colour$liberalising[1])) +
+  guides(colour=guide_legend(title="GTA evaluation", 
+                             label.hjust = 0, label.vjust = 0.5, 
+                             title.position = "top", title.hjust = 0, 
+                             direction = "horizontal", 
+                             label.position = "right"))+
+  gta_theme() +
+  theme(legend.position = "bottom")
+
+fig7
+
+gta_plot_saver(plot = fig7,
+               path = paste0(gta26.path, out.path),
+               name = "Figure 7 - Kernel density for affected export shares",
+               png = T,
+               pdf = T,
+               jpg = T,
+               eps = T)
+
+
+### Figure 8
+# Pivot wider to acomodate for facet_zoom
+table8.plot <- merge(select(subset(table8, evaluation == "liberalising"), un_code, "trade.coverage.liberalising" = trade.coverage), select(subset(table8, evaluation == "harmful"), un_code, "trade.coverage.harmful" = trade.coverage), by = "un_code", all.x = T)
+table8.plot <- merge(table8.plot, select(subset(table8, evaluation == "liberalising"), un_code, log.trade.value))
+
+fig8 <- ggplot(data = table8.plot, aes(x=trade.coverage.liberalising, y=trade.coverage.harmful, size = log.trade.value))+
+  geom_point(color = gta_colour$blue[1], alpha = 0.3)+
+  geom_abline(slope = 1, intercept = 0) +
+  facet_zoom(ylim = c(0,0.1)) +
+  # scale_y_continuous(name=str_wrap("Percentage of exports facing harmful measures", width = 50),
+  #                    limits = c(0,0.7), labels = label_percent(accuracy = 1L), breaks=seq(0,0.7,0.1),
+  #                    sec.axis = sec_axis(trans = ~., name = str_wrap("Percentage of exports facing harmful measures", width = 50),
+  #                                        labels = label_percent(accuracy = 1L), breaks=seq(0,0.7,0.1)))+
+  scale_y_continuous(name = "Percentage of exports facing harmful measures", labels = label_percent(accuracy = 1L)) +
+  scale_x_continuous(name="Percentage of exports facing beneficial measures", labels = label_percent(accuracy = 1L), limits=c(0,0.3), breaks=seq(0,0.3,0.05))+
+  labs(caption = "Source: Global Trade Alert.") +
+  guides(size=guide_legend(title="Log of 2019 trade value", 
+                             label.hjust = 0, label.vjust = 0.5, 
+                             title.position = "top", title.hjust = 0, 
+                             direction = "horizontal", 
+                             label.position = "right")) +
+  gta_theme() +
+  theme(panel.grid.minor = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        plot.caption = element_text(size = 8),
+        plot.caption.position = "plot",
+        legend.position = "bottom")
+
+fig8
+
+gta_plot_saver(plot = fig8,
+               path = paste0(gta26.path, out.path),
+               name = "Figure 8 - Comparison of harmful and liberalising trade share affected",
+               png = T,
+               pdf = T,
+               jpg = T,
+               eps = T,
+               width = 30,
+               height = 21)
+
+
+### Figure 9
+# Remove countries that do not have GDP data
+table9 <- subset(table9, is.finite(log.gdp.per.capita))
+
+# Pivot wider to acomodate for facet_zoom
+table9.plot <- merge(select(subset(table9, evaluation == "liberalising"), un_code, "trade.coverage.liberalising" = trade.coverage), select(subset(table9, evaluation == "harmful"), un_code, "trade.coverage.harmful" = trade.coverage), by = "un_code", all.x = T)
+table9.plot <- merge(table9.plot, select(subset(table9, evaluation == "liberalising"), un_code, log.gdp.per.capita))
+
+# Plot
+fig9 <- ggplot(data = table9.plot, aes(x=trade.coverage.liberalising, y=trade.coverage.harmful, size = log.gdp.per.capita))+
+  geom_point(color = gta_colour$blue[1], alpha = 0.3)+
+  geom_abline(slope = 1, intercept = 0) +
+  facet_zoom(ylim = c(0,0.1)) +
+  # scale_y_continuous(name=str_wrap("Percentage of exports facing harmful measures", width = 50),
+  #                    limits = c(0,0.7), labels = label_percent(accuracy = 1L), breaks=seq(0,0.7,0.1),
+  #                    sec.axis = sec_axis(trans = ~., name = str_wrap("Percentage of exports facing harmful measures", width = 50),
+  #                                        labels = label_percent(accuracy = 1L), breaks=seq(0,0.7,0.1)))+
+  scale_y_continuous(name = "Percentage of exports facing harmful measures", labels = label_percent(accuracy = 1L)) +
+  scale_x_continuous(name="Percentage of exports facing beneficial measures", labels = label_percent(accuracy = 1L), limits=c(0,0.3), breaks=seq(0,0.3,0.05))+
+  labs(caption = "Source: Global Trade Alert. Source of GDP data: World Bank.") +
+  guides(size=guide_legend(title="Log of GDP per capita", 
+                           label.hjust = 0, label.vjust = 0.5, 
+                           title.position = "top", title.hjust = 0, 
+                           direction = "horizontal", 
+                           label.position = "right")) +
+  gta_theme() +
+  theme(panel.grid.minor = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        plot.caption = element_text(size = 8),
+        plot.caption.position = "plot",
+        legend.position = "bottom")
+
+fig9
+
+gta_plot_saver(plot = fig9,
+               path = paste0(gta26.path, out.path),
+               name = "Figure 9 - Comparison of harmful and liberalising trade share affected - GDP version",
+               png = T,
+               pdf = T,
+               jpg = T,
+               eps = T,
+               width = 30,
+               height = 21)
+
+
+### Figure 10
+# Pivot wider to acomodate for facet_zoom
+table10.plot <- merge(select(subset(table10, evaluation == "liberalising"), un_code, "trade.coverage.liberalising" = trade.coverage), select(subset(table10, evaluation == "harmful"), un_code, "trade.coverage.harmful" = trade.coverage), by = "un_code", all.x = T)
+table10.plot <- merge(table10.plot, select(subset(table10, evaluation == "liberalising"), un_code, is.g20))
+
+fig10 <- ggplot(data = table10.plot, aes(x=trade.coverage.liberalising, y=trade.coverage.harmful, color = is.g20))+
+  geom_point(size = 2, alpha = 0.5)+
+  geom_abline(slope = 1, intercept = 0) +
+  facet_zoom(ylim = c(0,0.1)) +
+  # scale_y_continuous(name=str_wrap("Percentage of exports facing harmful measures", width = 50),
+  #                    limits = c(0,0.7), labels = label_percent(accuracy = 1L), breaks=seq(0,0.7,0.1),
+  #                    sec.axis = sec_axis(trans = ~., name = str_wrap("Percentage of exports facing harmful measures", width = 50),
+  #                                        labels = label_percent(accuracy = 1L), breaks=seq(0,0.7,0.1)))+
+  scale_y_continuous(name = "Percentage of exports facing harmful measures", labels = label_percent(accuracy = 1L)) +
+  scale_x_continuous(name="Percentage of exports facing beneficial measures", labels = label_percent(accuracy = 1L), limits=c(0,0.3), breaks=seq(0,0.3,0.05))+
+  scale_color_manual(values = c("1" = gta_colour$red[1], "0" = gta_colour$blue[1]), labels = c("Non-G20", "G20")) +
+  labs(caption = "Source: Global Trade Alert.") +
+  guides(color=guide_legend(title=NULL, 
+                           label.hjust = 0, label.vjust = 0.5, 
+                           title.position = "top", title.hjust = 0, 
+                           direction = "horizontal", 
+                           label.position = "right")) +
+  gta_theme() +
+  theme(panel.grid.minor = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        plot.caption = element_text(size = 8),
+        plot.caption.position = "plot",
+        legend.position = "bottom")
+
+fig10
+
+gta_plot_saver(plot = fig10,
+               path = paste0(gta26.path, out.path),
+               name = "Figure 10 - Comparison of harmful and liberalising trade share affected - G20 highlighted",
+               png = T,
+               pdf = T,
+               jpg = T,
+               eps = T,
+               width = 30,
+               height = 21)
+
+
+### Figure 11
+# Pivot wider to acomodate for facet_zoom
+table11.plot <- merge(select(subset(table11, evaluation == "liberalising"), un_code, "trade.coverage.liberalising" = trade.coverage), select(subset(table11, evaluation == "harmful"), un_code, "trade.coverage.harmful" = trade.coverage), by = "un_code", all.x = T)
+table11.plot <- merge(table11.plot, select(subset(table11, evaluation == "liberalising"), un_code, is.ldc))
+
+fig11 <- ggplot(data = table11.plot, aes(x=trade.coverage.liberalising, y=trade.coverage.harmful, color = is.ldc))+
+  geom_point(size = 2, alpha = 0.5)+
+  geom_abline(slope = 1, intercept = 0) +
+  facet_zoom(ylim = c(0,0.1)) +
+  # scale_y_continuous(name=str_wrap("Percentage of exports facing harmful measures", width = 50),
+  #                    limits = c(0,0.7), labels = label_percent(accuracy = 1L), breaks=seq(0,0.7,0.1),
+  #                    sec.axis = sec_axis(trans = ~., name = str_wrap("Percentage of exports facing harmful measures", width = 50),
+  #                                        labels = label_percent(accuracy = 1L), breaks=seq(0,0.7,0.1)))+
+  scale_y_continuous(name = "Percentage of exports facing harmful measures", labels = label_percent(accuracy = 1L)) +
+  scale_x_continuous(name="Percentage of exports facing beneficial measures", labels = label_percent(accuracy = 1L), limits=c(0,0.3), breaks=seq(0,0.3,0.05))+
+  scale_color_manual(values = c("1" = gta_colour$red[1], "0" = gta_colour$blue[1]), labels = c("Other", "Least developed country")) +
+  labs(caption = "Source: Global Trade Alert.") +
+  guides(color=guide_legend(title=NULL, 
+                            label.hjust = 0, label.vjust = 0.5, 
+                            title.position = "top", title.hjust = 0, 
+                            direction = "horizontal", 
+                            label.position = "right")) +
+  gta_theme() +
+  theme(panel.grid.minor = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        plot.caption = element_text(size = 8),
+        plot.caption.position = "plot",
+        legend.position = "bottom")
+
+fig11
+
+gta_plot_saver(plot = fig11,
+               path = paste0(gta26.path, out.path),
+               name = "Figure 11 - Comparison of harmful and liberalising trade share affected - LDCs highlighted",
+               png = T,
+               pdf = T,
+               jpg = T,
+               eps = T,
+               width = 30,
+               height = 21)
