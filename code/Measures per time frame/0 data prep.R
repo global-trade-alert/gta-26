@@ -119,16 +119,19 @@ any(is.na(master.sliced$SE.int.type)) ## Should be FALSE
 
 # Add column for reporting periods
 master.sliced$period.published <- paste0("End ", year(master.sliced$date.published))
-master.sliced$period.published[master.sliced$period.published == "End 2020"] <- "31 October 2020"
 
 # Aggregate for category and reporting period
 table3 <- select(aggregate(intervention.id ~ SE.int.type + period.published, master.sliced, function(x){length(unique(x))}), "intervention.type" = SE.int.type, period.published, "perc.of.interventions" = intervention.id)
 
-# Convert to percentages
-table3 <- merge(table3, select(aggregate(perc.of.interventions ~ period.published, table3, sum), period.published, "total.nr.interventions" = perc.of.interventions), by = "period.published", all.x = T)
-table3$perc.of.interventions <- table3$perc.of.interventions / table3$total.nr.interventions
+# Convert to percentages of cumulative sum
+table3$cumulative.sum.type <- ave(table3$perc.of.interventions, table3$intervention.type, FUN = cumsum)
+table3 <- merge(table3, select(aggregate(cumulative.sum.type ~ period.published, table3, sum), period.published, "total.nr.interventions" = cumulative.sum.type), by = "period.published", all.x = T)
+table3$perc.of.interventions <- table3$cumulative.sum.type / table3$total.nr.interventions
 table3$total.nr.interventions <- NULL
+table3$cumulative.sum <- NULL
 
+# Adjust names (has to be done here to preserve correct sorting for cumulative sum)
+table3$period.published[table3$period.published == "End 2020"] <- "31 October 2020"
 
 ### Save data
 save(table1, table2, table3, file = paste0(gta26.path, data.path, "measures per time frame.Rdata"))

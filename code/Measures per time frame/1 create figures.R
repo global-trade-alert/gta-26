@@ -141,8 +141,8 @@ gta_plot_saver(plot = fig2,
 
 
 ### Figure 3
-# Order the period
-table3$period.published <- factor(table3$period.published, levels = c("End 2009", "End 2010", "End 2011", "End 2012", "End 2013", "End 2014", "End 2015", "End 2016", "End 2017", "End 2018", "End 2019", "31 October 2020"))
+# # Order the period
+# table3$period.published <- factor(table3$period.published, levels = c("End 2009", "End 2010", "End 2011", "End 2012", "End 2013", "End 2014", "End 2015", "End 2016", "End 2017", "End 2018", "End 2019", "31 October 2020"))
 
 # Add auxiliary column with numeric periods, geom_area apparently does not work with categorical x-axis data
 table3$x.value <- as.numeric(stringr::str_extract(as.character(table3$period.published), "\\d{4}"))
