@@ -120,15 +120,21 @@ any(is.na(master.sliced$SE.int.type)) ## Should be FALSE
 # Add column for reporting periods
 master.sliced$period.published <- paste0("End ", year(master.sliced$date.published))
 
+# Create empty data frame in case there are periods with zero interventions
+table3 <- data.frame("intervention.type" = c("transparent policy instruments", "subsidies to import-competing firms", "export incentives", "other commercial policies"),
+                     "period.published" = "End 2009, End 2010, End 2011, End 2012, End 2013, End 2014, End 2015, End 2016, End 2017, End 2018, End 2019, End 2020")
+table3 <- cSplit(table3, "period.published", ", ", "long")
+
 # Aggregate for category and reporting period
-table3 <- select(aggregate(intervention.id ~ SE.int.type + period.published, master.sliced, function(x){length(unique(x))}), "intervention.type" = SE.int.type, period.published, "perc.of.interventions" = intervention.id)
+table3 <- merge(table3, select(aggregate(intervention.id ~ SE.int.type + period.published, master.sliced, function(x){length(unique(x))}), "intervention.type" = SE.int.type, period.published, "perc.of.interventions" = intervention.id), by = c("intervention.type", "period.published"), all.x = T)
+table3$perc.of.interventions[is.na(table3$perc.of.interventions)] <- 0
 
 # Convert to percentages of cumulative sum
 table3$cumulative.sum.type <- ave(table3$perc.of.interventions, table3$intervention.type, FUN = cumsum)
 table3 <- merge(table3, select(aggregate(cumulative.sum.type ~ period.published, table3, sum), period.published, "total.nr.interventions" = cumulative.sum.type), by = "period.published", all.x = T)
 table3$perc.of.interventions <- table3$cumulative.sum.type / table3$total.nr.interventions
 table3$total.nr.interventions <- NULL
-table3$cumulative.sum <- NULL
+table3$cumulative.sum.type <- NULL
 
 # Adjust names (has to be done here to preserve correct sorting for cumulative sum)
 table3$period.published[table3$period.published == "End 2020"] <- "31 October 2020"
