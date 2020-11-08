@@ -28,6 +28,13 @@ rm(list = ls())
 # year weights—and compare them. If the results are very similar, then please send me the chart using the 2015 year weights.
 #
 # 5lag. Please repeat 4 but for the implemented liberalising interventions.
+#
+# Addendum: Inspired by figure 3 in chapter 6, taking all of the G20 harmful interventions this year (until end of October) into account, please calculate the 
+# percentage of measures that have already lapsed (by 31 October), 
+# the % of measures due to lapse during the remainder of this year, 
+# the % of measures due to lapse in 2021, 
+# the % of measures due to lapse after 2021, 
+# and the % of measures without phase out dates.
 
 library(gtalibrary)
 library(tidyverse)
@@ -635,7 +642,34 @@ for(yr in 2015:2020){
 
 
 
+### Addendum
+# Get data
+gta_data_slicer(gta.evaluation = c("Red", "Amber"),
+                implementation.period = c(as.Date("2020-01-01"), as.Date(cutoff.date)),
+                keep.implementation.na = F,
+                implementing.country = country.names$un_code[country.names$is.g20],
+                keep.implementer = T)
+
+# Aggregate for periods
+master.sliced$period <- ifelse(master.sliced$date.removed <= as.Date(cutoff.date), 1, 0)
+master.sliced$period[master.sliced$date.removed > as.Date(cutoff.date) & master.sliced$date.removed <= as.Date("2020-12-31")] <- 2
+master.sliced$period[master.sliced$date.removed > as.Date("2020-12-31") & master.sliced$date.removed <= as.Date("2021-12-31")] <- 3
+master.sliced$period[master.sliced$date.removed > as.Date("2021-12-31")] <- 4
+master.sliced$period[is.na(master.sliced$date.removed)] <- 5
+
+master.sliced <- subset(master.sliced, period != 0)
+
+table6 <- data.frame("period" = c("percentage of measures that have already lapsed (by 31 October)", "the % of measures due to lapse during the remainder of this year",
+                                  "the % of measures due to lapse in 2021", "the % of measures due to lapse after 2021", "and the % of measures without phase out dates"))
+
+table6 <- cbind(table6, select(aggregate(intervention.id ~ period, master.sliced, function(x){length(unique(x))}), "percentage.of.interventions" = intervention.id))
+
+# Convert to percentages
+table6$total.nr.interventions <- sum(table6$percentage.of.interventions)
+table6$percentage.of.interventions <- table6$percentage.of.interventions / table6$total.nr.interventions
+table6$total.nr.interventions <- NULL
+
 
 
 ### Save data
-save(table1, table3, table4, table5,table4lag, table5lag, file = paste0(gta26.path, data.path, "top MAST interventions.Rdata"))
+save(table1, table3, table4, table5, table4lag, table5lag, table6, file = paste0(gta26.path, data.path, "top MAST interventions.Rdata"))

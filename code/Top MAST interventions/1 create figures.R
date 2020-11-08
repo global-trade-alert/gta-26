@@ -19,6 +19,13 @@ rm(list = ls())
 # year weights—and compare them. If the results are very similar, then please send me the chart using the 2015 year weights.
 #
 # 5. Please repeat 4 but for the implemented liberalising interventions.
+#
+# Addendum: Inspired by figure 3 in chapter 6, taking all of the G20 harmful interventions this year (until end of October) into account, please calculate the 
+# percentage of measures that have already lapsed (by 31 October), 
+# the % of measures due to lapse during the remainder of this year, 
+# the % of measures due to lapse in 2021, 
+# the % of measures due to lapse after 2021, 
+# and the % of measures without phase out dates.
 
 library(gtalibrary)
 library(tidyverse)
@@ -48,11 +55,12 @@ write.xlsx(table4, file = paste0(gta26.path, out.path, "Figure 4 data.xlsx"))
 write.xlsx(table5, file = paste0(gta26.path, out.path, "Figure 5 data.xlsx"))
 write.xlsx(table4lag, file = paste0(gta26.path, out.path, "Figure 4 data - lag adjusted.xlsx"))
 write.xlsx(table5lag, file = paste0(gta26.path, out.path, "Figure 5 data - lag adjusted.xlsx"))
+write.xlsx(table6, file = paste0(gta26.path, out.path, "Addendum data.xlsx"))
 
 
 ### Functions
 # Simple bar chart
-bar.function <- function(data, fill.colour, x.lab = "", y.lab, y.breaks = seq(0,1,0.1), y.labels = label_percent(accuracy = 1L), y.limits = c(0,1)){
+bar.function <- function(data, fill.colour, x.lab = "", y.lab, y.breaks = seq(0,1,0.1), y.labels = label_percent(accuracy = 2L), y.limits = c(0,1)){
   plot <- ggplot(data = data)+
     geom_bar(aes(x=forcats::fct_inorder(as.character(year), ordered = T), y=trade.coverage), width=0.65, stat = "identity", fill=fill.colour) +
     labs(x=x.lab, y="")+
@@ -222,9 +230,9 @@ p1 <- bar.function(data = subset(table4, mast.group == 'All harmful intervention
 p2 <- bar.function(data = subset(table4, mast.group == 'P: Export incentives'), fill.colour = gta_colour$harmful[1], x.lab = 'P: Export incentives', y.lab = '', y.breaks = seq(0,0.45,0.05), y.limits = c(0,0.45))
 p3 <- bar.function(data = subset(table4, mast.group == 'L: Subsidies (excl. export subsidies)'), fill.colour = gta_colour$harmful[1], x.lab = 'L: Subsidies (excl. export subsidies)', y.lab = '', y.breaks = seq(0,0.45,0.05), y.limits = c(0,0.45))
 p4 <- bar.function(data = subset(table4, mast.group == 'Tariff measures'), fill.colour = gta_colour$harmful[1], x.lab = 'Tariff measures', y.lab = '', y.breaks = seq(0,0.45,0.05), y.limits = c(0,0.45))
-p5 <- bar.function(data = subset(table4, mast.group == 'D: Contingent trade-protective measures'), fill.colour = gta_colour$harmful[1], x.lab = 'D: Contingent trade-protective measures', y.lab = '', y.breaks = seq(0,0.006,0.001), y.limits = c(0,0.006), y.labels = label_percent(accuracy = 0.1))
-p6 <- bar.function(data = subset(table4, mast.group == 'I: Trade-related investment measures '), fill.colour = gta_colour$harmful[1], x.lab = 'I: Trade-related investment measures', y.lab = '', y.breaks = seq(0,0.006,0.001), y.limits = c(0,0.006), y.labels = label_percent(accuracy = 0.1))
-p7 <- bar.function(data = subset(table4, mast.group == 'P: Export barriers'), fill.colour = gta_colour$harmful[1], x.lab = 'P: Export barriers', y.lab = '', y.breaks = seq(0,0.006,0.001), y.limits = c(0,0.006), y.labels = label_percent(accuracy = 0.1))
+p5 <- bar.function(data = subset(table4, mast.group == 'D: Contingent trade-protective measures'), fill.colour = gta_colour$harmful[1], x.lab = 'D: Contingent trade-protective measures', y.lab = '', y.breaks = seq(0,0.02,0.005), y.limits = c(0,0.02), y.labels = label_percent(accuracy = 0.1))
+p6 <- bar.function(data = subset(table4, mast.group == 'I: Trade-related investment measures '), fill.colour = gta_colour$harmful[1], x.lab = 'I: Trade-related investment measures', y.lab = '', y.breaks = seq(0,0.02,0.005), y.limits = c(0,0.02), y.labels = label_percent(accuracy = 0.1))
+p7 <- bar.function(data = subset(table4, mast.group == 'P: Export barriers'), fill.colour = gta_colour$harmful[1], x.lab = 'P: Export barriers', y.lab = '', y.breaks = seq(0,0.02,0.005), y.limits = c(0,0.02), y.labels = label_percent(accuracy = 0.1))
 
 # # Plot with row 1 scale
 # for (i in c(1:3)){
@@ -259,9 +267,9 @@ p1 <- bar.function(data = subset(table4lag, mast.group == 'All harmful intervent
 p2 <- bar.function(data = subset(table4lag, mast.group == 'P: Export incentives'), fill.colour = gta_colour$harmful[1], x.lab = 'P: Export incentives', y.lab = '', y.breaks = seq(0,0.4,0.05), y.limits = c(0,0.4))
 p3 <- bar.function(data = subset(table4lag, mast.group == 'L: Subsidies (excl. export subsidies)'), fill.colour = gta_colour$harmful[1], x.lab = 'L: Subsidies (excl. export subsidies)', y.lab = '', y.breaks = seq(0,0.4,0.05), y.limits = c(0,0.4))
 p4 <- bar.function(data = subset(table4lag, mast.group == 'Tariff measures'), fill.colour = gta_colour$harmful[1], x.lab = 'Tariff measures', y.lab = '', y.breaks = seq(0,0.4,0.05), y.limits = c(0,0.4))
-p5 <- bar.function(data = subset(table4lag, mast.group == 'D: Contingent trade-protective measures'), fill.colour = gta_colour$harmful[1], x.lab = 'D: Contingent trade-protective measures', y.lab = '', y.breaks = seq(0,0.006,0.001), y.limits = c(0,0.006), y.labels = label_percent(accuracy = 0.1))
-p6 <- bar.function(data = subset(table4lag, mast.group == 'I: Trade-related investment measures '), fill.colour = gta_colour$harmful[1], x.lab = 'I: Trade-related investment measures', y.lab = '', y.breaks = seq(0,0.006,0.001), y.limits = c(0,0.006), y.labels = label_percent(accuracy = 0.1))
-p7 <- bar.function(data = subset(table4lag, mast.group == 'P: Export barriers'), fill.colour = gta_colour$harmful[1], x.lab = 'P: Export barriers', y.lab = '', y.breaks = seq(0,0.006,0.001), y.limits = c(0,0.006), y.labels = label_percent(accuracy = 0.1))
+p5 <- bar.function(data = subset(table4lag, mast.group == 'D: Contingent trade-protective measures'), fill.colour = gta_colour$harmful[1], x.lab = 'D: Contingent trade-protective measures', y.lab = '', y.breaks = seq(0,0.02,0.005), y.limits = c(0,0.02), y.labels = label_percent(accuracy = 0.1))
+p6 <- bar.function(data = subset(table4lag, mast.group == 'I: Trade-related investment measures '), fill.colour = gta_colour$harmful[1], x.lab = 'I: Trade-related investment measures', y.lab = '', y.breaks = seq(0,0.02,0.005), y.limits = c(0,0.02), y.labels = label_percent(accuracy = 0.1))
+p7 <- bar.function(data = subset(table4lag, mast.group == 'P: Export barriers'), fill.colour = gta_colour$harmful[1], x.lab = 'P: Export barriers', y.lab = '', y.breaks = seq(0,0.02,0.005), y.limits = c(0,0.02), y.labels = label_percent(accuracy = 0.1))
 
 # # Plot
 # for (i in c(1:7)){
@@ -293,8 +301,8 @@ p1 <- bar.function(data = subset(table5, mast.group == 'All liberalising interve
 p2 <- bar.function(data = subset(table5, mast.group == 'P: Export incentives'), fill.colour = gta_colour$liberalising[1], x.lab = 'P: Export incentives', y.lab = '', y.breaks = seq(0,0.3,0.05), y.limits = c(0,0.3))
 p3 <- bar.function(data = subset(table5, mast.group == 'Tariff measures'), fill.colour = gta_colour$liberalising[1], x.lab = 'Tariff measures', y.lab = '', y.breaks = seq(0,0.3,0.05), y.limits = c(0,0.3))
 p4 <- bar.function(data = subset(table5, mast.group == 'L: Subsidies (excl. export subsidies)'), fill.colour = gta_colour$liberalising[1], x.lab = 'L: Subsidies (excl. export subsidies)', y.lab = '', y.breaks = seq(0,0.05,0.01), y.limits = c(0,0.05))
-p5 <- bar.function(data = subset(table5, mast.group == 'E: Non-automatic licensing, quotas etc.'), fill.colour = gta_colour$liberalising[1], x.lab = 'E: Non-automatic licensing, quotas etc.', y.lab = '', y.breaks = seq(0,0.05,0.01), y.limits = c(0,0.05))
-p6 <- bar.function(data = subset(table5, mast.group == 'P: Export barriers'), fill.colour = gta_colour$liberalising[1], x.lab = 'P: Export barriers', y.lab = '', y.breaks = seq(0,0.05,0.01), y.limits = c(0,0.05))
+p5 <- bar.function(data = subset(table5, mast.group == 'E: Non-automatic licensing, quotas etc.'), fill.colour = gta_colour$liberalising[1], x.lab = 'E: Non-automatic licensing, quotas etc.', y.lab = '', y.breaks = seq(0,0.02,0.005), y.limits = c(0,0.025))
+p6 <- bar.function(data = subset(table5, mast.group == 'P: Export barriers'), fill.colour = gta_colour$liberalising[1], x.lab = 'P: Export barriers', y.lab = '', y.breaks = seq(0,0.02,0.005), y.limits = c(0,0.025))
 
 # # Plot
 # for (i in c(1:6)){
@@ -322,9 +330,9 @@ data.table::setnames(table5lag, old = "trade.share", new = "trade.coverage")
 p1 <- bar.function(data = subset(table5lag, mast.group == 'All liberalising interventions'), fill.colour = gta_colour$liberalising[1], x.lab = 'All liberalising interventions', y.lab = '', y.breaks = seq(0,0.3,0.05), y.limits = c(0,0.3))
 p2 <- bar.function(data = subset(table5lag, mast.group == 'P: Export incentives'), fill.colour = gta_colour$liberalising[1], x.lab = 'P: Export incentives', y.lab = '', y.breaks = seq(0,0.3,0.05), y.limits = c(0,0.3))
 p3 <- bar.function(data = subset(table5lag, mast.group == 'Tariff measures'), fill.colour = gta_colour$liberalising[1], x.lab = 'Tariff measures', y.lab = '', y.breaks = seq(0,0.3,0.05), y.limits = c(0,0.3))
-p4 <- bar.function(data = subset(table5lag, mast.group == 'L: Subsidies (excl. export subsidies)'), fill.colour = gta_colour$liberalising[1], x.lab = 'L: Subsidies (excl. export subsidies)', y.lab = '', y.breaks = seq(0,0.011,0.001), y.limits = c(0,0.011), y.labels = label_percent(accuracy = 0.1))
-p5 <- bar.function(data = subset(table5lag, mast.group == 'E: Non-automatic licensing, quotas etc.'), fill.colour = gta_colour$liberalising[1], x.lab = 'E: Non-automatic licensing, quotas etc.', y.lab = '', y.breaks = seq(0,0.011,0.001), y.limits = c(0,0.011), y.labels = label_percent(accuracy = 0.1))
-p6 <- bar.function(data = subset(table5lag, mast.group == 'P: Export barriers'), fill.colour = gta_colour$liberalising[1], x.lab = 'P: Export barriers', y.lab = '', y.breaks = seq(0,0.011,0.001), y.limits = c(0,0.011), y.labels = label_percent(accuracy = 0.1))
+p4 <- bar.function(data = subset(table5lag, mast.group == 'L: Subsidies (excl. export subsidies)'), fill.colour = gta_colour$liberalising[1], x.lab = 'L: Subsidies (excl. export subsidies)', y.lab = '', y.breaks = seq(0,0.02,0.005), y.limits = c(0,0.025), y.labels = label_percent(accuracy = 0.1))
+p5 <- bar.function(data = subset(table5lag, mast.group == 'E: Non-automatic licensing, quotas etc.'), fill.colour = gta_colour$liberalising[1], x.lab = 'E: Non-automatic licensing, quotas etc.', y.lab = '', y.breaks = seq(0,0.02,0.005), y.limits = c(0,0.025), y.labels = label_percent(accuracy = 0.1))
+p6 <- bar.function(data = subset(table5lag, mast.group == 'P: Export barriers'), fill.colour = gta_colour$liberalising[1], x.lab = 'P: Export barriers', y.lab = '', y.breaks = seq(0,0.02,0.005), y.limits = c(0,0.025), y.labels = label_percent(accuracy = 0.1))
 
 # # Plot
 # for (i in c(1:6)){
@@ -342,3 +350,127 @@ gta_plot_saver(plot = fig5lag,
                eps = T,
                width = 29,
                height = 21)
+
+
+
+
+
+### Alternate version
+# Chart 4: 
+# Same type of statistics calculated as before but for the following policy interventions:
+#
+# All harmful interventions
+# P: Export incentives
+# P: Export controls
+#
+# and then the 5 MAST chapters that have the next largest non-duration adjusted world export shares in 2020.
+#
+# So this chart with have two rows of four panels each.
+#
+# Chart 5:
+# Same type of statistics calculated as before but for the following policy interventions:
+#
+# All liberalising interventions
+# P: Export incentives
+# P: Export controls
+#
+# and then the 5 MAST chapters that have the next largest non-duration adjusted world export shares in 2020.
+# So this chart with have two rows of four panels each.
+
+
+# # Figure 4 - alternate version
+# # Plot for all measures
+# p1 <- bar.function(data = subset(table4, mast.group == 'All harmful interventions'), fill.colour = gta_colour$harmful[1], x.lab = 'All harmful interventions', y.lab = '', y.breaks = seq(0,0.45,0.05), y.limits = c(0,0.45))
+# p2 <- bar.function(data = subset(table4, mast.group == 'P: Export incentives'), fill.colour = gta_colour$harmful[1], x.lab = 'P: Export incentives', y.lab = '', y.breaks = seq(0,0.45,0.05), y.limits = c(0,0.45))
+# p3 <- bar.function(data = subset(table4, mast.group == 'P: Export barriers'), fill.colour = gta_colour$harmful[1], x.lab = 'P: Export barriers', y.lab = '', y.breaks = seq(0,0.006,0.001), y.limits = c(0,0.006))
+# p4 <- bar.function(data = subset(table4, mast.group == 'Tariff measures'), fill.colour = gta_colour$harmful[1], x.lab = 'Tariff measures', y.lab = '', y.breaks = seq(0,0.45,0.05), y.limits = c(0,0.45))
+# p5 <- bar.function(data = subset(table4, mast.group == 'D: Contingent trade-protective measures'), fill.colour = gta_colour$harmful[1], x.lab = 'D: Contingent trade-protective measures', y.lab = '', y.breaks = seq(0,0.006,0.001), y.limits = c(0,0.006))
+# p6 <- bar.function(data = subset(table4, mast.group == 'I: Trade-related investment measures '), fill.colour = gta_colour$harmful[1], x.lab = 'I: Trade-related investment measures', y.lab = '', y.breaks = seq(0,0.006,0.001), y.limits = c(0,0.006))
+# p7 <- bar.function(data = subset(table4, mast.group == 'I: Trade-related investment measures '), fill.colour = gta_colour$harmful[1], x.lab = 'I: Trade-related investment measures', y.lab = '', y.breaks = seq(0,0.006,0.001), y.limits = c(0,0.006))
+# p8 <- bar.function(data = subset(table4, mast.group == 'I: Trade-related investment measures '), fill.colour = gta_colour$harmful[1], x.lab = 'I: Trade-related investment measures', y.lab = '', y.breaks = seq(0,0.006,0.001), y.limits = c(0,0.006))
+# 
+# fig4alt <- grid.arrange(p1, p2, p3, p4, p5, p6, p7, p8, nrow = 2, bottom = text_grob("Source: Global Trade Alert.", family = "Open Sans", color = "#3f3f3f", size = 10))
+# 
+# gta_plot_saver(plot = fig4alt,
+#                path = paste0(gta26.path, out.path),
+#                name = "Figure 4 - Trade covered by harmful interventions by MAST chapter - alternate version",
+#                png = T,
+#                pdf = T,
+#                jpg = T,
+#                eps = T,
+#                width = 29,
+#                height = 21)
+# 
+# 
+# 
+# # Figure 4 - alternate version - lag adjusted
+# # Plot for all measures
+# p1 <- bar.function(data = subset(table4lag, mast.group == 'All harmful interventions'), fill.colour = gta_colour$harmful[1], x.lab = 'All harmful interventions', y.lab = '', y.breaks = seq(0,0.45,0.05), y.limits = c(0,0.45))
+# p2 <- bar.function(data = subset(table4lag, mast.group == 'P: Export incentives'), fill.colour = gta_colour$harmful[1], x.lab = 'P: Export incentives', y.lab = '', y.breaks = seq(0,0.45,0.05), y.limits = c(0,0.45))
+# p3 <- bar.function(data = subset(table4lag, mast.group == 'P: Export barriers'), fill.colour = gta_colour$harmful[1], x.lab = 'P: Export barriers', y.lab = '', y.breaks = seq(0,0.006,0.001), y.limits = c(0,0.006))
+# p4 <- bar.function(data = subset(table4lag, mast.group == 'Tariff measures'), fill.colour = gta_colour$harmful[1], x.lab = 'Tariff measures', y.lab = '', y.breaks = seq(0,0.45,0.05), y.limits = c(0,0.45))
+# p5 <- bar.function(data = subset(table4lag, mast.group == 'D: Contingent trade-protective measures'), fill.colour = gta_colour$harmful[1], x.lab = 'D: Contingent trade-protective measures', y.lab = '', y.breaks = seq(0,0.006,0.001), y.limits = c(0,0.006))
+# p6 <- bar.function(data = subset(table4lag, mast.group == 'I: Trade-related investment measures '), fill.colour = gta_colour$harmful[1], x.lab = 'I: Trade-related investment measures', y.lab = '', y.breaks = seq(0,0.006,0.001), y.limits = c(0,0.006))
+# p7 <- bar.function(data = subset(table4lag, mast.group == 'I: Trade-related investment measures '), fill.colour = gta_colour$harmful[1], x.lab = 'I: Trade-related investment measures', y.lab = '', y.breaks = seq(0,0.006,0.001), y.limits = c(0,0.006))
+# p8 <- bar.function(data = subset(table4lag, mast.group == 'I: Trade-related investment measures '), fill.colour = gta_colour$harmful[1], x.lab = 'I: Trade-related investment measures', y.lab = '', y.breaks = seq(0,0.006,0.001), y.limits = c(0,0.006))
+# 
+# fig4.lag.alt <- grid.arrange(p1, p2, p3, p4, p5, p6, p7, p8, nrow = 2, bottom = text_grob("Source: Global Trade Alert.", family = "Open Sans", color = "#3f3f3f", size = 10))
+# 
+# gta_plot_saver(plot = fig4.lag.alt,
+#                path = paste0(gta26.path, out.path),
+#                name = "Figure 4 - Trade covered by harmful interventions by MAST chapter - lag adjusted - alternate version",
+#                png = T,
+#                pdf = T,
+#                jpg = T,
+#                eps = T,
+#                width = 29,
+#                height = 21)
+# 
+# 
+# # Figure 5 - alternate version
+# # Plot for all measures
+# p1 <- bar.function(data = subset(table5, mast.group == 'All liberalising interventions'), fill.colour = gta_colour$liberalising[1], x.lab = 'All liberalising interventions', y.lab = '', y.breaks = seq(0,0.45,0.05), y.limits = c(0,0.45))
+# p2 <- bar.function(data = subset(table5, mast.group == 'P: Export incentives'), fill.colour = gta_colour$liberalising[1], x.lab = 'P: Export incentives', y.lab = '', y.breaks = seq(0,0.45,0.05), y.limits = c(0,0.45))
+# p3 <- bar.function(data = subset(table5, mast.group == 'P: Export barriers'), fill.colour = gta_colour$liberalising[1], x.lab = 'P: Export barriers', y.lab = '', y.breaks = seq(0,0.006,0.001), y.limits = c(0,0.006))
+# p4 <- bar.function(data = subset(table5, mast.group == 'Tariff measures'), fill.colour = gta_colour$liberalising[1], x.lab = 'Tariff measures', y.lab = '', y.breaks = seq(0,0.45,0.05), y.limits = c(0,0.45))
+# p5 <- bar.function(data = subset(table5, mast.group == 'D: Contingent trade-protective measures'), fill.colour = gta_colour$liberalising[1], x.lab = 'D: Contingent trade-protective measures', y.lab = '', y.breaks = seq(0,0.006,0.001), y.limits = c(0,0.006))
+# p6 <- bar.function(data = subset(table5, mast.group == 'I: Trade-related investment measures '), fill.colour = gta_colour$liberalising[1], x.lab = 'I: Trade-related investment measures', y.lab = '', y.breaks = seq(0,0.006,0.001), y.limits = c(0,0.006))
+# p7 <- bar.function(data = subset(table5, mast.group == 'I: Trade-related investment measures '), fill.colour = gta_colour$liberalising[1], x.lab = 'I: Trade-related investment measures', y.lab = '', y.breaks = seq(0,0.006,0.001), y.limits = c(0,0.006))
+# p8 <- bar.function(data = subset(table5, mast.group == 'I: Trade-related investment measures '), fill.colour = gta_colour$liberalising[1], x.lab = 'I: Trade-related investment measures', y.lab = '', y.breaks = seq(0,0.006,0.001), y.limits = c(0,0.006))
+# 
+# fig5alt <- grid.arrange(p1, p2, p3, p4, p5, p6, p7, p8, nrow = 2, bottom = text_grob("Source: Global Trade Alert.", family = "Open Sans", color = "#3f3f3f", size = 10))
+# 
+# gta_plot_saver(plot = fig5alt,
+#                path = paste0(gta26.path, out.path),
+#                name = "Figure 5 - Trade covered by liberalising interventions by MAST chapter - alternate version",
+#                png = T,
+#                pdf = T,
+#                jpg = T,
+#                eps = T,
+#                width = 29,
+#                height = 21)
+# 
+# 
+# 
+# # Figure 5 - alternate version - lag adjusted
+# # Plot for all measures
+# p1 <- bar.function(data = subset(table5lag, mast.group == 'All harmful interventions'), fill.colour = gta_colour$liberalising[1], x.lab = 'All harmful interventions', y.lab = '', y.breaks = seq(0,0.45,0.05), y.limits = c(0,0.45))
+# p2 <- bar.function(data = subset(table5lag, mast.group == 'P: Export incentives'), fill.colour = gta_colour$liberalising[1], x.lab = 'P: Export incentives', y.lab = '', y.breaks = seq(0,0.45,0.05), y.limits = c(0,0.45))
+# p3 <- bar.function(data = subset(table5lag, mast.group == 'P: Export barriers'), fill.colour = gta_colour$liberalising[1], x.lab = 'P: Export barriers', y.lab = '', y.breaks = seq(0,0.006,0.001), y.limits = c(0,0.006))
+# p4 <- bar.function(data = subset(table5lag, mast.group == 'Tariff measures'), fill.colour = gta_colour$liberalising[1], x.lab = 'Tariff measures', y.lab = '', y.breaks = seq(0,0.45,0.05), y.limits = c(0,0.45))
+# p5 <- bar.function(data = subset(table5lag, mast.group == 'D: Contingent trade-protective measures'), fill.colour = gta_colour$liberalising[1], x.lab = 'D: Contingent trade-protective measures', y.lab = '', y.breaks = seq(0,0.006,0.001), y.limits = c(0,0.006))
+# p6 <- bar.function(data = subset(table5lag, mast.group == 'I: Trade-related investment measures '), fill.colour = gta_colour$liberalising[1], x.lab = 'I: Trade-related investment measures', y.lab = '', y.breaks = seq(0,0.006,0.001), y.limits = c(0,0.006))
+# p7 <- bar.function(data = subset(table5lag, mast.group == 'I: Trade-related investment measures '), fill.colour = gta_colour$liberalising[1], x.lab = 'I: Trade-related investment measures', y.lab = '', y.breaks = seq(0,0.006,0.001), y.limits = c(0,0.006))
+# p8 <- bar.function(data = subset(table5lag, mast.group == 'I: Trade-related investment measures '), fill.colour = gta_colour$liberalising[1], x.lab = 'I: Trade-related investment measures', y.lab = '', y.breaks = seq(0,0.006,0.001), y.limits = c(0,0.006))
+# 
+# fig5.lag.alt <- grid.arrange(p1, p2, p3, p4, p5, p6, p7, p8, nrow = 2, bottom = text_grob("Source: Global Trade Alert.", family = "Open Sans", color = "#3f3f3f", size = 10))
+# 
+# gta_plot_saver(plot = fig5.lag.alt,
+#                path = paste0(gta26.path, out.path),
+#                name = "Figure 4 - Trade covered by liberalising interventions by MAST chapter - lag adjusted - alternate version",
+#                png = T,
+#                pdf = T,
+#                jpg = T,
+#                eps = T,
+#                width = 29,
+#                height = 21)
