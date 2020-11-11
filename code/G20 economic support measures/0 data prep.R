@@ -36,7 +36,9 @@ gta_data_slicer(gta.evaluation = c("Red", "Amber"),
                 implementation.period = c(as.Date("2020-01-01"), as.Date(cutoff.date)),
                 keep.implementation.na = F,
                 implementing.country = country.names$un_code[country.names$is.g20],
-                keep.implementer = T)
+                keep.implementer = T,
+                intervention.types = unlist(economic.support.measures),
+                keep.type = T)
 
 # Aggregate for every country
 table1 <- select(aggregate(intervention.id ~ implementing.jurisdiction, subset(master.sliced, intervention.type %in% unlist(economic.support.measures["Inward subsidy"])), function(x){length(unique(x))}), implementing.jurisdiction, "Inward subsidies" = intervention.id)
@@ -48,7 +50,7 @@ table1 <- merge(table1, select(aggregate(intervention.id ~ implementing.jurisdic
                 by = "implementing.jurisdiction", all = T)
 
 # Add column with time-limited measures
-table1 <- merge(table1, select(aggregate(intervention.id ~ implementing.jurisdiction, subset(master.sliced, !is.na(date.removed) & intervention.type %in% unlist(economic.support.measures)), function(x){length(unique(x))}), implementing.jurisdiction, "Percentage of time-limited measures" = intervention.id),
+table1 <- merge(table1, select(aggregate(intervention.id ~ implementing.jurisdiction, subset(master.sliced, !is.na(date.removed)), function(x){length(unique(x))}), implementing.jurisdiction, "Percentage of time-limited measures" = intervention.id),
                 by = "implementing.jurisdiction", all = T)
 table1[is.na(table1)] <- 0
 table1$`Percentage of time-limited measures` <- table1$`Percentage of time-limited measures` / rowSums(table1[,2:5])
@@ -63,7 +65,7 @@ table1.nofirm <- merge(table1.nofirm, select(aggregate(intervention.id ~ impleme
                        by = "implementing.jurisdiction", all = T)
 
 # Add column with time-limited measures
-table1.nofirm <- merge(table1.nofirm, select(aggregate(intervention.id ~ implementing.jurisdiction, subset(master.sliced, eligible.firms!="firm-specific" & !is.na(date.removed) & intervention.type %in% unlist(economic.support.measures)), function(x){length(unique(x))}), implementing.jurisdiction, "Percentage of time-limited measures" = intervention.id),
+table1.nofirm <- merge(table1.nofirm, select(aggregate(intervention.id ~ implementing.jurisdiction, subset(master.sliced, eligible.firms!="firm-specific" & !is.na(date.removed)), function(x){length(unique(x))}), implementing.jurisdiction, "Percentage of time-limited measures" = intervention.id),
                        by = "implementing.jurisdiction", all = T)
 table1.nofirm[is.na(table1.nofirm)] <- 0
 table1.nofirm$`Percentage of time-limited measures` <- table1.nofirm$`Percentage of time-limited measures` / rowSums(table1.nofirm[,2:5])
@@ -71,14 +73,6 @@ table1.nofirm$`Percentage of time-limited measures` <- table1.nofirm$`Percentage
 
 
 ### Table 2
-# Get data
-gta_data_slicer(gta.evaluation = c("Red", "Amber"),
-                implementation.period = c(as.Date("2020-01-01"), as.Date(cutoff.date)),
-                keep.implementation.na = F,
-                implementing.country = country.names$un_code[country.names$is.g20],
-                keep.implementer = T,
-                intervention.types = unlist(economic.support.measures),
-                keep.type = T)
 
 # Split the affected products and sectors
 master.sliced <- cSplit(master.sliced, splitCols = "affected.product", sep = ", ", direction = "long")
