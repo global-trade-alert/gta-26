@@ -41,15 +41,15 @@ gta_data_slicer(gta.evaluation = c("Red", "Amber"),
 # Aggregate for every country
 table1 <- select(aggregate(intervention.id ~ implementing.jurisdiction, subset(master.sliced, intervention.type %in% unlist(economic.support.measures["Inward subsidy"])), function(x){length(unique(x))}), implementing.jurisdiction, "Inward subsidies" = intervention.id)
 table1 <- merge(table1, select(aggregate(intervention.id ~ implementing.jurisdiction, subset(master.sliced, intervention.type %in% unlist(economic.support.measures["Export incentive and support in foreign markets"])), function(x){length(unique(x))}), implementing.jurisdiction, "Export incentives and support in foreign markets" = intervention.id),
-                by = "implementing.jurisdiction", all.x = T)
+                by = "implementing.jurisdiction", all = T)
 table1 <- merge(table1, select(aggregate(intervention.id ~ implementing.jurisdiction, subset(master.sliced, intervention.type %in% unlist(economic.support.measures["Localisation measure"])), function(x){length(unique(x))}), implementing.jurisdiction, "Localisation measure" = intervention.id),
-                by = "implementing.jurisdiction", all.x = T)
+                by = "implementing.jurisdiction", all = T)
 table1 <- merge(table1, select(aggregate(intervention.id ~ implementing.jurisdiction, subset(master.sliced, intervention.type %in% unlist(economic.support.measures["Government procurement measure"])), function(x){length(unique(x))}), implementing.jurisdiction, "Government procurement measures" = intervention.id),
-                by = "implementing.jurisdiction", all.x = T)
+                by = "implementing.jurisdiction", all = T)
 
 # Add column with time-limited measures
 table1 <- merge(table1, select(aggregate(intervention.id ~ implementing.jurisdiction, subset(master.sliced, !is.na(date.removed) & intervention.type %in% unlist(economic.support.measures)), function(x){length(unique(x))}), implementing.jurisdiction, "Percentage of time-limited measures" = intervention.id),
-                by = "implementing.jurisdiction", all.x = T)
+                by = "implementing.jurisdiction", all = T)
 table1[is.na(table1)] <- 0
 table1$`Percentage of time-limited measures` <- table1$`Percentage of time-limited measures` / rowSums(table1[,2:5])
 
