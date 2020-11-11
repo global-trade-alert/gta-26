@@ -53,7 +53,7 @@ table1=subset(table1, implementing.jurisdiction!=affected.jurisdiction)
 table1 <- merge(table1, select(aggregate(intervention.id ~ implementing.jurisdiction + affected.jurisdiction + gta.evaluation, master.sliced, function(x){length(unique(x))}), implementing.jurisdiction, affected.jurisdiction, gta.evaluation, "nr.of.interventions" = intervention.id),
                 by = c("implementing.jurisdiction", "affected.jurisdiction", "gta.evaluation"), all.x = T)
 
-# table1[is.na(table1)] <- 0
+table1[is.na(table1)] <- 0
 
 ### Tables 3 & 4
 # Get data
