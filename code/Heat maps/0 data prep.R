@@ -32,7 +32,8 @@ gta_data_slicer(implementation.period = c(as.Date("2020-01-01"), as.Date(cutoff.
                 implementing.country = country.names$un_code[country.names$is.g20],
                 keep.implementer = T,
                 affected.country = country.names$un_code[country.names$is.g20],
-                keep.affected = T)
+                keep.affected = T,
+                submission.period = c("1999-01-01", cutoff.date))
 
 # Convert GTA evaluation into two categories
 master.sliced$gta.evaluation <- ifelse(master.sliced$gta.evaluation %in% c("Red", "Amber"), "harmful", "liberalising")

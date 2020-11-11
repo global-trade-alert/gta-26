@@ -38,7 +38,8 @@ gta_data_slicer(gta.evaluation = c("Red", "Amber"),
                 implementing.country = country.names$un_code[country.names$is.g20],
                 keep.implementer = T,
                 intervention.types = unlist(economic.support.measures),
-                keep.type = T)
+                keep.type = T,
+                submission.period = c("1999-01-01", cutoff.date) )
 
 # Aggregate for every country
 table1 <- select(aggregate(intervention.id ~ implementing.jurisdiction, subset(master.sliced, intervention.type %in% unlist(economic.support.measures["Inward subsidy"])), function(x){length(unique(x))}), implementing.jurisdiction, "Inward subsidies" = intervention.id)
@@ -107,4 +108,4 @@ table2$`Percentage of harmful support measures that are classified as firm-speci
 table2$total.nr.of.interventions <- NULL
 
 ### Save data
-save(table1, table2, file = paste0(gta26.path, data.path, "g20 economic support measures.Rdata"))
+save(table1, table1.nofirm, table2, file = paste0(gta26.path, data.path, "g20 economic support measures.Rdata"))

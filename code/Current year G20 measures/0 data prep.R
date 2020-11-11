@@ -32,7 +32,8 @@ gta_data_slicer(implementing.country = country.names$un_code[country.names$is.g2
                 keep.implementer = T,
                 lag.adjustment = format(as.Date(cutoff.date), "%m-%d"),
                 implementation.period = c("2008-11-01", as.character(as.Date(cutoff.date))),
-                keep.implementation.na = F)
+                keep.implementation.na = F,
+                submission.period = c("1999-01-01", cutoff.date) )
 
 
 # Aggregate per year and add percentage of harmful interventions
@@ -49,7 +50,8 @@ table1$nr.of.harmful.interventions <- NULL
 gta_data_slicer(implementing.country = country.names$un_code[country.names$is.g20],
                 keep.implementer = T,
                 implementation.period = c("2020-01-01", as.character(as.Date(cutoff.date))),
-                keep.implementation.na = F)
+                keep.implementation.na = F,
+                submission.period = c("1999-01-01", cutoff.date) )
 
 # Convert gta.evaluation into harmful and liberalising
 master.sliced$gta.evaluation <- ifelse(master.sliced$gta.evaluation %in% c("Red", "Amber"), "harmful", "liberalising")
@@ -72,7 +74,8 @@ gta_data_slicer(implementing.country = country.names$un_code[country.names$is.g2
                 keep.implementer = T,
                 mast.chapters = "D",
                 keep.mast = T,
-                announcement.period = c("2020-01-01", as.character(as.Date(cutoff.date))))
+                announcement.period = c("2020-01-01", as.character(as.Date(cutoff.date))),
+                submission.period = c("1999-01-01", cutoff.date) )
 
 
 data2 <- select(aggregate(intervention.id ~ implementing.jurisdiction, subset(master.sliced, is.na(date.implemented)), function(x){length(unique(x))}), implementing.jurisdiction, "nr.of.cont.protection.int" = intervention.id)
@@ -92,7 +95,8 @@ gta_data_slicer(gta.evaluation = c("Red", "Amber"),
                 implementation.period = c(as.Date("2020-01-01"), as.Date(cutoff.date)),
                 keep.implementation.na = F,
                 implementing.country = country.names$un_code[country.names$is.g20],
-                keep.implementer = T)
+                keep.implementer = T,
+                submission.period = c("1999-01-01", cutoff.date) )
 
 # Aggregate total number of interventions per country and number of already lapsed interventions
 table3 <- merge(select(aggregate(intervention.id ~ implementing.jurisdiction, master.sliced, function(x){length(unique(x))}), implementing.jurisdiction, "total.nr.of.interventions" = intervention.id),

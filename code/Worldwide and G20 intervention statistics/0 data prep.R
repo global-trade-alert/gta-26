@@ -22,7 +22,7 @@ source(paste0(gta26.path, "help files/GTA 26 cutoff and definitions.R"))
 
 ### Table 1
 # Get data
-gta_data_slicer()
+gta_data_slicer(submission.period = c("1999-01-01", cutoff.date) )
 gta.intervention <- read_delim(file = "data/database replica/gta_intervention.csv", delim = ",")
 gta.measure <- read_delim(file = "data/database replica/gta_measure.csv", delim = ",")
 
