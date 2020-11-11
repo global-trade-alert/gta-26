@@ -108,9 +108,7 @@ table3 <- merge(select(table3, "exporter" = "Exporting country", "trade.coverage
 
 ### Figure 8
 # Get additional data needed
-gta_trade_value_bilateral(cpc.sectors = cpc.names$cpc[cpc.names$cpc.digit.level == 3 & cpc.names$cpc < 500],
-                          keep.cpc = T,
-                          trade.data = 2019)
+gta_trade_value_bilateral(trade.data = 2019)
 
 # Make sure that every country has values for both GTA evaluations and merge with GDP data
 temp <- data.frame("exporter" = unique(table3$exporter),
