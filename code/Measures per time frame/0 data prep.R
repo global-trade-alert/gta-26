@@ -47,7 +47,8 @@ source(paste0(gta26.path, "help files/GTA 26 cutoff and definitions.R"))
 ### Table 1
 # Load data
 gta_data_slicer(implementation.period = c(as.Date("2009-01-01"), as.Date("2009-12-31")),
-                keep.implementation.na = F)
+                keep.implementation.na = F,
+                submission.period = c("1999-01-01", cutoff.date))
 
 # Create an auxiliary variable to keep track of the submission time frames
 master.sliced$period <- ifelse(master.sliced$date.published <= as.Date("2009-10-31"), 1, 0) ### Using 31 Oct since else it would not be included
@@ -104,7 +105,8 @@ table2 <- select(table2, year.submitted, SE.int.type, percentage.per.year)
 ### Figure 3
 # Get data
 gta_data_slicer(keep.implementation.na = F,
-                implementation.period = c(as.Date("2009-01-01"), as.Date("2009-12-31")))
+                implementation.period = c(as.Date("2009-01-01"), as.Date("2009-12-31")),
+                submission.period = c("1999-01-01", cutoff.date))
 
 # Disregard submissions after 2020-10-31
 master.sliced <- subset(master.sliced, date.published <= as.Date(cutoff.date))
