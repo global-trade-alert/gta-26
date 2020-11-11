@@ -53,6 +53,22 @@ table1 <- merge(table1, select(aggregate(intervention.id ~ implementing.jurisdic
 table1[is.na(table1)] <- 0
 table1$`Percentage of time-limited measures` <- table1$`Percentage of time-limited measures` / rowSums(table1[,2:5])
 
+# Aggregate for every country - removing firm-specific transactions
+table1.nofirm <- select(aggregate(intervention.id ~ implementing.jurisdiction, subset(master.sliced, eligible.firms!="firm-specific" & intervention.type %in% unlist(economic.support.measures["Inward subsidy"])), function(x){length(unique(x))}), implementing.jurisdiction, "Inward subsidies" = intervention.id)
+table1.nofirm <- merge(table1.nofirm, select(aggregate(intervention.id ~ implementing.jurisdiction, subset(master.sliced, eligible.firms!="firm-specific" & intervention.type %in% unlist(economic.support.measures["Export incentive and support in foreign markets"])), function(x){length(unique(x))}), implementing.jurisdiction, "Export incentives and support in foreign markets" = intervention.id),
+                       by = "implementing.jurisdiction", all = T)
+table1.nofirm <- merge(table1.nofirm, select(aggregate(intervention.id ~ implementing.jurisdiction, subset(master.sliced, eligible.firms!="firm-specific" & intervention.type %in% unlist(economic.support.measures["Localisation measure"])), function(x){length(unique(x))}), implementing.jurisdiction, "Localisation measure" = intervention.id),
+                       by = "implementing.jurisdiction", all = T)
+table1.nofirm <- merge(table1.nofirm, select(aggregate(intervention.id ~ implementing.jurisdiction, subset(master.sliced, eligible.firms!="firm-specific" & intervention.type %in% unlist(economic.support.measures["Government procurement measure"])), function(x){length(unique(x))}), implementing.jurisdiction, "Government procurement measures" = intervention.id),
+                       by = "implementing.jurisdiction", all = T)
+
+# Add column with time-limited measures
+table1.nofirm <- merge(table1.nofirm, select(aggregate(intervention.id ~ implementing.jurisdiction, subset(master.sliced, eligible.firms!="firm-specific" & !is.na(date.removed) & intervention.type %in% unlist(economic.support.measures)), function(x){length(unique(x))}), implementing.jurisdiction, "Percentage of time-limited measures" = intervention.id),
+                       by = "implementing.jurisdiction", all = T)
+table1.nofirm[is.na(table1.nofirm)] <- 0
+table1.nofirm$`Percentage of time-limited measures` <- table1.nofirm$`Percentage of time-limited measures` / rowSums(table1.nofirm[,2:5])
+
+
 
 ### Table 2
 # Get data
