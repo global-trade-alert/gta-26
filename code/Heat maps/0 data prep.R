@@ -73,7 +73,7 @@ for (a.group in names(se.country.groups)){
   # Second aggregation step to address this point: "Please take account of the fact that a G20 member’s policy intervention can hurt more than one member of a
   # group—therefore, could each harmed country towards the total number of hits by a G20 country on a given group’s commercial interests."
   temp <- aggregate(nr.of.interventions.per.member ~ implementing.jurisdiction + gta.evaluation, temp, sum)
-  
+  temp$nr.of.interventions.per.member=temp$nr.of.interventions.per.member/length(unique(unlist(se.country.groups[a.group])))
   temp$affected.jurisdiction <- a.group
   table2 <- rbind(table2, temp)
 }; rm(temp)
@@ -87,12 +87,7 @@ temp <- cSplit(temp, splitCols = "gta.evaluation", sep = ", ", direction = "long
 
 # Merge the prepared table and the aggregated results
 table2 <- merge(temp, table2, by = c("implementing.jurisdiction", "affected.jurisdiction", "gta.evaluation"), all.x = T); rm(temp)
-# table2[is.na(table2)] <- 0
-
-# Merge with the number of countries in each group and convert to interventions per country
-table2$nr.of.members <- sapply(table2$affected.jurisdiction, function(x){length(unlist(se.country.groups[x]))})
-table2$nr.of.interventions.per.member <- table2$nr.of.interventions.per.member / table2$nr.of.members
-table2$nr.of.members <- NULL
+table2[is.na(table2)] <- 0
 
 
 ### Save data
