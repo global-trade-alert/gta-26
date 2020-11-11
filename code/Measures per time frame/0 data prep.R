@@ -46,7 +46,7 @@ source(paste0(gta26.path, "help files/GTA 26 cutoff and definitions.R"))
 
 ### Table 1
 # Load data
-gta_data_slicer(announcement.period = c(as.Date("2009-01-01"), as.Date("2009-12-31")),
+gta_data_slicer(implementation.period = c(as.Date("2009-01-01"), as.Date("2009-12-31")),
                 keep.implementation.na = F)
 
 # Create an auxiliary variable to keep track of the submission time frames
