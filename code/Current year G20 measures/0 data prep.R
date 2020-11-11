@@ -1,5 +1,5 @@
 rm(list = ls())
-
+# JF signoff
 ### REQUEST:
 # 1. Please produce a line chart for the years 2009 to 2020 with the following variable on the primary vertical axis: Total number of G20 commercial policy
 # interventions worldwide documented by 21 October. On the second axis: please plot the percentage of G20 commercial policy interventions that are harmful.
