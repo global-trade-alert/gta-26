@@ -101,7 +101,7 @@ table1$mast.chapter <- factor(table1$mast.chapter, levels = c("Other", unique(ta
 
 # Plot
 fig1 <- ggplot(data = subset(table1, gta.evaluation == "harmful"))+
-  geom_bar(aes(x=forcats::fct_inorder(as.character(year.implemented), ordered = T), y=perc.of.interventions, fill=mast.chapter), width=0.65, stat = "identity") +
+  geom_bar(aes(x=forcats::fct_reorder(as.character(year.implemented), desc(-year.implemented)), y=perc.of.interventions, fill=mast.chapter), width=0.65, stat = "identity") +
   labs(x="", y="", caption = "Source: Global Trade Alert.")+
   scale_y_continuous(name=str_wrap("Percentage of measures recorded", 40), breaks=seq(0,1,0.1), labels=label_percent(accuracy = 1L),
                      sec.axis = sec_axis(trans = ~., name=str_wrap("Percentage of measures recorded", 40), breaks=seq(0,1,0.1), labels=label_percent(accuracy = 1L)))+
@@ -142,7 +142,7 @@ gta_plot_saver(plot = fig1,
 ### Figure 2
 # Plot
 fig2 <- ggplot(data = subset(table1, gta.evaluation == "liberalising"))+
-  geom_bar(aes(x=forcats::fct_inorder(as.character(year.implemented), ordered = T), y=perc.of.interventions, fill=mast.chapter), width=0.65, stat = "identity") +
+  geom_bar(aes(x=forcats::fct_reorder(as.character(year.implemented), desc(-year.implemented)), y=perc.of.interventions, fill=mast.chapter), width=0.65, stat = "identity") +
   labs(x="", y="", caption = "Source: Global Trade Alert.")+
   scale_y_continuous(name=str_wrap("Percentage of measures recorded", 40), breaks=seq(0,1,0.1), labels=label_percent(accuracy = 1L),
                      sec.axis = sec_axis(trans = ~., name=str_wrap("Percentage of measures recorded", 40), breaks=seq(0,1,0.1), labels=label_percent(accuracy = 1L)))+
