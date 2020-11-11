@@ -47,6 +47,7 @@ table1 <- cSplit(table1, splitCols = "affected.jurisdiction", sep = ", ", direct
 
 table1$gta.evaluation <- "harmful, liberalising"
 table1 <- cSplit(table1, splitCols = "gta.evaluation", sep = ", ", direction = "long")
+table1=subset(table1, implementing.jurisdiction!=affected.jurisdiction)
 
 # Aggregate for every combination
 table1 <- merge(table1, select(aggregate(intervention.id ~ implementing.jurisdiction + affected.jurisdiction + gta.evaluation, master.sliced, function(x){length(unique(x))}), implementing.jurisdiction, affected.jurisdiction, gta.evaluation, "nr.of.interventions" = intervention.id),
