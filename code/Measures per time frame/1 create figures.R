@@ -71,7 +71,7 @@ fig1 <- ggplot(data = table1)+
   scale_fill_manual(values=c("before 31 Oct 2009" = gta_colour$qualitative[4], "1 Nov 2009 to 31 Oct 2010" = gta_colour$qualitative[3], "1 Nov 2010 to 31 Oct 2015" = gta_colour$qualitative[1],
                              "1 Nov 2015 to 31 Oct 2020" = gta_colour$qualitative[2]), labels = c("1 Nov 2015 to 31 Oct 2020", "1 Nov 2010 to 31 Oct 2015", "1 Nov 2009 to 31 Oct 2010", "Before 31 Oct 2009"))+
   gta_theme()+
-  guides(guide_legend(title = NULL, label.hjust = 0, label.vjust = 0.5, title.position = "top", title.vjust = 0.5, ncol = 2, nrow = 2))+
+  guides(fill=guide_legend(title = NULL, label.hjust = 0, label.vjust = 0.5, title.position = "top", title.vjust = 0.5, ncol = 2, nrow = 2))+
   theme(axis.text.x.bottom = element_text(hjust=0.5, size=10),
         axis.title.y.left = element_text(size=10),
         axis.title.y.right = element_text(size=10),
@@ -81,7 +81,7 @@ fig1 <- ggplot(data = table1)+
         legend.box.background = element_rect(fill = "transparent", color="transparent"),
         legend.position = "bottom",
         legend.background = element_rect(fill="transparent", colour = "transparent"),
-        legend.margin = margin(t=10,b=0,r=100,l=100),
+        legend.margin = margin(t=5,b=0,r=100,l=100),
         panel.grid.major.x = element_blank(),
         panel.grid.major.y = element_line(size=.1, color=gta_colour$qualitative[1]),
         panel.grid.minor.x = element_blank(),
@@ -96,9 +96,7 @@ gta_plot_saver(plot = fig1,
                png = T,
                pdf = T,
                jpg = T,
-               eps = T,
-               width = 21,
-               height = 21)
+               eps = T)
 
 
 ### Figure 2
@@ -110,7 +108,7 @@ fig2 <- ggplot(data = table2)+
   scale_fill_manual(values=c("export incentives" = gta_colour$qualitative[1], "other commercial policies" = gta_colour$qualitative[2], "subsidies to import-competing firms" = gta_colour$qualitative[3],
                              "transparent policy instruments" = gta_colour$qualitative[4]), labels = c("export incentives", "other commercial policies", "subsidies to import-competing firms", "transparent policy instruments"))+
   gta_theme(x.bottom.angle = 90, x.bottom.align = 1)+
-  guides(guide_legend(title = NULL, label.hjust = 0, label.vjust = 0.5, title.position = "top", title.vjust = 0.5, ncol = 2, nrow = 2))+
+  guides(fill = guide_legend(title = NULL, label.hjust = 0, label.vjust = 0.5, title.position = "top", title.vjust = 0.5, ncol = 2, nrow = 2))+
   theme(axis.text.x.bottom = element_text(hjust=0.5, size=10),
         axis.title.y.left = element_text(size=10),
         axis.title.y.right = element_text(size=10),
@@ -120,7 +118,7 @@ fig2 <- ggplot(data = table2)+
         legend.box.background = element_rect(fill = "transparent", color="transparent"),
         legend.position = "bottom",
         legend.background = element_rect(fill="transparent", colour = "transparent"),
-        legend.margin = margin(t=10,b=0,r=100,l=100),
+        legend.margin = margin(t=5,b=0,r=100,l=100),
         panel.grid.major.x = element_blank(),
         panel.grid.major.y = element_line(size=.1, color=gta_colour$qualitative[1]),
         panel.grid.minor.x = element_blank(),
@@ -135,9 +133,7 @@ gta_plot_saver(plot = fig2,
                png = T,
                pdf = T,
                jpg = T,
-               eps = T,
-               width = 25,
-               height = 21)
+               eps = T)
 
 
 ### Figure 3
@@ -158,9 +154,9 @@ fig3 <- ggplot(data = table3) +
                      sec.axis = sec_axis(trans = ~., name=str_wrap("Percentage of published measures", 40), breaks = seq(0,1,0.1), labels = label_percent(accuracy = 1L))) +
   scale_fill_manual(values=c("export incentives" = gta_colour$qualitative[1], "other commercial policies" = gta_colour$qualitative[2], "subsidies to import-competing firms" = gta_colour$qualitative[3],
                              "transparent policy instruments" = gta_colour$qualitative[4]), labels = c("other commercial policies", "export incentives", "subsidies to import-competing firms", "transparent policy instruments")) +
-  scale_x_continuous(breaks = seq(2009,2020,1), labels = c("End 2009", "End 2010", "End 2011", "End 2012", "End 2013", "End 2014", "End 2015", "End 2016", "End 2017", "End 2018", "End 2019", "31 October 2020")) +
+  scale_x_continuous(breaks = seq(2009,2020,1), labels = c("End 2009", "End 2010", "End 2011", "End 2012", "End 2013", "End 2014", "End 2015", "End 2016", "End 2017", "End 2018", "End 2019", "31 Oct. 2020")) +
   gta_theme(x.bottom.angle = 90, x.bottom.align = 1)+
-  guides(guide_legend(title = NULL, label.hjust = 0, label.vjust = 0.5, title.position = "top", title.vjust = 0.5, ncol = 2, nrow = 2))+
+  guides(fill=guide_legend(title = NULL, label.hjust = 0, label.vjust = 0.5, title.position = "top", title.vjust = 0.5, ncol = 2, nrow = 2))+
   theme(axis.text.x.bottom = element_text(hjust=1, vjust = 0.5, size=10),
         axis.title.y.left = element_text(size=10),
         axis.title.y.right = element_text(size=10),
@@ -170,7 +166,7 @@ fig3 <- ggplot(data = table3) +
         legend.box.background = element_rect(fill = "transparent", color="transparent"),
         legend.position = "bottom",
         legend.background = element_rect(fill="transparent", colour = "transparent"),
-        legend.margin = margin(t=10,b=0,r=100,l=100),
+        legend.margin = margin(t=5,b=0,r=100,l=100),
         panel.grid.major.x = element_blank(),
         panel.grid.major.y = element_line(size=.1, color=gta_colour$qualitative[1]),
         panel.grid.minor.x = element_blank(),
@@ -185,6 +181,4 @@ gta_plot_saver(plot = fig3,
                png = T,
                pdf = T,
                jpg = T,
-               eps = T,
-               width = 25,
-               height = 21)
+               eps = T)
