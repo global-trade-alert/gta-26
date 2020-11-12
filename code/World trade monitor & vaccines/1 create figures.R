@@ -183,8 +183,8 @@ fig3 <- ggplot(data = table3)+
                      sec.axis = sec_axis(trans = ~., name=str_wrap("USDm value of Mask Imports by the United States", 30), breaks=seq(0,4e9,5e8), labels=seq(0,4000,500)))+
   scale_fill_manual(values=c("China" = gta_colour$qualitative[1], "ROW" = gta_colour$qualitative[2]), labels = c("From Rest of the world","From China"))+
   guides(guide_legend(title = NULL, label.hjust = 0, label.vjust = 0.5, title.position = "top", title.vjust = 0.5))+
-  gta_theme(x.bottom.angle = 90, x.bottom.align = 1)+
-  theme(axis.text.x.bottom = element_text(hjust=0.5, size=10),
+  gta_theme()+
+  theme(axis.text.x.bottom = element_text(angle=90, hjust=1, size=10, vjust=0.5),
         axis.title.y.left = element_text(size=10),
         axis.title.y.right = element_text(size=10),
         legend.text = element_text(size=10),
@@ -243,12 +243,13 @@ fig4 <- ggplot() +
         legend.direction = "horizontal",
         plot.title = element_text(family = "Open Sans", face = "bold", colour = "#333333", size = 11, hjust = 0.5, margin = margin(b=10)),
         plot.subtitle = element_text(family = "Open Sans", face = "bold", colour = "#333333", size = 9, hjust = 0.5, margin = margin(b=10)),
-        legend.title = element_text(vjust= 0.3, family="", colour = "#333333", size = 11*0.8, margin = margin(r=10,b=5),hjust=0.5),
-        legend.text = element_text(family="", colour = "#333333", size = 11*0.75, angle = 0, hjust=0, vjust=1, margin = margin(r=10)),
+        legend.title = element_text(vjust= 0.3, family="", colour = "#333333", size = 11*0.9, margin = margin(r=10,b=5),hjust=0.5),
+        legend.text = element_text(family="", colour = "#333333", size = 11*0.8, angle = 0, hjust=0, vjust=1, margin = margin(r=10)),
         legend.text.align = 0.6,
         legend.background = element_rect(fill="transparent"),
         plot.background = element_rect(fill="#F9F9F9"),
-        plot.caption = element_text(hjust = 0.5, vjust = 0.8, margin = margin(t=30),size=8, color="#777777",lineheight = 1))
+        plot.caption = element_text(hjust = 0.5, vjust = 0.8, margin = margin(t=30),size=8, color="#777777",lineheight = 1),
+        plot.margin = margin(t=20, l=10, b=30, r=10))
 
 fig4
 
