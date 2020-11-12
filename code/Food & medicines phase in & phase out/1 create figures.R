@@ -85,9 +85,8 @@ gta_plot_saver(plot = fig1,
 ### Figure 2
 fig2 <- ggplot(data = subset(table2, product.type == "medical"))+
   geom_line(aes(x=forcats::fct_inorder(time, ordered = T), y=nr.of.interventions, colour=int.type, group=int.type), size=1)+
-  geom_label(data=subset(table2, product.type=="medical" & int.type=="liberalising"),aes(x = forcats::fct_inorder(time, ordered = T), y = nr.of.interventions, label = nr.of.interventions), colour = gta_colour$green[1], size=2.8, label.size = 0.2, label.padding = unit(0.15, "lines"), nudge_y=7)+
-  geom_label(data=subset(table2, product.type=="medical" & int.type=="harmful"),aes(x = forcats::fct_inorder(time, ordered = T), y = nr.of.interventions, label = nr.of.interventions), colour = gta_colour$red[1], size=2.8, label.size = 0.2, label.padding = unit(0.15, "lines"), nudge_y=-7)+
-  scale_y_continuous(name=str_wrap("Cumulative global total number of measures introduced in 2020 that were still in force in the medical goods and medicines sectors", 70), limits = c(0,205), breaks=seq(0,200,25),  
+  geom_label(aes(x = forcats::fct_inorder(time, ordered = T), y = nr.of.interventions, label = nr.of.interventions), colour = "#555555", size=2.2, label.size = 0.2, label.padding = unit(0.15, "lines"), position = position_dodge2(width = 1, preserve = "total"))+
+  scale_y_continuous(name=str_wrap("Cumulative global total number of measures introduced in 2020 that were still in force in the medical goods and medicines sectors", 70), limits = c(0,200), breaks=seq(0,200,25),  
                      sec.axis = sec_axis(trans = ~., name=str_wrap("Cumulative global total number of measures introduced in 2020 that were still in force in the medical goods and medicines sectors", 70), breaks=seq(0,200,25)))+
   scale_color_manual(values=c(gta_colour$harmful[1], gta_colour$liberalising[1]))+
   labs(caption = "Source: Global Trade Alert.") +
@@ -112,16 +111,17 @@ gta_plot_saver(plot = fig2,
                png = T,
                pdf = T,
                jpg = T,
-               eps = T)
+               eps = T,
+               width = 21,
+               height = 21)
 
 
 ### Figure 3
 fig3 <- ggplot(data = subset(table2, product.type == "food"))+
   geom_line(aes(x=forcats::fct_inorder(time, ordered = T), y=nr.of.interventions, colour=int.type, group=int.type), size=1)+
-  geom_label(data=subset(table2, product.type=="food" & int.type=="liberalising"), aes(x = forcats::fct_inorder(time, ordered = T), y = nr.of.interventions, label = nr.of.interventions), colour = gta_colour$green[1], size=3, label.size = 0.2, label.padding = unit(0.15, "lines"), nudge_y=3)+
-  geom_label(data=subset(table2, product.type=="food" & int.type=="harmful"), aes(x = forcats::fct_inorder(time, ordered = T), y = nr.of.interventions, label = nr.of.interventions), colour = gta_colour$red[1], size=3, label.size = 0.2, label.padding = unit(0.15, "lines"), nudge_y=-3)+
-  scale_y_continuous(name=str_wrap("Cumulative global total number of measures introduced in 2020 that were still in force in the food sector", 60), limits = c(-3,85), breaks=seq(0,85,10),  
-                     sec.axis = sec_axis(trans = ~., name=str_wrap("Cumulative global total number of measures introduced in 2020 that were still in force in the food sector", 60), breaks=seq(0,85,10)))+
+  geom_label(aes(x = forcats::fct_inorder(time, ordered = T), y = nr.of.interventions, label = nr.of.interventions), colour = "#555555", size=2.2, label.size = 0.2, label.padding = unit(0.15, "lines"), position = position_dodge2(width = 0.8, preserve = "total"))+
+  scale_y_continuous(name=str_wrap("Cumulative global total number of measures introduced in 2020 that were still in force in the food sector", 70), limits = c(0,85), breaks=seq(0,85,10),  
+                     sec.axis = sec_axis(trans = ~., name=str_wrap("Cumulative global total number of measures introduced in 2020 that were still in force in the food sector", 70), breaks=seq(0,85,10)))+
   scale_color_manual(values=c(gta_colour$harmful[1], gta_colour$liberalising[1]))+
   labs(caption = "Source: Global Trade Alert.") +
   guides(colour=guide_legend(title=NULL, 
@@ -145,4 +145,6 @@ gta_plot_saver(plot = fig3,
                png = T,
                pdf = T,
                jpg = T,
-               eps = T)
+               eps = T,
+               width = 21,
+               height = 21)
