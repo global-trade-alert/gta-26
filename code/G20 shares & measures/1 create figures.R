@@ -77,7 +77,8 @@ map.function <- function(data, caption, plottitle, limits, breaks, labels, colou
           legend.text.align = 0.6,
           legend.background = element_rect(fill="transparent"),
           plot.background = element_rect(fill="#F9F9F9"),
-          plot.caption = element_text(hjust = 0.5, vjust = 0.8, margin = margin(t=30),size=8, color="#777777",lineheight = 1)
+          plot.caption = element_text(hjust = 0.5, vjust = 0.8, margin = margin(t=40),size=8, color="#777777",lineheight = 1),
+          plot.margin = margin(t=20, b=30, l=10, r=10)
           
     )
   
