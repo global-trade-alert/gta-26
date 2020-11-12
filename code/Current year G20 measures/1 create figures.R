@@ -6,15 +6,7 @@ rm(list = ls())
 # For the primary axis title use the text highlighted in bold. For the secondary axis title please use “Percentage of G20 measures that harm trading partners.”
 #
 # 2. For each G20 country please add up the total number of harmful measures implemented this year, the total number of liberalising measures implemented this
-library(gtalibrary)
-library(tidyverse)
-library(ggplot2)
-library(ggrepel)
-library(gridExtra)
-library(scales)
-library(stringr)
-library(openxlsx)
-#year, and the total number of contingent protection investigations started this year but which have not resulted in duties imposed. Rank the G20 nations by
+# year, and the total number of contingent protection investigations started this year but which have not resulted in duties imposed. Rank the G20 nations by
 # these totals. Please produce a 2-D bar chart with G20 country as a separate entry where red is used to indicate the number of harmful interventions, green is
 # used to indicate the liberalising interventions, and yellow to indicate the contingent protection investigations started this year. Please indicate in the chart
 # the number of measures in each category for each G20 member. So for each G20 member, the number associated with each colour segment in the bar will be reported.
@@ -23,6 +15,14 @@ library(openxlsx)
 # that have already lapsed (by 21 October), the % of measures due to lapse during the remainder of this year, the % of measures due to lapse in 2021, the % of
 # measures due to lapse after 2021, and the % of measures without phase out dates.
 
+library(gtalibrary)
+library(tidyverse)
+library(ggplot2)
+library(ggrepel)
+library(gridExtra)
+library(scales)
+library(stringr)
+library(openxlsx)
 
 
 gta_setwd()
