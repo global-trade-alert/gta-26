@@ -98,12 +98,13 @@ map.function <- function(data, caption, plottitle, limits, breaks, labels, colou
           legend.direction = "horizontal",
           plot.title = element_text(family = "Open Sans", face = "bold", colour = "#333333", size = 11, hjust = 0.5, margin = margin(b=10)),
           plot.subtitle = element_text(family = "Open Sans", face = "bold", colour = "#333333", size = 9, hjust = 0.5, margin = margin(b=10)),
-          legend.title = element_text(vjust= 0.3, family="", colour = "#333333", size = 11*0.8, margin = margin(r=10,b=5),hjust=0.5),
-          legend.text = element_text(family="", colour = "#333333", size = 11*0.75, angle = 0, hjust=0, vjust=1, margin = margin(r=10)),
+          legend.title = element_text(vjust= 0.3, family="", colour = "#333333", size = 11*0.9, margin = margin(r=10,b=5),hjust=0.5),
+          legend.text = element_text(family="", colour = "#333333", size = 11*0.8, angle = 0, hjust=0, vjust=1, margin = margin(r=10)),
           legend.text.align = 0.6,
           legend.background = element_rect(fill="transparent"),
           plot.background = element_rect(fill="#F9F9F9"),
-          plot.caption = element_text(hjust = 0.5, vjust = 0.8, margin = margin(t=30),size=8, color="#777777",lineheight = 1)
+          plot.caption = element_text(hjust = 0.5, vjust = 0.8, margin = margin(t=40),size=8, color="#777777",lineheight = 1),
+          plot.margin = margin(t=20, b=30, l=10, r=10)
           
     )
   
@@ -149,18 +150,18 @@ world.fig2 <- gta_plot_map_df(subset(table2, gta.evaluation == "harmful"), count
 world.fig3 <- gta_plot_map_df(subset(table2, gta.evaluation == "liberalising"), countries="affected.un",values="nr.of.interventions")
 
 # Plot
-fig2 <- map.function(data = world.fig2, caption = "Source: Global Trade Alert. Countries marked in grey had zero export exposure to reforms implemented during 2020", plottitle = NULL,
+fig2 <- map.function(data = world.fig2, caption = str_wrap("Source: Global Trade Alert. Countries marked in grey had zero export exposure to reforms implemented during 2020",60), plottitle = NULL,
                      limits = c(0, max(world.fig2$value, na.rm = T)), breaks = c(seq(0, max(world.fig2$value, na.rm = T), max(world.fig2$value, na.rm=T) / 4)),
                      labels = c(round(seq(0, max(world.fig2$value, na.rm = T), max(world.fig2$value, na.rm=T) / 4))),
                      colourvalues = c(gta_colour$amber[4], gta_colour$amber[1], gta_colour$red[1], "#bf1b46", "#7d0c2a"),
-                     legend.name = "Number of harmful measures affected by in 2020", subtitle = NULL)
+                     legend.name = "Number of harmful measures\naffected by in 2020", subtitle = NULL)
 fig2
 
-fig3 <- map.function(data = world.fig3, caption = "Source: Global Trade Alert. Countries marked in grey had zero export exposure to reforms implemented during 2020", plottitle = NULL,
+fig3 <- map.function(data = world.fig3, caption = str_wrap("Source: Global Trade Alert. Countries marked in grey had zero export exposure to reforms implemented during 2020",60), plottitle = NULL,
                      limits = c(0, max(world.fig3$value, na.rm = T)), breaks = c(seq(0, max(world.fig3$value, na.rm = T), max(world.fig3$value, na.rm=T) / 4)),
                      labels = c(round(seq(0, max(world.fig3$value, na.rm = T), max(world.fig3$value, na.rm=T) / 4))),
                      colourvalues = c(gta_colour$green[4], gta_colour$green[2], "#298535", "#1c6625"),
-                     legend.name = "Number of liberalising measures affected by in 2020", subtitle = NULL)
+                     legend.name = "Number of liberalising measures\naffected by in 2020", subtitle = NULL)
 fig3
 
 fig2.and.fig3 <- grid.arrange(fig2, fig3, nrow = 2)
@@ -183,14 +184,14 @@ world.fig4 <- gta_plot_map_df(subset(table3, evaluation == "harmful"), countries
 world.fig5 <- gta_plot_map_df(subset(table3, evaluation == "liberalising"), countries="un_code",values="trade.coverage")
 
 # Plot
-fig4 <- map.function(data = world.fig4, caption = "Source: Global Trade Alert. Countries marked in grey had zero export exposure to reforms implemented during 2020", plottitle = NULL,
+fig4 <- map.function(data = world.fig4, caption = str_wrap("Source: Global Trade Alert. Countries marked in grey had zero export exposure to reforms implemented during 2020", 60), plottitle = NULL,
                      limits = c(0, max(world.fig4$value, na.rm = T)), breaks = c(seq(0, max(world.fig4$value, na.rm = T), max(world.fig4$value, na.rm=T) / 4)),
                      labels = scales::percent,
                      colourvalues = c(gta_colour$amber[4], gta_colour$amber[1], gta_colour$red[1], "#bf1b46", "#7d0c2a"),
                      legend.name = "Share of exports affected by harmful measures implemented in 2020", subtitle = NULL)
 fig4
 
-fig5 <- map.function(data = world.fig5, caption = "Source: Global Trade Alert. Countries marked in grey had zero export exposure to reforms implemented during 2020", plottitle = NULL,
+fig5 <- map.function(data = world.fig5, caption = str_wrap("Source: Global Trade Alert. Countries marked in grey had zero export exposure to reforms implemented during 2020", 60), plottitle = NULL,
                      limits = c(0, max(world.fig5$value, na.rm = T)), breaks = c(seq(0, max(world.fig5$value, na.rm = T), max(world.fig5$value, na.rm=T) / 4)),
                      labels = scales::percent,
                      colourvalues = c(gta_colour$green[4], gta_colour$green[2], "#298535", "#1c6625"),
