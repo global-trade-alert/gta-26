@@ -46,7 +46,7 @@ source(paste0(gta26.path, "help files/GTA 26 cutoff and definitions.R"))
 
 ### Table 1
 # Load data
-gta_data_slicer(announcement.period = c(as.Date("2009-01-01"), as.Date("2009-12-31")),
+gta_data_slicer(implementation.period = c(as.Date("2009-01-01"), as.Date("2009-12-31")),
                 keep.implementation.na = F,
                 submission.period = c("1999-01-01", cutoff.date))
 
@@ -108,8 +108,6 @@ gta_data_slicer(keep.implementation.na = F,
                 implementation.period = c(as.Date("2009-01-01"), as.Date("2009-12-31")),
                 submission.period = c("1999-01-01", cutoff.date))
 
-# Disregard submissions after 2020-10-31
-master.sliced <- subset(master.sliced, date.published <= as.Date(cutoff.date))
 
 # Add column for SE intervention categories
 master.sliced$SE.int.type <- ifelse(master.sliced$intervention.type %in% transparent.policy.instruments, "transparent policy instruments", NA)
