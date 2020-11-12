@@ -225,7 +225,7 @@ table2[is.na(table2)] <- 0
 # Plot
 fig6 <- ggplot(table2, aes(x=nr.of.interventions, color = gta.evaluation)) +
   geom_density() +
-  labs(x = "Nr. of interventions announced", y = "Density", caption = "Source: Global Trade Alert.") +
+  labs(x = "Nr. of interventions affected by/benefiting from", y = "Density", caption = "Source: Global Trade Alert.") +
   scale_color_manual(values=c(gta_colour$harmful[1], gta_colour$liberalising[1])) +
   guides(colour=guide_legend(title="GTA evaluation", 
                              label.hjust = 0, label.vjust = 0.5, 
