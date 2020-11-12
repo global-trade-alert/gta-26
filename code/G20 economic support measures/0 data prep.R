@@ -87,13 +87,13 @@ master.sliced <- merge(master.sliced, gta_intervention, by.x = "intervention.id"
 # Aggregate for every country
 table2 <- select(aggregate(intervention.id ~ implementing.jurisdiction, subset(master.sliced, affected.product %in% hs.codes$hs.code[hs.codes$is.agriculture]), function(x){length(unique(x))}), implementing.jurisdiction, "Percentage of harmful economic support measures that affect agricultural sectors" = intervention.id)
 table2 <- merge(table2, select(aggregate(intervention.id ~ implementing.jurisdiction, subset(master.sliced, affected.product %in% hs.codes$hs.code[hs.codes$is.manufactured]), function(x){length(unique(x))}), implementing.jurisdiction, "Percentage of harmful support measures that affect manufacturing sectors" = intervention.id),
-                by = "implementing.jurisdiction", all.x = T)
+                by = "implementing.jurisdiction", all = T)
 table2 <- merge(table2, select(aggregate(intervention.id ~ implementing.jurisdiction, subset(master.sliced, affected.sector >= 500), function(x){length(unique(x))}), implementing.jurisdiction, "Percentage of harmful support measures that affect service sectors" = intervention.id),
-                by = "implementing.jurisdiction", all.x = T)
+                by = "implementing.jurisdiction", all = T)
 table2 <- merge(table2, select(aggregate(intervention.id ~ implementing.jurisdiction, subset(master.sliced, is_horizontal_measure == 1), function(x){length(unique(x))}), implementing.jurisdiction, "Percentage of harmful support measures that are classified as 'horizontal'" = intervention.id),
-                by = "implementing.jurisdiction", all.x = T)
+                by = "implementing.jurisdiction", all = T)
 table2 <- merge(table2, select(aggregate(intervention.id ~ implementing.jurisdiction, subset(master.sliced, eligible.firms == "firm-specific"), function(x){length(unique(x))}), implementing.jurisdiction, "Percentage of harmful support measures that are classified as firm-specific" = intervention.id),
-                by = "implementing.jurisdiction", all.x = T)
+                by = "implementing.jurisdiction", all = T)
 
 # Convert to percentages
 table2 <- merge(table2, select(aggregate(intervention.id ~ implementing.jurisdiction, master.sliced, function(x){length(unique(x))}), implementing.jurisdiction, "total.nr.of.interventions" = intervention.id),
