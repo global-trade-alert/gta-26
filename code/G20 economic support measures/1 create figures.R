@@ -34,6 +34,7 @@ load(paste0(gta26.path, data.path, "g20 economic support measures.Rdata"))
 
 ### Save Excel files of the data
 write.xlsx(table1, file = paste0(gta26.path, out.path, "Table 1.xlsx"))
+write.xlsx(table1.nofirm, file = paste0(gta26.path, out.path, "Table 1 - no firm version.xlsx"))
 write.xlsx(table2, file = paste0(gta26.path, out.path, "Table 2.xlsx"))
 
 
