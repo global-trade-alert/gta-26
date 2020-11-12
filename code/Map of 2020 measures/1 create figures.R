@@ -72,5 +72,6 @@ gta_plot_saver(plot = fig1,
                png = T,
                pdf = T,
                jpg = T,
+               eps = T,
                width = 29,
                height = 17.2)
