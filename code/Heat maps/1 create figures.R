@@ -52,22 +52,24 @@ write.xlsx(list("harmful" = t3, "liberalising" = t4), file = paste0(gta26.path, 
 
 
 ### Functions
-heatmap.function <- function(data, aux.table, z.aes, scale.colours, diagonal.fill, legend.breaks, legend.labels, legend.no.value.label, legend.limits, x.axis.title, y.axis.title, plot.title, plot.name, plot.width, plot.height){
+heatmap.function <- function(data, data.zeroes, aux.table, z.aes, scale.colours, diagonal.fill, legend.breaks, legend.labels, legend.no.value.label, legend.limits, x.axis.title, y.axis.title, plot.title, plot.name, plot.width, plot.height){
   plot <- ggplot(data = data) +
-    geom_tile(aes(x = forcats::fct_reorder(affected.jurisdiction, desc(affected.jurisdiction)), y = forcats::fct_inorder(implementing.jurisdiction, ordered = T), color = as.factor(1)), fill = gta_colour$grey[4], size = 0.2, na.rm = F)+
-    geom_tile(aes(x = forcats::fct_reorder(affected.jurisdiction, desc(affected.jurisdiction)), y = forcats::fct_inorder(implementing.jurisdiction, ordered = T), fill = z.aes), color = "#FFFFFF", size = 0.2, na.rm = F)+
+    geom_tile(aes(x = forcats::fct_inorder(affected.jurisdiction, ordered = T), y = forcats::fct_inorder(implementing.jurisdiction, ordered = T), color = as.factor(1)), fill = gta_colour$grey[4], size = 0.2, na.rm = T)+
+    geom_tile(aes(x = forcats::fct_inorder(affected.jurisdiction, ordered = T), y = forcats::fct_inorder(implementing.jurisdiction, ordered = T), fill = z.aes), color = "#FFFFFF", size = 0.2, na.rm = T)+
     geom_tile(data = aux.table, aes(x = forcats::fct_reorder(affected.jurisdiction, desc(affected.jurisdiction)), y = forcats::fct_inorder(implementing.jurisdiction, ordered = T)), fill = diagonal.fill, color = "#FFFFFF", size = 0.2, na.rm = F)+
-    gta_theme(x.bottom.angle = 90, x.bottom.align = 1)+
+    geom_tile(data = data.zeroes, aes(x = forcats::fct_inorder(affected.jurisdiction, ordered = T), y = forcats::fct_inorder(implementing.jurisdiction, ordered = T)), fill = gta_colour$grey[4], color = "#FFFFFF", size = 0.2, na.rm = F)+
+    gta_theme(x.bottom.angle = 45, x.bottom.align = 1)+
     scale_fill_gradientn(name = "", colours = scale.colours, breaks = legend.breaks, labels = legend.labels,
                          limits = legend.limits, guide = guide_colorbar(barwidth = 15, label.hjust = 0.5))+
-    scale_colour_manual(values = "#FFFFFF", label = legend.no.value.label)+
+    scale_colour_manual(values = gta_colour$grey[4], label = legend.no.value.label)+
     labs(x = x.axis.title, y = y.axis.title)+
     ggtitle(plot.title)+
     guides(colour = guide_legend(title = NULL, position = "right", barwidth = 1, label.position = "bottom", keywidth = 0, hjust = 0, label.hjust = 0))+
     theme(panel.background = element_blank(), 
           panel.border = element_rect(size = 1, colour = gta_colour$grey[4], fill = "transparent"), 
-          axis.text.x.bottom = element_text(hjust = 1, vjust = 0.5),
-          legend.position = "bottom")
+          axis.text.x.bottom = element_text(hjust = 1, vjust = 1),
+          legend.position = "bottom",
+          legend.justification = 0.5)
   
   plot
   
@@ -77,48 +79,79 @@ heatmap.function <- function(data, aux.table, z.aes, scale.colours, diagonal.fil
                  png = T,
                  pdf = T,
                  jpg = T,
+                 eps = T,
                  width = plot.width,
                  height = plot.height)
 }
+
+
+# Rename United States to USA
+table1$affected.jurisdiction <- as.character(table1$affected.jurisdiction)
+table1$implementing.jurisdiction[table1$implementing.jurisdiction=="United States of America"] <- "USA"
+table1$affected.jurisdiction[table1$affected.jurisdiction=="United States of America"] <- "USA"
+table1$implementing.jurisdiction[table1$implementing.jurisdiction=="United Kingdom"] <- "UK"
+table1$affected.jurisdiction[table1$affected.jurisdiction=="United Kingdom"] <- "UK"
+table2$implementing.jurisdiction[table2$implementing.jurisdiction=="United States of America"] <- "USA"
+table2$affected.jurisdiction[table2$affected.jurisdiction=="United States of America"] <- "USA"
+table2$implementing.jurisdiction[table2$implementing.jurisdiction=="United Kingdom"] <- "UK"
+table2$affected.jurisdiction[table2$affected.jurisdiction=="United Kingdom"] <- "UK"
+
+
+# Add all combinations and sort
+expanded = expand.grid(unique(table1$implementing.jurisdiction), unique(table1$affected.jurisdiction), unique(table1$gta.evaluation), stringsAsFactors = F)
+names(expanded) <- c("implementing.jurisdiction","affected.jurisdiction", "gta.evaluation")
+table1 <- merge(table1, expanded, by=c("implementing.jurisdiction","affected.jurisdiction", "gta.evaluation"), all=T)
+table1 <- table1[with(table1, order(implementing.jurisdiction, affected.jurisdiction)),]
+row.names(table1) <- NULL
 
 ### Figure 1
 # Create auxiliary table
 diagonal.table1 <- subset(table1, implementing.jurisdiction == affected.jurisdiction)
 
 # Plot
-heatmap.function(data = subset(table1, gta.evaluation == "harmful"), z.aes = subset(table1, gta.evaluation == "harmful")$nr.of.interventions, diagonal.fill = "#FFFFFF",
+max.value = max(subset(table1, gta.evaluation == "harmful")$nr.of.interventions, na.rm = T)
+heatmap.function(data = subset(table1, gta.evaluation == "harmful"), data.zeroes=subset(table1, nr.of.interventions==0 & gta.evaluation == "harmful"), z.aes = subset(table1, gta.evaluation == "harmful")$nr.of.interventions, diagonal.fill = "#FFFFFF",
                  aux.table = diagonal.table1, plot.title = paste0("Number of harmful interventions implemented until ", format(as.Date(cutoff.date), "%d %B %Y")),
-                 scale.colours = c(gta_colour$red[4], gta_colour$red[1], "#b3143d"), legend.breaks = seq(0,45,5), legend.labels = seq(0,45,5),
-                 legend.limits = c(0,45), legend.no.value.label = "No interventions", x.axis.title = "Affected country", y.axis.title = "Implementing country",
-                 plot.name = "Figure 1 - Harmful G20 interventions heatmap", plot.width = 21, plot.height = 21)
+                 scale.colours = c(gta_colour$red[4], gta_colour$red[1], "#b3143d"), legend.breaks = c(1,5,seq(10, max.value, 5)), legend.labels = c(1,5,seq(10,max.value,5)),
+                 legend.limits = c(0,max.value), legend.no.value.label = "No interventions", x.axis.title = "Affected country", y.axis.title = "Implementing country",
+                 plot.name = "Figure 1 - Harmful G20 interventions heatmap", plot.width = 21, plot.height = 29.7/2)
 
 
 ### Figure 2
 # Plot
-heatmap.function(data = subset(table1, gta.evaluation == "liberalising"), z.aes = subset(table1, gta.evaluation == "liberalising")$nr.of.interventions, diagonal.fill = "#FFFFFF",
+max.value = max(subset(table1, gta.evaluation == "liberalising")$nr.of.interventions, na.rm = T)
+heatmap.function(data = subset(table1, gta.evaluation == "liberalising"), data.zeroes=subset(table1, nr.of.interventions==0 & gta.evaluation == "liberalising"), z.aes = subset(table1, gta.evaluation == "liberalising")$nr.of.interventions, diagonal.fill = "#FFFFFF",
                  aux.table = diagonal.table1, plot.title = paste0("Number of liberalising interventions implemented until ", format(as.Date(cutoff.date), "%d %B %Y")),
-                 scale.colours = c(gta_colour$green[4], gta_colour$green[1], "#1d6626"), legend.breaks = seq(0,70,10), legend.labels = seq(0,70,10),
-                 legend.limits = c(0,70), legend.no.value.label = "No interventions", x.axis.title = "Affected country", y.axis.title = "Implementing country",
-                 plot.name = "Figure 2 - Liberalising G20 interventions heatmap", plot.width = 21, plot.height = 21)
+                 scale.colours = c(gta_colour$green[4], gta_colour$green[1], "#1d6626"), legend.breaks = c(1,10,seq(20, max.value, 10)), legend.labels = c(1,10,seq(20,max.value,10)),
+                 legend.limits = c(0,max.value), legend.no.value.label = "No interventions", x.axis.title = "Affected country", y.axis.title = "Implementing country",
+                 plot.name = "Figure 2 - Liberalising G20 interventions heatmap", plot.width = 21, plot.height = 29.7/2)
 
 
 ### Figure 3
+table2$affected.jurisdiction <- str_wrap(table2$affected.jurisdiction, 20)
+
 # Create auxiliary table
 diagonal.table2 <- unique(select(table2, implementing.jurisdiction, affected.jurisdiction)) ## NOTE: there is no diagonal here, so the diagnonal.fill is "transparent"
-                                                                                            ## there still needs to be an auxiliary table argument regardless
+## there still needs to be an auxiliary table argument regardless
+
+# Order table
+table2 <- table2[with(table2, order(implementing.jurisdiction, affected.jurisdiction)),]
+row.names(table2) <- NULL
 
 # Plot
-heatmap.function(data = subset(table2, gta.evaluation == "harmful"), z.aes = subset(table2, gta.evaluation == "harmful")$nr.of.interventions.per.member, diagonal.fill = "transparent",
+max.value = max(subset(table2, gta.evaluation == "harmful")$nr.of.interventions.per.member, na.rm = T)
+heatmap.function(data = subset(table2, gta.evaluation == "harmful"), data.zeroes=subset(table2, nr.of.interventions.per.member==0 & gta.evaluation == "harmful"), z.aes = subset(table2, gta.evaluation == "harmful")$nr.of.interventions.per.member, diagonal.fill = "transparent",
                  aux.table = diagonal.table2, plot.title = paste0("Number of harmful interventions per country in the\nrespective group implemented until ", format(as.Date(cutoff.date), "%d %B %Y")),
-                 scale.colours = c(gta_colour$red[4], gta_colour$red[1], "#b3143d"), legend.breaks = seq(0,21,3), legend.labels = seq(0,21,3),
-                 legend.limits = c(0,21), legend.no.value.label = "No interventions", x.axis.title = "Affected country group", y.axis.title = "Implementing country",
-                 plot.name = "Figure 3 - Harmful G20 interventions per country group heatmap", plot.width = 21, plot.height = 21)
+                 scale.colours = c(gta_colour$red[4], gta_colour$red[1], "#b3143d"), legend.breaks = c(1,3,seq(6, max.value, 3)), legend.labels = c(1,3,seq(6,max.value,3)),
+                 legend.limits = c(0,max.value), legend.no.value.label = "No interventions", x.axis.title = "Affected country group", y.axis.title = "Implementing country",
+                 plot.name = "Figure 3 - Harmful G20 interventions per country group heatmap", plot.width = 21, plot.height = 29.7/2)
 
 
 ### Figure 4
 # Plot
-heatmap.function(data = subset(table2, gta.evaluation == "liberalising"), z.aes = subset(table2, gta.evaluation == "liberalising")$nr.of.interventions.per.member, diagonal.fill = "transparent",
+max.value = max(subset(table2, gta.evaluation == "liberalising")$nr.of.interventions.per.member, na.rm = T)
+heatmap.function(data = subset(table2, gta.evaluation == "liberalising"),  data.zeroes=subset(table2, nr.of.interventions.per.member==0 & gta.evaluation == "liberalising"), z.aes = subset(table2, gta.evaluation == "liberalising")$nr.of.interventions.per.member, diagonal.fill = "transparent",
                  aux.table = diagonal.table2, plot.title = paste0("Number of liberalising interventions per country in the\nrespective group implemented until ", format(as.Date(cutoff.date), "%d %B %Y")),
-                 scale.colours = c(gta_colour$green[4], gta_colour$green[1], "#1d6626"), legend.breaks = seq(0,30,5), legend.labels = seq(0,30,5),
-                 legend.limits = c(0,30), legend.no.value.label = "No interventions", x.axis.title = "Affected country group", y.axis.title = "Implementing country",
-                 plot.name = "Figure 4 - Liberalising G20 interventions per country group heatmap", plot.width = 21, plot.height = 21)
+                 scale.colours = c(gta_colour$green[4], gta_colour$green[1], "#1d6626"), legend.breaks = c(1,5,seq(10, max.value, 5)), legend.labels = c(1,5,seq(10,max.value,5)),
+                 legend.limits = c(0,max.value), legend.no.value.label = "No interventions", x.axis.title = "Affected country group", y.axis.title = "Implementing country",
+                 plot.name = "Figure 4 - Liberalising G20 interventions per country group heatmap", plot.width = 21, plot.height = 29.7/2)
