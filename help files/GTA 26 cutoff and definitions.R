@@ -6,7 +6,7 @@ cutoff.gta24 <- c("2019-04-15") ## cut-off for GTA 24
 cutoff.gta23=c("2018-10-31")  ## cut-off for GTA 23
 cutoff.gta22=c("2018-04-24")  ## cut-off for GTA 22
 
-# break.date<-c("2016-12-31")   ## first day of populist-era
+break.date<-c("2016-12-31")   ## first day of populist-era
 # manually.removed.interventions=c(18891,70350,16819,71578,58794,18254,13633,15366,19899,13512,14328,
 #                                  18602,14104,17285,18601,19351,19347,15100,18638,57474,14017,20375,
 #                                  57843,57619,62121,70692,72278,60042,13631,72137,18795,71645,13707,
@@ -53,6 +53,9 @@ se.country.groups <- list("Least Developed Countries" = country.names$name[count
                           "ASEAN" = country.names$name[country.names$is.asean],
                           "East Asia and Pacific" = c("American Samoa", "Australia", "Brunei Darussalam", "Cambodia", "China", "Chinese Taipei", "Republic of Korea", "Fiji", "French Polynesia", "Guam", "Hong Kong", "Indonesia", "Japan", "Kiribati", "Lao", "Macao", "Malaysia", "Marshall Islands", "Micronesia", "Mongolia", "Myanmar", "Nauru", "New Caledonia", "New Zealand", "Northern Mariana Islands", "Palau", "Papua New Guinea", "Philippines", "Samoa", "Singapore", "Solomon Islands", "Thailand", "Timor-Leste", "Tonga", "Tuvalu", "Vanuatu", "Vietnam"),
                           "Eurasian Economic Union" = c("Armenia", "Belarus", "Kazakhstan", "Kyrgyzstan", "Russia"))
+
+g20.members <- country.names$un_code[country.names$is.g20]
+g20.member.names <- country.names$name[country.names$is.g20]
 
 
 # g20.members=c("32", "36", "76", "124", "156", "251", "276", "699", "360", "381", "392", "484", "410", "643", "682", "710", "792", "826", "840")
