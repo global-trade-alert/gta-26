@@ -13,7 +13,7 @@ rm(list = ls())
 # each harmed country towards the total number of hits by a G20 country on a given group’s commercial interests.
 #
 # 4. Please repeat 3 but for liberalising policy interventions.
-
+Sys.setlocale("LC_ALL","English")
 library(gtalibrary)
 library(tidyverse)
 library(openxlsx)
