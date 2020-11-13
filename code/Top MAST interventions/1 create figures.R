@@ -108,7 +108,7 @@ fig1 <- ggplot(data = subset(table1, gta.evaluation == "harmful"))+
   scale_fill_manual(values=c(gta_colour$qualitative[6],gta_colour$qualitative[5],gta_colour$qualitative[4],gta_colour$qualitative[3],gta_colour$qualitative[2],
                              gta_colour$qualitative[1]), labels = levels(table1$mast.chapter)[levels(table1$mast.chapter) %in% unique(subset(table1, gta.evaluation == "harmful")$mast.chapter)])+
   gta_theme()+
-  guides(guide_legend(title = NULL, label.hjust = 0, label.vjust = 0.5, title.position = "top", title.vjust = 0.5, nrow = 2))+
+  guides(fill=guide_legend(title = NULL, label.hjust = 0, label.vjust = 0.5, title.position = "top", title.vjust = 0.5, ncol = 2))+
   theme(axis.text.x.bottom = element_text(hjust=0.5, size=10),
         axis.title.y.left = element_text(size=10),
         axis.title.y.right = element_text(size=10),
@@ -118,7 +118,7 @@ fig1 <- ggplot(data = subset(table1, gta.evaluation == "harmful"))+
         legend.box.background = element_rect(fill = "transparent", color="transparent"),
         legend.position = "bottom",
         legend.background = element_rect(fill="transparent", colour = "transparent"),
-        legend.margin = margin(t=10,b=0,r=100,l=100),
+        legend.box.just = 0,
         panel.grid.major.x = element_blank(),
         panel.grid.major.y = element_line(size=.1, color=gta_colour$qualitative[1]),
         panel.grid.minor.x = element_blank(),
@@ -149,7 +149,7 @@ fig2 <- ggplot(data = subset(table1, gta.evaluation == "liberalising"))+
   scale_fill_manual(values=c(gta_colour$qualitative[6],gta_colour$qualitative[5],gta_colour$qualitative[4],gta_colour$qualitative[3],gta_colour$qualitative[2],
                              gta_colour$qualitative[1]), labels = levels(table1$mast.chapter)[levels(table1$mast.chapter) %in% unique(subset(table1, gta.evaluation == "liberalising")$mast.chapter)])+
   gta_theme()+
-  guides(guide_legend(title = NULL, label.hjust = 0, label.vjust = 0.5, title.position = "top", title.vjust = 0.5, nrow = 2))+
+  guides(fill=guide_legend(title = NULL, label.hjust = 0, label.vjust = 0.5, title.position = "top", title.vjust = 0.5, ncol = 2))+
   theme(axis.text.x.bottom = element_text(hjust=0.5, size=10),
         axis.title.y.left = element_text(size=10),
         axis.title.y.right = element_text(size=10),
@@ -159,7 +159,7 @@ fig2 <- ggplot(data = subset(table1, gta.evaluation == "liberalising"))+
         legend.box.background = element_rect(fill = "transparent", color="transparent"),
         legend.position = "bottom",
         legend.background = element_rect(fill="transparent", colour = "transparent"),
-        legend.margin = margin(t=10,b=0,r=100,l=100),
+        legend.justification = 0,
         panel.grid.major.x = element_blank(),
         panel.grid.major.y = element_line(size=.1, color=gta_colour$qualitative[1]),
         panel.grid.minor.x = element_blank(),
@@ -189,7 +189,7 @@ fig3 <- ggplot(data = table3)+
                      sec.axis = sec_axis(trans = ~., name=str_wrap("Number of measures recorded", 40), breaks=seq(0,300,25), labels=seq(0,300,25)))+
   scale_fill_manual(values=c("Safeguard" = gta_colour$qualitative[1], "Anti-subsidy" = gta_colour$qualitative[2],"Anti-dumping" = gta_colour$qualitative[4]), labels = c("New dumping inquiries", "New subsidy inquiries", "New safeguard inquiries"))+
   gta_theme(x.bottom.angle = 90, x.bottom.align = 1)+
-  guides(guide_legend(title = NULL, label.hjust = 0, label.vjust = 0.5, title.position = "top", title.vjust = 0.5, nrow = 2))+
+  guides(fill=guide_legend(title = NULL, label.hjust = 0, label.vjust = 0.5, title.position = "top", title.vjust = 0.5, ncol = 3))+
   theme(axis.text.x.bottom = element_text(hjust=0.5, size=10),
         axis.title.y.left = element_text(size=10),
         axis.title.y.right = element_text(size=10),
@@ -199,7 +199,7 @@ fig3 <- ggplot(data = table3)+
         legend.box.background = element_rect(fill = "transparent", color="transparent"),
         legend.position = "bottom",
         legend.background = element_rect(fill="transparent", colour = "transparent"),
-        legend.margin = margin(t=10,b=0,r=100,l=100),
+        legend.justification = 0,
         panel.grid.major.x = element_blank(),
         panel.grid.major.y = element_line(size=.1, color=gta_colour$qualitative[1]),
         panel.grid.minor.x = element_blank(),
