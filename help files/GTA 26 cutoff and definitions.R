@@ -6,7 +6,7 @@ cutoff.gta24 <- c("2019-04-15") ## cut-off for GTA 24
 cutoff.gta23=c("2018-10-31")  ## cut-off for GTA 23
 cutoff.gta22=c("2018-04-24")  ## cut-off for GTA 22
 
-break.date<-c("2016-12-31")   ## first day of populist-era
+break.date<-c("2019-12-31")   ## first day of populist-era
 # manually.removed.interventions=c(18891,70350,16819,71578,58794,18254,13633,15366,19899,13512,14328,
 #                                  18602,14104,17285,18601,19351,19347,15100,18638,57474,14017,20375,
 #                                  57843,57619,62121,70692,72278,60042,13631,72137,18795,71645,13707,

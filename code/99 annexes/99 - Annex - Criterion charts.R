@@ -1,7 +1,7 @@
 rm(list = ls())
 
 ### Request:
-# I have no major changes in mind. However instead of highlighting 2017-2019 in the export exposure table, we should highlight only 2020.
+# I have no major changes in mind. However instead of highlighting 2020-2019 in the export exposure table, we should highlight only 2020.
 
 library(splitstackshape)
 library(openxlsx)
@@ -106,7 +106,7 @@ if(run.calc){
   current$name[current$name=="United States of America"]<-"US"
   current$name[current$name=="Republic of Korea"]<-"South Korea"
   # current$name[current$name=="Russian Federation"]<-"Russia"
-  current$name<-paste(current$name," since 2017" ,sep="")
+  current$name<-paste(current$name," in 2020" ,sep="")
   
   current$score[is.na(current$score)==T]<-0
   
@@ -119,42 +119,42 @@ if(run.calc){
   g20.avg<-as.data.frame(cSplit(g20.avg,2,direction="long", sep=","))
   g20.avg$score<-apply(g20.avg, 1, function(x) mean(current$score[current$c==x[2]]))
   
-  g20.avg$name<-"G20 mean since 2017"
+  g20.avg$name<-"G20 mean in 2020"
   
   
   ## pre cutoff
-  pre.2017<-as.data.frame(unique(g20$i.un))
-  setnames(pre.2017, old="unique(g20$i.un)", new="i.un")
-  pre.2017$c<-"c1.p, c2.p, c3.p, c4.p, c5.p, c1.l, c2.l, c3.l, c4.l, c5.l"
-  pre.2017<-as.data.frame(cSplit(pre.2017,2,direction="long", sep=","))
-  pre.2017$i.un<-as.numeric(pre.2017$i.un)
-  pre.2017$score[pre.2017$c=="c1.p"]<-apply(subset(pre.2017, c=="c1.p"),1, function(x) sum(subset(hits, prior==1 & i.un==as.numeric(x[1]) & protect==1)$intervention.id)/sum(subset(hits, prior==1 & i.un==as.numeric(x[1]))$intervention.id))
-  pre.2017$score[pre.2017$c=="c2.p"]<-apply(subset(pre.2017, c=="c2.p"),1, function(x) sum(subset(hits, prior==1 & i.un==as.numeric(x[1]) & protect==1 & murky==1)$intervention.id)/sum(subset(hits, prior==1 & i.un==as.numeric(x[1]) & protect==1)$intervention.id))
-  pre.2017$score[pre.2017$c=="c3.p"]<-apply(subset(pre.2017, c=="c3.p"),1, function(x) sum(subset(products.prior, i.un==as.numeric(x[1]) & protect==1 & currently.in.force=="Yes")$affected.product)/5205)
-  pre.2017$score[pre.2017$c=="c4.p"]<-apply(subset(pre.2017, c=="c4.p"),1, function(x) sum(subset(products.prior.imp, i.un==as.numeric(x[1]) & protect==1)$affected.product)/5205)
-  pre.2017$score[pre.2017$c=="c5.p"]<-apply(subset(pre.2017, c=="c5.p"),1, function(x) sum(subset(hits, prior==1 & i.un==as.numeric(x[1]) & protect==1 & currently.in.force=="Yes")$intervention.id)/sum(subset(hits, prior==1 & i.un==as.numeric(x[1]) & protect==1)$intervention.id))
+  pre.2020<-as.data.frame(unique(g20$i.un))
+  setnames(pre.2020, old="unique(g20$i.un)", new="i.un")
+  pre.2020$c<-"c1.p, c2.p, c3.p, c4.p, c5.p, c1.l, c2.l, c3.l, c4.l, c5.l"
+  pre.2020<-as.data.frame(cSplit(pre.2020,2,direction="long", sep=","))
+  pre.2020$i.un<-as.numeric(pre.2020$i.un)
+  pre.2020$score[pre.2020$c=="c1.p"]<-apply(subset(pre.2020, c=="c1.p"),1, function(x) sum(subset(hits, prior==1 & i.un==as.numeric(x[1]) & protect==1)$intervention.id)/sum(subset(hits, prior==1 & i.un==as.numeric(x[1]))$intervention.id))
+  pre.2020$score[pre.2020$c=="c2.p"]<-apply(subset(pre.2020, c=="c2.p"),1, function(x) sum(subset(hits, prior==1 & i.un==as.numeric(x[1]) & protect==1 & murky==1)$intervention.id)/sum(subset(hits, prior==1 & i.un==as.numeric(x[1]) & protect==1)$intervention.id))
+  pre.2020$score[pre.2020$c=="c3.p"]<-apply(subset(pre.2020, c=="c3.p"),1, function(x) sum(subset(products.prior, i.un==as.numeric(x[1]) & protect==1 & currently.in.force=="Yes")$affected.product)/5205)
+  pre.2020$score[pre.2020$c=="c4.p"]<-apply(subset(pre.2020, c=="c4.p"),1, function(x) sum(subset(products.prior.imp, i.un==as.numeric(x[1]) & protect==1)$affected.product)/5205)
+  pre.2020$score[pre.2020$c=="c5.p"]<-apply(subset(pre.2020, c=="c5.p"),1, function(x) sum(subset(hits, prior==1 & i.un==as.numeric(x[1]) & protect==1 & currently.in.force=="Yes")$intervention.id)/sum(subset(hits, prior==1 & i.un==as.numeric(x[1]) & protect==1)$intervention.id))
   
   
   
   
   
-  pre.2017$score[pre.2017$c=="c1.l"]<-apply(subset(pre.2017, c=="c1.l"),1, function(x) sum(subset(hits, prior==1 & i.un==as.numeric(x[1]) & protect==0)$intervention.id)/sum(subset(hits, prior==1 & i.un==as.numeric(x[1]))$intervention.id))
-  pre.2017$score[pre.2017$c=="c2.l"]<-apply(subset(pre.2017, c=="c2.l"),1, function(x) sum(subset(hits, prior==1 & i.un==as.numeric(x[1]) & protect==0 & tariff==1)$intervention.id)/sum(subset(hits, prior==1 & i.un==as.numeric(x[1]) & protect==0)$intervention.id))
-  pre.2017$score[pre.2017$c=="c3.l"]<-apply(subset(pre.2017, c=="c3.l"),1, function(x) sum(subset(products.prior, i.un==as.numeric(x[1]) & protect==0 & currently.in.force=="Yes")$affected.product)/5205)
-  pre.2017$score[pre.2017$c=="c4.l"]<-apply(subset(pre.2017, c=="c4.l"),1, function(x) sum(subset(products.prior.imp, i.un==as.numeric(x[1]) & protect==0)$affected.product)/5205)
-  pre.2017$score[pre.2017$c=="c5.l"]<-apply(subset(pre.2017, c=="c5.l"),1, function(x) sum(subset(hits, prior==1 & i.un==as.numeric(x[1]) & protect==0 & currently.in.force=="Yes")$intervention.id)/sum(subset(hits, prior==1 & i.un==as.numeric(x[1]) & protect==0)$intervention.id))
+  pre.2020$score[pre.2020$c=="c1.l"]<-apply(subset(pre.2020, c=="c1.l"),1, function(x) sum(subset(hits, prior==1 & i.un==as.numeric(x[1]) & protect==0)$intervention.id)/sum(subset(hits, prior==1 & i.un==as.numeric(x[1]))$intervention.id))
+  pre.2020$score[pre.2020$c=="c2.l"]<-apply(subset(pre.2020, c=="c2.l"),1, function(x) sum(subset(hits, prior==1 & i.un==as.numeric(x[1]) & protect==0 & tariff==1)$intervention.id)/sum(subset(hits, prior==1 & i.un==as.numeric(x[1]) & protect==0)$intervention.id))
+  pre.2020$score[pre.2020$c=="c3.l"]<-apply(subset(pre.2020, c=="c3.l"),1, function(x) sum(subset(products.prior, i.un==as.numeric(x[1]) & protect==0 & currently.in.force=="Yes")$affected.product)/5205)
+  pre.2020$score[pre.2020$c=="c4.l"]<-apply(subset(pre.2020, c=="c4.l"),1, function(x) sum(subset(products.prior.imp, i.un==as.numeric(x[1]) & protect==0)$affected.product)/5205)
+  pre.2020$score[pre.2020$c=="c5.l"]<-apply(subset(pre.2020, c=="c5.l"),1, function(x) sum(subset(hits, prior==1 & i.un==as.numeric(x[1]) & protect==0 & currently.in.force=="Yes")$intervention.id)/sum(subset(hits, prior==1 & i.un==as.numeric(x[1]) & protect==0)$intervention.id))
   
   conversion <- gtalibrary::country.names[,c("un_code","name")]
   setnames(conversion, old="un_code", new="i.un")
-  pre.2017<-merge(pre.2017, unique(conversion[, c("i.un", "name")]), by="i.un", all.x=T)
-  pre.2017$name<-as.character(pre.2017$name)
-  pre.2017$name[pre.2017$name=="United Kingdom"]<-"UK"
-  pre.2017$name[pre.2017$name=="United States of America"]<-"US"
-  pre.2017$name[pre.2017$name=="Republic of Korea"]<-"South Korea"
-  # pre.2017$name[pre.2017$name=="Russian Federation"]<-"Russia"
+  pre.2020<-merge(pre.2020, unique(conversion[, c("i.un", "name")]), by="i.un", all.x=T)
+  pre.2020$name<-as.character(pre.2020$name)
+  pre.2020$name[pre.2020$name=="United Kingdom"]<-"UK"
+  pre.2020$name[pre.2020$name=="United States of America"]<-"US"
+  pre.2020$name[pre.2020$name=="Republic of Korea"]<-"South Korea"
+  # pre.2020$name[pre.2020$name=="Russian Federation"]<-"Russia"
   
-  pre.2017$name<-paste(pre.2017$name," pre-2017" ,sep="")
-  pre.2017$score[is.na(pre.2017$score)==T]<-0
+  pre.2020$name<-paste(pre.2020$name," pre-2020" ,sep="")
+  pre.2020$score[is.na(pre.2020$score)==T]<-0
   
   
   ## G20 avg
@@ -162,15 +162,15 @@ if(run.calc){
   setnames(g20.avg.pre, old="0", new="i.un")
   g20.avg.pre$c<-"c1.p, c2.p, c3.p, c4.p, c5.p, c1.l, c2.l, c3.l, c4.l, c5.l"
   g20.avg.pre<-as.data.frame(cSplit(g20.avg.pre,2,direction="long", sep=","))
-  g20.avg.pre$score<-apply(g20.avg.pre, 1, function(x) mean(pre.2017$score[current$c==x[2]]))
+  g20.avg.pre$score<-apply(g20.avg.pre, 1, function(x) mean(pre.2020$score[current$c==x[2]]))
   
-  g20.avg.pre$name<-"G20 mean pre-2017"
+  g20.avg.pre$name<-"G20 mean pre-2020"
   
   
   
   
   ### final
-  lines<-rbind(current, pre.2017, g20.avg, g20.avg.pre)
+  lines<-rbind(current, pre.2020, g20.avg, g20.avg.pre)
   
   lines$criterion[lines$c=="c1.p"]<-"Share of harmful in all implemented interventions"
   lines$criterion[lines$c=="c2.p"]<-"Share of harmful interventions that are 'murky' (not tariffs or trade defence)"
