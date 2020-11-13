@@ -111,7 +111,7 @@ diagonal.table1 <- subset(table1, implementing.jurisdiction == affected.jurisdic
 # Plot
 max.value = max(subset(table1, gta.evaluation == "harmful")$nr.of.interventions, na.rm = T)
 heatmap.function(data = subset(table1, gta.evaluation == "harmful"), data.zeroes=subset(table1, nr.of.interventions==0 & gta.evaluation == "harmful"), z.aes = subset(table1, gta.evaluation == "harmful")$nr.of.interventions, diagonal.fill = "#FFFFFF",
-                 aux.table = diagonal.table1, plot.title = paste0("Number of harmful interventions implemented until ", format(as.Date(cutoff.date), "%d %B %Y")),
+                 aux.table = diagonal.table1, plot.title = gsub("Oktober", "October", paste0("Number of harmful interventions implemented until ", format(as.Date(cutoff.date), "%d %B %Y"))),
                  scale.colours = c(gta_colour$red[4], gta_colour$red[1], "#b3143d"), legend.breaks = c(1,5,seq(10, max.value, 5)), legend.labels = c(1,5,seq(10,max.value,5)),
                  legend.limits = c(0,max.value), legend.no.value.label = "No interventions", x.axis.title = "Affected country", y.axis.title = "Implementing country",
                  plot.name = "Figure 1 - Harmful G20 interventions heatmap", plot.width = 21, plot.height = 29.7/2)
@@ -121,7 +121,7 @@ heatmap.function(data = subset(table1, gta.evaluation == "harmful"), data.zeroes
 # Plot
 max.value = max(subset(table1, gta.evaluation == "liberalising")$nr.of.interventions, na.rm = T)
 heatmap.function(data = subset(table1, gta.evaluation == "liberalising"), data.zeroes=subset(table1, nr.of.interventions==0 & gta.evaluation == "liberalising"), z.aes = subset(table1, gta.evaluation == "liberalising")$nr.of.interventions, diagonal.fill = "#FFFFFF",
-                 aux.table = diagonal.table1, plot.title = paste0("Number of liberalising interventions implemented until ", format(as.Date(cutoff.date), "%d %B %Y")),
+                 aux.table = diagonal.table1, plot.title = gsub("Oktober", "October", paste0("Number of liberalising interventions implemented until ", format(as.Date(cutoff.date), "%d %B %Y"))),
                  scale.colours = c(gta_colour$green[4], gta_colour$green[1], "#1d6626"), legend.breaks = c(1,10,seq(20, max.value, 10)), legend.labels = c(1,10,seq(20,max.value,10)),
                  legend.limits = c(0,max.value), legend.no.value.label = "No interventions", x.axis.title = "Affected country", y.axis.title = "Implementing country",
                  plot.name = "Figure 2 - Liberalising G20 interventions heatmap", plot.width = 21, plot.height = 29.7/2)
@@ -141,7 +141,7 @@ row.names(table2) <- NULL
 # Plot
 max.value = max(subset(table2, gta.evaluation == "harmful")$nr.of.interventions.per.member, na.rm = T)
 heatmap.function(data = subset(table2, gta.evaluation == "harmful"), data.zeroes=subset(table2, nr.of.interventions.per.member==0 & gta.evaluation == "harmful"), z.aes = subset(table2, gta.evaluation == "harmful")$nr.of.interventions.per.member, diagonal.fill = "transparent",
-                 aux.table = diagonal.table2, plot.title = paste0("Number of harmful interventions per country in the\nrespective group implemented until ", format(as.Date(cutoff.date), "%d %B %Y")),
+                 aux.table = diagonal.table2, plot.title = gsub("Oktober", "October", paste0("Number of harmful interventions per country in the\nrespective group implemented until ", format(as.Date(cutoff.date), "%d %B %Y"))),
                  scale.colours = c(gta_colour$red[4], gta_colour$red[1], "#b3143d"), legend.breaks = c(1,3,seq(6, max.value, 3)), legend.labels = c(1,3,seq(6,max.value,3)),
                  legend.limits = c(0,max.value), legend.no.value.label = "No interventions", x.axis.title = "Affected country group", y.axis.title = "Implementing country",
                  plot.name = "Figure 3 - Harmful G20 interventions per country group heatmap", plot.width = 21, plot.height = 29.7/2)
@@ -151,7 +151,7 @@ heatmap.function(data = subset(table2, gta.evaluation == "harmful"), data.zeroes
 # Plot
 max.value = max(subset(table2, gta.evaluation == "liberalising")$nr.of.interventions.per.member, na.rm = T)
 heatmap.function(data = subset(table2, gta.evaluation == "liberalising"),  data.zeroes=subset(table2, nr.of.interventions.per.member==0 & gta.evaluation == "liberalising"), z.aes = subset(table2, gta.evaluation == "liberalising")$nr.of.interventions.per.member, diagonal.fill = "transparent",
-                 aux.table = diagonal.table2, plot.title = paste0("Number of liberalising interventions per country in the\nrespective group implemented until ", format(as.Date(cutoff.date), "%d %B %Y")),
+                 aux.table = diagonal.table2, plot.title = gsub("Oktober", "October", paste0("Number of liberalising interventions per country in the\nrespective group implemented until ", format(as.Date(cutoff.date), "%d %B %Y"))),
                  scale.colours = c(gta_colour$green[4], gta_colour$green[1], "#1d6626"), legend.breaks = c(1,5,seq(10, max.value, 5)), legend.labels = c(1,5,seq(10,max.value,5)),
                  legend.limits = c(0,max.value), legend.no.value.label = "No interventions", x.axis.title = "Affected country group", y.axis.title = "Implementing country",
                  plot.name = "Figure 4 - Liberalising G20 interventions per country group heatmap", plot.width = 21, plot.height = 29.7/2)
