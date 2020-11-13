@@ -113,11 +113,14 @@ map.function <- function(data, caption, plottitle, limits, breaks, labels, colou
 
 
 ### Figure 1
+
+# Simon: In the primary vertical axis please replace the word announced with implemented
+
 fig1 <- ggplot(data=table1)+
   geom_line(aes(x=forcats::fct_inorder(as.character(year.announced), ordered = T), y=nr.of.interventions, group=1), size=1, colour=gta_colour$qualitative[1])+
   # geom_text(aes(x=month.group, y=index, label=index), vjust=1, colour="#555555", size=2.5)+
   geom_line(aes(x=forcats::fct_inorder(as.character(year.announced), ordered = T), y=avg.hours.between.int*100, group=1), size=1, colour=gta_colour$qualitative[3]) +
-  scale_y_continuous(name=str_wrap("Total number of commercial policy interventions worldwide announced by 31 October", 50),
+  scale_y_continuous(name=str_wrap("Total number of commercial policy interventions worldwide implemented by 31 October", 50),
                      labels=seq(0,2100,300), limits = c(0,2100), breaks=seq(0,2100,300),
                      sec.axis = sec_axis(trans = ~./100, name=str_wrap("Average number of hours between each commercial policy intervention", 50),
                                          breaks=seq(0,21,3),labels=seq(0,21,3)))+
