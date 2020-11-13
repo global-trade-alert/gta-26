@@ -100,13 +100,16 @@ gta_plot_saver(plot = fig1,
 
 
 ### Figure 2
+
+# Simon: In the legend please add a capital letter to the figure words E.g. "export incentives" becomes "Export incentives". Please repeat this for all 4 entries in the legend. 
+
 fig2 <- ggplot(data = table2)+
   geom_bar(aes(x=forcats::fct_inorder(as.character(year.submitted)), y=percentage.per.year, fill=SE.int.type), width=0.65, stat = "identity") +
   labs(x="", y="", caption = "Source: Global Trade Alert.")+
   scale_y_continuous(name=str_wrap("Percentage of recorded measures", 40), breaks=seq(0,1,0.1), labels=percent,
                      sec.axis = sec_axis(trans = ~., name=str_wrap("Percentage of recorded measures", 40), breaks=seq(0,1,0.1), labels=percent))+
   scale_fill_manual(values=c("export incentives" = gta_colour$qualitative[1], "other commercial policies" = gta_colour$qualitative[2], "subsidies to import-competing firms" = gta_colour$qualitative[3],
-                             "transparent policy instruments" = gta_colour$qualitative[4]), labels = c("export incentives", "other commercial policies", "subsidies to import-competing firms", "transparent policy instruments"))+
+                             "transparent policy instruments" = gta_colour$qualitative[4]), labels = c("Export incentives", "Other commercial policies", "Subsidies to import-competing firms", "Transparent policy instruments"))+
   gta_theme(x.bottom.angle = 90, x.bottom.align = 1)+
   guides(fill = guide_legend(title = NULL, label.hjust = 0, label.vjust = 0.5, title.position = "top", title.vjust = 0.5, ncol = 2, nrow = 2))+
   theme(axis.text.x.bottom = element_text(hjust=0.5, size=10),
@@ -147,13 +150,16 @@ table3$x.value <- as.numeric(stringr::str_extract(as.character(table3$period.pub
 table3$intervention.type <- factor(table3$intervention.type, levels = c("other commercial policies", "export incentives", "subsidies to import-competing firms", "transparent policy instruments"))
 
 # Plot
+
+# Simon: In the legend please add a capital letter to the figure words E.g. "export incentives" becomes "Export incentives". Please repeat this for all 4 entries in the legend. 
+
 fig3 <- ggplot(data = table3) +
   geom_area(aes(x = x.value, y = perc.of.interventions, fill = intervention.type),stat = "identity") +
   labs(x = "", y = "", caption = "Source: Global Trade Alert.") +
   scale_y_continuous(name = str_wrap("Percentage of published measures", 40), breaks = seq(0,1,0.1), labels = label_percent(accuracy = 1L),
                      sec.axis = sec_axis(trans = ~., name=str_wrap("Percentage of published measures", 40), breaks = seq(0,1,0.1), labels = label_percent(accuracy = 1L))) +
   scale_fill_manual(values=c("export incentives" = gta_colour$qualitative[1], "other commercial policies" = gta_colour$qualitative[2], "subsidies to import-competing firms" = gta_colour$qualitative[3],
-                             "transparent policy instruments" = gta_colour$qualitative[4]), labels = c("other commercial policies", "export incentives", "subsidies to import-competing firms", "transparent policy instruments")) +
+                             "transparent policy instruments" = gta_colour$qualitative[4]), labels = c("Other commercial policies", "Export incentives", "Subsidies to import-competing firms", "Transparent policy instruments")) +
   scale_x_continuous(breaks = seq(2009,2020,1), labels = c("End 2009", "End 2010", "End 2011", "End 2012", "End 2013", "End 2014", "End 2015", "End 2016", "End 2017", "End 2018", "End 2019", "31 Oct. 2020")) +
   gta_theme(x.bottom.angle = 90, x.bottom.align = 1)+
   guides(fill=guide_legend(title = NULL, label.hjust = 0, label.vjust = 0.5, title.position = "top", title.vjust = 0.5, ncol = 2, nrow = 2))+
