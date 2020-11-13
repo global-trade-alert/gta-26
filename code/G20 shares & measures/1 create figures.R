@@ -128,14 +128,14 @@ fig2 <- map.function(data = world.fig2, caption = "Source: Global Trade Alert.",
                      limits = c(0, max(world.fig2$value, na.rm = T)), breaks = round(seq(0, max(world.fig2$value, na.rm = T), max(world.fig2$value, na.rm=T) / 4)),
                      labels = round(seq(0, max(world.fig2$value, na.rm = T), max(world.fig2$value, na.rm=T) / 4)),
                      colourvalues = c(gta_colour$amber[1], gta_colour$red[1], "#bf1b46", "#7d0c2a"),
-                     legend.name = "Number of harmful measures affected by in 2009", subtitle = NULL)
+                     legend.name = "Number of harmful measures implemented in 2009", subtitle = NULL)
 fig2
 
 fig3 <- map.function(data = world.fig3, caption = "Source: Global Trade Alert.", plottitle = NULL,
                      limits = c(0, max(world.fig3$value, na.rm = T)), breaks = round(seq(0, max(world.fig3$value, na.rm = T), max(world.fig3$value, na.rm=T) / 4)),
                      labels = round(seq(0, max(world.fig3$value, na.rm = T), max(world.fig3$value, na.rm=T) / 4)),
                      colourvalues = c("#b5f5bd", gta_colour$green[4], gta_colour$green[2], "#298535", "#1c6625"),
-                     legend.name = "Number of liberalising measures affected by in 2009", subtitle = NULL)
+                     legend.name = "Number of liberalising measures implemented in 2009", subtitle = NULL)
 fig3
 
 fig2.and.fig3 <- grid.arrange(fig2, fig3, nrow = 2)
