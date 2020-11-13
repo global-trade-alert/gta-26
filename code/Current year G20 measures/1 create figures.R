@@ -81,13 +81,16 @@ table2$implementing.jurisdiction[table2$implementing.jurisdiction == "United Sta
 table2$implementing.jurisdiction[table2$implementing.jurisdiction == "United Kingdom"] <- "UK"
 
 # Plot
+
+# Simon: Please capitalise the first word in each of the legend entries. 
+
 fig2 <- ggplot(data = table2)+
   geom_bar(aes(x=forcats::fct_reorder(implementing.jurisdiction, desc(-total.nr.of.interventions)), y=nr.of.interventions, fill=factor(intervention.type, levels=c("nr.of.cont.protection.int", "nr.of.liberalising.int", "nr.of.harmful.int"))), width=0.65, stat = "identity") +
   geom_label(aes(x=forcats::fct_reorder(implementing.jurisdiction, desc(-total.nr.of.interventions)), y=nr.of.interventions, label=nr.of.interventions), colour="#3c3c3c", label.size = 0.2, label.padding = unit(0.15, "lines"), size=2.5, position = position_stack(vjust = 0.5)) +
   labs(x="", y="", caption = "Source: Global Trade Alert.") +
   scale_y_continuous(name=str_wrap("Number of measures recorded", 40), breaks=seq(0,275,25), labels=seq(0,275,25),
                      sec.axis = sec_axis(trans = ~., name=str_wrap("Number of measures recorded", 40), breaks=seq(0,275,25), labels=seq(0,275,25)))+
-  scale_fill_manual(values=c("nr.of.harmful.int" = gta_colour$harmful[1], "nr.of.liberalising.int" = gta_colour$liberalising[1],"nr.of.cont.protection.int" = gta_colour$amber[1]), labels = c("contingent protection investigations", "liberalising interventions", "harmful interventions"))+
+  scale_fill_manual(values=c("nr.of.harmful.int" = gta_colour$harmful[1], "nr.of.liberalising.int" = gta_colour$liberalising[1],"nr.of.cont.protection.int" = gta_colour$amber[1]), labels = c("Contingent protection investigations", "Liberalising interventions", "Harmful interventions"))+
   gta_theme(x.bottom.angle = 90, x.bottom.align = 0)+
   guides(guide_legend(title = NULL, label.hjust = 0, label.vjust = 0.5, title.position = "top", title.vjust = 0.5, nrow = 2))+
   theme(axis.text.x.bottom = element_text(hjust=1, size=10),
