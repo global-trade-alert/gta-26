@@ -191,14 +191,14 @@ fig4 <- map.function(data = world.fig4, caption = str_wrap("Source: Global Trade
                      limits = c(0, max(world.fig4$value, na.rm = T)), breaks = c(seq(0, max(world.fig4$value, na.rm = T), max(world.fig4$value, na.rm=T) / 4)),
                      labels = scales::percent,
                      colourvalues = c(gta_colour$amber[4], gta_colour$amber[1], gta_colour$red[1], "#bf1b46", "#7d0c2a"),
-                     legend.name = "Share of exports affected by harmful measures implemented in 2020", subtitle = NULL)
+                     legend.name = "Percentage of exports affected by harmful measures implemented in 2020", subtitle = NULL)
 fig4
 
 fig5 <- map.function(data = world.fig5, caption = str_wrap("Source: Global Trade Alert. Countries marked in grey had zero export exposure to reforms implemented during 2020", 60), plottitle = NULL,
                      limits = c(0, max(world.fig5$value, na.rm = T)), breaks = c(seq(0, max(world.fig5$value, na.rm = T), max(world.fig5$value, na.rm=T) / 4)),
                      labels = scales::percent,
                      colourvalues = c(gta_colour$green[4], gta_colour$green[2], "#298535", "#1c6625"),
-                     legend.name = "Share of exports affected by liberalising measures implemented in 2020", subtitle = NULL)
+                     legend.name = "Percentage of exports affected by liberalising measures implemented in 2020", subtitle = NULL)
 fig5
 
 fig4.and.fig5 <- grid.arrange(fig4, fig5, nrow = 2)
