@@ -45,6 +45,12 @@ write.xlsx(table2, file = paste0(gta26.path, out.path, "Figure 2 & 3 data.xlsx")
 table1 <- pivot_longer(table1, cols = c(names(table1)[-1]), names_to = "product", values_to = "nr.of.interventions")
 
 # Plot
+
+# Simon:
+# Figure 11: For each of the top 3 sectors please delete the text 
+# "top X sector (CPC" leaving only the description of the sector. 
+# Please shorten the description of Motor vechiles descriptor to "Motor vehicles including parts"
+
 fig1 <- ggplot(data=table1)+
   geom_line(aes(x=as.numeric(year.implemented), y=nr.of.interventions, colour=product), size=1)+
   # geom_text(aes(x=month.group, y=index, label=index), vjust=1, colour="#555555", size=2.5)+
@@ -54,15 +60,15 @@ fig1 <- ggplot(data=table1)+
   scale_x_continuous(name = NULL, breaks = c(2009:2020), labels = as.character(c(2009:2020))) +
   scale_color_manual(values=c("food"=gta_colour$qualitative[1],"medical"=gta_colour$qualitative[2],"Top 1 sector (412)"=gta_colour$qualitative[3],
                               "Top 2 sector (491)"=gta_colour$qualitative[4], "Top 3 sector (429)"=gta_colour$qualitative[5]),
-                     labels=c("Food and agri-food", "COVID-19 medical kit and medicines", paste0("Top 1 sector (412 - ",subset(gtalibrary::cpc.names, cpc==412)$cpc.name,")"),
-                              paste0("Top 2 sector (491 - ",subset(gtalibrary::cpc.names, cpc==491)$cpc.name,")"), paste0("Top 3 sector (429 - ",subset(gtalibrary::cpc.names, cpc==429)$cpc.name,")")))+
+                     labels=c("Food and agri-food", "COVID-19 medical kit and medicines", paste0(subset(gtalibrary::cpc.names, cpc==412)$cpc.name),
+                              "Motor vehicles including parts", paste0(subset(gtalibrary::cpc.names, cpc==429)$cpc.name)))+
   labs(x = "", caption = "Source: Global Trade Alert.") +
   guides(colour=guide_legend(title=NULL, ncol = 2, 
                              label.hjust = 0, label.vjust = 0.5, 
                              title.position = "top", title.hjust = 0, 
                              direction = "horizontal", 
                              label.position = "right")) +
-  gta_theme(x.bottom.angle = 90, x.bottom.align = 1) +
+  gta_theme(x.bottom.angle = 0, x.bottom.align = 0.5) +
   theme(legend.position = "bottom",
         panel.grid.major.y = element_line(size=.1, color="#555555"),
         panel.grid.minor.x = element_blank(),
@@ -83,15 +89,18 @@ gta_plot_saver(plot = fig1,
 
 
 ### Figure 2
+
+# Simon: Please capitalise the first letters of harmful and liberalising
+
 fig2 <- ggplot(data = subset(table2, product.type == "medical"))+
   geom_line(aes(x=forcats::fct_inorder(time, ordered = T), y=nr.of.interventions, colour=int.type, group=int.type), size=1)+
-  geom_label(data=subset(table2, product.type=="medical" & int.type=="liberalising"),aes(x = forcats::fct_inorder(time, ordered = T), y = nr.of.interventions, label = nr.of.interventions), colour = gta_colour$green[1], size=2.8, label.size = 0.2, label.padding = unit(0.15, "lines"), nudge_y=7)+
-  geom_label(data=subset(table2, product.type=="medical" & int.type=="harmful"),aes(x = forcats::fct_inorder(time, ordered = T), y = nr.of.interventions, label = nr.of.interventions), colour = gta_colour$red[1], size=2.8, label.size = 0.2, label.padding = unit(0.15, "lines"), nudge_y=-7)+
-  scale_y_continuous(name=str_wrap("Cumulative global total number of measures introduced in 2020 that were still in force in the medical goods and medicines sectors", 70), limits = c(0,205), breaks=seq(0,200,25),  
+  geom_label(data=subset(table2, product.type=="medical" & int.type=="liberalising"),aes(x = forcats::fct_inorder(time, ordered = T), y = nr.of.interventions, label = nr.of.interventions), colour = gta_colour$green[1], size=2.8, label.size = 0.2, label.padding = unit(0.15, "lines"), nudge_y=5)+
+  geom_label(data=subset(table2, product.type=="medical" & int.type=="harmful"),aes(x = forcats::fct_inorder(time, ordered = T), y = nr.of.interventions, label = nr.of.interventions), colour = gta_colour$red[1], size=2.8, label.size = 0.2, label.padding = unit(0.15, "lines"), nudge_y=-5)+
+  scale_y_continuous(name=str_wrap("Cumulative global total number of measures introduced in 2020 that were still in force in the medical goods and medicines sectors", 70), limits = c(-5,205), breaks=seq(0,200,25),  
                      sec.axis = sec_axis(trans = ~., name=str_wrap("Cumulative global total number of measures introduced in 2020 that were still in force in the medical goods and medicines sectors", 70), breaks=seq(0,200,25)))+
-  scale_color_manual(values=c(gta_colour$harmful[1], gta_colour$liberalising[1]))+
+  scale_color_manual(values=c(gta_colour$harmful[1], gta_colour$liberalising[1]), labels=c("Harmful","Liberlising"))+
   labs(caption = "Source: Global Trade Alert.") +
-  guides(colour=guide_legend(title=NULL, 
+  guides(colour=guide_legend(title=NULL,
                              label.hjust = 0, label.vjust = 0.5, 
                              title.position = "top", title.hjust = 0, 
                              direction = "horizontal", 
@@ -116,13 +125,16 @@ gta_plot_saver(plot = fig2,
 
 
 ### Figure 3
+
+# Simon: Please capitalise the first letters of harmful and liberalising
+
 fig3 <- ggplot(data = subset(table2, product.type == "food"))+
   geom_line(aes(x=forcats::fct_inorder(time, ordered = T), y=nr.of.interventions, colour=int.type, group=int.type), size=1)+
   geom_label(data=subset(table2, product.type=="food" & int.type=="liberalising"), aes(x = forcats::fct_inorder(time, ordered = T), y = nr.of.interventions, label = nr.of.interventions), colour = gta_colour$green[1], size=3, label.size = 0.2, label.padding = unit(0.15, "lines"), nudge_y=3)+
   geom_label(data=subset(table2, product.type=="food" & int.type=="harmful"), aes(x = forcats::fct_inorder(time, ordered = T), y = nr.of.interventions, label = nr.of.interventions), colour = gta_colour$red[1], size=3, label.size = 0.2, label.padding = unit(0.15, "lines"), nudge_y=-3)+
   scale_y_continuous(name=str_wrap("Cumulative global total number of measures introduced in 2020 that were still in force in the food sector", 60), limits = c(-3,85), breaks=seq(0,85,10),  
                      sec.axis = sec_axis(trans = ~., name=str_wrap("Cumulative global total number of measures introduced in 2020 that were still in force in the food sector", 60), breaks=seq(0,85,10)))+
-  scale_color_manual(values=c(gta_colour$harmful[1], gta_colour$liberalising[1]))+
+  scale_color_manual(values=c(gta_colour$harmful[1], gta_colour$liberalising[1]), labels=c("Harmful", "Liberalising"))+
   labs(caption = "Source: Global Trade Alert.") +
   guides(colour=guide_legend(title=NULL, 
                              label.hjust = 0, label.vjust = 0.5, 
