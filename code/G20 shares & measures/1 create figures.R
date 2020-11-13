@@ -86,10 +86,14 @@ map.function <- function(data, caption, plottitle, limits, breaks, labels, colou
 }
 
 ### Figure 1
+
+# Simon: Figure 1: Please add a 45 degree line to the chart.
+
 # Plot
 fig1 <- ggplot(data=table1)+
   geom_text_repel(aes(x=harmful.2009, y=harmful.2020, label=implementing.jurisdiction), hjust = 1.2, vjust=0.5, color = gta_colour$grey[1], size=3)+
   geom_point(aes(x=harmful.2009, y=harmful.2020), color = gta_colour$blue[1], size=2)+
+  geom_abline(intercept = 0, slope = 1, colour=gta_colour$grey[4], alpha=0.8)+
   scale_y_continuous(name=str_wrap("Share of 2020 measures that created negative spillovers for trading partners", width = 40),
                      limits = c(0,1), labels = label_percent(accuracy = 1L), breaks=seq(0,1,0.1),
                      sec.axis = sec_axis(trans = ~., name = str_wrap("Share of 2020 measures that created negative spillovers for trading partners", width = 40),
