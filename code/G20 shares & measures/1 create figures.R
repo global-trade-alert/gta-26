@@ -166,14 +166,14 @@ fig4 <- map.function(data = world.fig4, caption = "Source: Global Trade Alert.",
                      limits = c(0, 1), breaks = seq(0,1,0.25),
                      labels = scales::percent,
                      colourvalues = c( gta_colour$amber[1], gta_colour$red[1], "#bf1b46", "#7d0c2a"),
-                     legend.name = "Share of exports affected by harmful measures implemented in 2009", subtitle = NULL)
+                     legend.name = "Percentage of exports affected by harmful measures implemented in 2009", subtitle = NULL)
 fig4
 
 fig5 <- map.function(data = world.fig5, caption = "Source: Global Trade Alert.", plottitle = NULL,
                      limits = c(0, 1), breaks = seq(0,1,0.25),
                      labels = scales::percent,
                      colourvalues = c(gta_colour$green[4], gta_colour$green[2], "#298535", "#1c6625"),
-                     legend.name = "Share of exports affected by liberalising measures implemented in 2009", subtitle = NULL)
+                     legend.name = "Percentage of exports affected by liberalising measures implemented in 2009", subtitle = NULL)
 fig5
 
 fig4.and.fig5 <- grid.arrange(fig4, fig5, nrow = 2)
