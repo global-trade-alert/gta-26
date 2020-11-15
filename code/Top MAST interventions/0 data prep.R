@@ -114,7 +114,8 @@ for(yr in 2015:2020){
                      mast.chapters = mast.groups[! mast.groups %in% odd.chapters],
                      keep.mast = T,
                      group.mast = F,
-                     intra.year.duration = F)
+                     intra.year.duration = F,
+                     trade.data = 2015)
   
   if("trade.coverage.estimates" %in% ls()){
     
@@ -148,7 +149,8 @@ for(yr in 2015:2020){
                        mast.chapters = "P",
                        keep.mast = T,
                        group.mast = T,
-                       intra.year.duration = F)
+                       intra.year.duration = F,
+                       trade.data = 2015)
     
   
  
@@ -185,7 +187,8 @@ for(yr in 2015:2020){
                        mast.chapters = "P",
                        keep.mast = T,
                        group.mast = T,
-                       intra.year.duration = F)
+                       intra.year.duration = F,
+                       trade.data = 2015)
     
 
     
@@ -220,7 +223,8 @@ for(yr in 2015:2020){
   gta_trade_coverage(gta.evaluation = c("Red", "Amber"),
                      implementation.period = c(as.Date(paste0(yr,"-01-01")), as.Date(paste0(yr,"-", format(as.Date(cutoff.date), "%m-%d")))),
                      coverage.period = c(yr, yr),
-                     intra.year.duration = F)
+                     intra.year.duration = F,
+                     trade.data = 2015)
   trade.coverage.estimates$`MAST chapter ID`="ALL"
   trade.coverage.estimates$`MAST chapter name`="All harmful interventions"
   trade.coverage.estimates$year=yr
@@ -248,7 +252,8 @@ for(yr in 2015:2020){
                      mast.chapters = mast.groups[! mast.groups %in% odd.chapters],
                      keep.mast = T,
                      group.mast = F,
-                     intra.year.duration = F)
+                     intra.year.duration = F,
+                     trade.data = 2015)
   
   if("trade.coverage.estimates" %in% ls()){
     
@@ -282,7 +287,8 @@ for(yr in 2015:2020){
                        mast.chapters = "P",
                        keep.mast = T,
                        group.mast = T,
-                       intra.year.duration = F)
+                       intra.year.duration = F,
+                       trade.data = 2015)
     
     
     
@@ -319,7 +325,8 @@ for(yr in 2015:2020){
                        mast.chapters = "P",
                        keep.mast = T,
                        group.mast = T,
-                       intra.year.duration = F)
+                       intra.year.duration = F,
+                       trade.data = 2015)
     
     
     
@@ -355,7 +362,8 @@ for(yr in 2015:2020){
   gta_trade_coverage(gta.evaluation = c("Green"),
                      implementation.period = c(as.Date(paste0(yr,"-01-01")), as.Date(paste0(yr,"-", format(as.Date(cutoff.date), "%m-%d")))),
                      coverage.period = c(yr, yr),
-                     intra.year.duration = F)
+                     intra.year.duration = F,
+                     trade.data = 2015)
   trade.coverage.estimates$`MAST chapter ID`="ALL"
   trade.coverage.estimates$`MAST chapter name`="All liberalising interventions"
   trade.coverage.estimates$year=yr
@@ -384,7 +392,8 @@ for(yr in 2015:2020){
                      keep.mast = T,
                      group.mast = F,
                      intra.year.duration = F,
-                     lag.adjustment = format(as.Date(cutoff.date), "%m-%d"))
+                     lag.adjustment = format(as.Date(cutoff.date), "%m-%d"),
+                     trade.data = 2015)
   
   if("trade.coverage.estimates" %in% ls()){
     
@@ -419,7 +428,8 @@ for(yr in 2015:2020){
                        keep.mast = T,
                        group.mast = T,
                        intra.year.duration = F,
-                       lag.adjustment = format(as.Date(cutoff.date), "%m-%d"))
+                       lag.adjustment = format(as.Date(cutoff.date), "%m-%d"),
+                       trade.data = 2015)
     
     
     
@@ -457,7 +467,8 @@ for(yr in 2015:2020){
                        keep.mast = T,
                        group.mast = T,
                        intra.year.duration = F,
-                       lag.adjustment = format(as.Date(cutoff.date), "%m-%d"))
+                       lag.adjustment = format(as.Date(cutoff.date), "%m-%d"),
+                       trade.data = 2015)
     
     
     
@@ -493,7 +504,8 @@ for(yr in 2015:2020){
                      implementation.period = c(as.Date(paste0(yr,"-01-01")), as.Date(paste0(yr,"-", format(as.Date(cutoff.date), "%m-%d")))),
                      coverage.period = c(yr, yr),
                      intra.year.duration = F,
-                     lag.adjustment = format(as.Date(cutoff.date), "%m-%d"))
+                     lag.adjustment = format(as.Date(cutoff.date), "%m-%d"),
+                     trade.data = 2015)
   trade.coverage.estimates$`MAST chapter ID`="ALL"
   trade.coverage.estimates$`MAST chapter name`="All harmful interventions"
   trade.coverage.estimates$year=yr
@@ -522,7 +534,8 @@ for(yr in 2015:2020){
                      keep.mast = T,
                      group.mast = F,
                      intra.year.duration = F,
-                     lag.adjustment = format(as.Date(cutoff.date), "%m-%d"))
+                     lag.adjustment = format(as.Date(cutoff.date), "%m-%d"),
+                     trade.data = 2015)
   
   if("trade.coverage.estimates" %in% ls()){
     
@@ -557,7 +570,8 @@ for(yr in 2015:2020){
                        keep.mast = T,
                        group.mast = T,
                        intra.year.duration = F,
-                       lag.adjustment = format(as.Date(cutoff.date), "%m-%d"))
+                       lag.adjustment = format(as.Date(cutoff.date), "%m-%d"),
+                       trade.data = 2015)
     
     
     
@@ -595,7 +609,8 @@ for(yr in 2015:2020){
                        keep.mast = T,
                        group.mast = T,
                        intra.year.duration = F,
-                       lag.adjustment = format(as.Date(cutoff.date), "%m-%d"))
+                       lag.adjustment = format(as.Date(cutoff.date), "%m-%d"),
+                       trade.data = 2015)
     
     
     
@@ -632,7 +647,8 @@ for(yr in 2015:2020){
                      implementation.period = c(as.Date(paste0(yr,"-01-01")), as.Date(paste0(yr,"-", format(as.Date(cutoff.date), "%m-%d")))),
                      coverage.period = c(yr, yr),
                      intra.year.duration = F,
-                     lag.adjustment = format(as.Date(cutoff.date), "%m-%d"))
+                     lag.adjustment = format(as.Date(cutoff.date), "%m-%d"),
+                     trade.data = 2015)
   trade.coverage.estimates$`MAST chapter ID`="ALL"
   trade.coverage.estimates$`MAST chapter name`="All liberalising interventions"
   trade.coverage.estimates$year=yr
@@ -648,7 +664,8 @@ gta_data_slicer(gta.evaluation = c("Red", "Amber"),
                 implementation.period = c(as.Date("2020-01-01"), as.Date(cutoff.date)),
                 keep.implementation.na = F,
                 implementing.country = country.names$un_code[country.names$is.g20],
-                keep.implementer = T)
+                keep.implementer = T,
+                trade.data = 2015)
 
 # Aggregate for periods
 master.sliced$period <- ifelse(master.sliced$date.removed <= as.Date(cutoff.date), 1, 0)
