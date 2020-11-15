@@ -91,14 +91,14 @@ map.function <- function(data, caption, plottitle, limits, breaks, labels, colou
 
 # Plot
 fig1 <- ggplot(data=table1)+
+  geom_abline(intercept = 0, slope = 1, colour=gta_colour$grey[4], alpha=0.8)+
   geom_text_repel(aes(x=harmful.2009, y=harmful.2020, label=implementing.jurisdiction), hjust = 1.2, vjust=0.5, color = gta_colour$grey[1], size=3)+
   geom_point(aes(x=harmful.2009, y=harmful.2020), color = gta_colour$blue[1], size=2)+
-  geom_abline(intercept = 0, slope = 1, colour=gta_colour$grey[4], alpha=0.8)+
-  scale_y_continuous(name=str_wrap("Share of 2020 measures that created negative spillovers for trading partners", width = 40),
+  scale_y_continuous(name=str_wrap("Percentage of 2020 measures that created negative spillovers for trading partners", width = 40),
                      limits = c(0,1), labels = label_percent(accuracy = 1L), breaks=seq(0,1,0.1),
-                     sec.axis = sec_axis(trans = ~., name = str_wrap("Share of 2020 measures that created negative spillovers for trading partners", width = 40),
+                     sec.axis = sec_axis(trans = ~., name = str_wrap("Percentage of 2020 measures that created negative spillovers for trading partners", width = 40),
                                          labels = label_percent(accuracy = 1L), breaks=seq(0,1,0.1)))+
-  scale_x_continuous(name="Share of 2009 measures that created negative spillovers for trading partners", labels = label_percent(accuracy = 1L), limits=c(0,1), breaks=seq(0,1,0.1))+
+  scale_x_continuous(name="Percentage of 2009 measures that created negative spillovers for trading partners", labels = label_percent(accuracy = 1L), limits=c(0,1), breaks=seq(0,1,0.1))+
   labs(caption = "Source: Global Trade Alert.") +
   gta_theme() +
   theme(panel.grid.minor = element_blank(),
@@ -124,14 +124,14 @@ world.fig2 <- gta_plot_map_df(subset(table2, gta.evaluation == "harmful"), count
 world.fig3 <- gta_plot_map_df(subset(table2, gta.evaluation == "liberalising"), countries="a.un",values="intervention.id")
 
 # Plot
-fig2 <- map.function(data = world.fig2, caption = "Source: Global Trade Alert.", plottitle = NULL,
+fig2 <- map.function(data = world.fig2, caption = "Source: Global Trade Alert. Countries marked in grey did not implement any measures.", plottitle = NULL,
                      limits = c(0, max(world.fig2$value, na.rm = T)), breaks = round(seq(0, max(world.fig2$value, na.rm = T), max(world.fig2$value, na.rm=T) / 4)),
                      labels = round(seq(0, max(world.fig2$value, na.rm = T), max(world.fig2$value, na.rm=T) / 4)),
                      colourvalues = c(gta_colour$amber[1], gta_colour$red[1], "#bf1b46", "#7d0c2a"),
                      legend.name = "Number of harmful measures implemented in 2009", subtitle = NULL)
 fig2
 
-fig3 <- map.function(data = world.fig3, caption = "Source: Global Trade Alert.", plottitle = NULL,
+fig3 <- map.function(data = world.fig3, caption = "Source: Global Trade Alert. Countries marked in grey did not implement any measures.", plottitle = NULL,
                      limits = c(0, max(world.fig3$value, na.rm = T)), breaks = round(seq(0, max(world.fig3$value, na.rm = T), max(world.fig3$value, na.rm=T) / 4)),
                      labels = round(seq(0, max(world.fig3$value, na.rm = T), max(world.fig3$value, na.rm=T) / 4)),
                      colourvalues = c("#b5f5bd", gta_colour$green[4], gta_colour$green[2], "#298535", "#1c6625"),
@@ -162,14 +162,14 @@ world.fig4 <- gta_plot_map_df(subset(table3, gta.evaluation == "harmful"), count
 world.fig5 <- gta_plot_map_df(subset(table3, gta.evaluation == "liberalising"), countries="un_code", values="trade.coverage")
 
 # Plot
-fig4 <- map.function(data = world.fig4, caption = "Source: Global Trade Alert.", plottitle = NULL,
+fig4 <- map.function(data = world.fig4, caption = "Source: Global Trade Alert. Countries marked in grey were not affected.", plottitle = NULL,
                      limits = c(0, 1), breaks = seq(0,1,0.25),
                      labels = scales::percent,
                      colourvalues = c( gta_colour$amber[1], gta_colour$red[1], "#bf1b46", "#7d0c2a"),
                      legend.name = "Percentage of exports affected by harmful measures implemented in 2009", subtitle = NULL)
 fig4
 
-fig5 <- map.function(data = world.fig5, caption = "Source: Global Trade Alert.", plottitle = NULL,
+fig5 <- map.function(data = world.fig5, caption = "Source: Global Trade Alert. Countries marked in grey were not affected", plottitle = NULL,
                      limits = c(0, 1), breaks = seq(0,1,0.25),
                      labels = scales::percent,
                      colourvalues = c(gta_colour$green[4], gta_colour$green[2], "#298535", "#1c6625"),
