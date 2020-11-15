@@ -98,7 +98,7 @@ fig2 <- ggplot(data = subset(table2, product.type == "medical"))+
   geom_label(data=subset(table2, product.type=="medical" & int.type=="harmful"),aes(x = forcats::fct_inorder(time, ordered = T), y = nr.of.interventions, label = nr.of.interventions), colour = gta_colour$red[1], size=2.8, label.size = 0.2, label.padding = unit(0.15, "lines"), nudge_y=-5)+
   scale_y_continuous(name=str_wrap("Cumulative global total number of measures introduced in 2020 that were still in force in the medical goods and medicines sectors", 70), limits = c(-5,205), breaks=seq(0,200,25),  
                      sec.axis = sec_axis(trans = ~., name=str_wrap("Cumulative global total number of measures introduced in 2020 that were still in force in the medical goods and medicines sectors", 70), breaks=seq(0,200,25)))+
-  scale_color_manual(values=c(gta_colour$harmful[1], gta_colour$liberalising[1]), labels=c("Harmful","Liberlising"))+
+  scale_color_manual(values=c(gta_colour$harmful[1], gta_colour$liberalising[1]), labels=c("Export controls","Import reforms"))+
   labs(caption = "Source: Global Trade Alert.") +
   guides(colour=guide_legend(title=NULL,
                              label.hjust = 0, label.vjust = 0.5, 
@@ -134,7 +134,7 @@ fig3 <- ggplot(data = subset(table2, product.type == "food"))+
   geom_label(data=subset(table2, product.type=="food" & int.type=="harmful"), aes(x = forcats::fct_inorder(time, ordered = T), y = nr.of.interventions, label = nr.of.interventions), colour = gta_colour$red[1], size=3, label.size = 0.2, label.padding = unit(0.15, "lines"), nudge_y=-3)+
   scale_y_continuous(name=str_wrap("Cumulative global total number of measures introduced in 2020 that were still in force in the food sector", 60), limits = c(-3,85), breaks=seq(0,85,10),  
                      sec.axis = sec_axis(trans = ~., name=str_wrap("Cumulative global total number of measures introduced in 2020 that were still in force in the food sector", 60), breaks=seq(0,85,10)))+
-  scale_color_manual(values=c(gta_colour$harmful[1], gta_colour$liberalising[1]), labels=c("Harmful", "Liberalising"))+
+  scale_color_manual(values=c(gta_colour$harmful[1], gta_colour$liberalising[1]), labels=c("Export controls","Import reforms"))+
   labs(caption = "Source: Global Trade Alert.") +
   guides(colour=guide_legend(title=NULL, 
                              label.hjust = 0, label.vjust = 0.5, 
