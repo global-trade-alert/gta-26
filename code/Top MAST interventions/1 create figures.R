@@ -55,6 +55,7 @@ write.xlsx(table4, file = paste0(gta26.path, out.path, "Figure 4 data.xlsx"))
 write.xlsx(table5, file = paste0(gta26.path, out.path, "Figure 5 data.xlsx"))
 write.xlsx(table4lag, file = paste0(gta26.path, out.path, "Figure 4 data - lag adjusted.xlsx"))
 write.xlsx(table5lag, file = paste0(gta26.path, out.path, "Figure 5 data - lag adjusted.xlsx"))
+write.xlsx(table4lag.special, file = paste0(gta26.path, out.path, "Figure 4 data - lag adjusted - special categories.xlsx"))
 write.xlsx(table6, file = paste0(gta26.path, out.path, "Addendum data.xlsx"))
 
 
@@ -70,7 +71,7 @@ bar.function <- function(data, fill.colour, x.lab = "", y.lab, y.breaks = seq(0,
     guides(guide_legend(title = NULL, label.hjust = 0, label.vjust = 0.5, title.position = "top", title.vjust = 0.5, nrow = 2))+
     theme(axis.text.x.bottom = element_text(hjust=0.5, size=10),
           axis.title.y.left = element_text(size=10),
-          axis.title.y.right = element_text(size=10),
+          axis.title.y.right = element_blank(),
           legend.text = element_text(size=9),
           legend.title = element_blank(),
           legend.key = element_rect(colour = "transparent", fill = "transparent"),
@@ -226,13 +227,13 @@ data.table::setnames(table4, old = "MAST chapter name", new = "mast.group")
 data.table::setnames(table4, old = "trade.share", new = "trade.coverage")
 
 # Plot for all measures
-p1 <- bar.function(data = subset(table4, mast.group == 'All harmful interventions'), fill.colour = gta_colour$harmful[1], x.lab = 'All harmful interventions', y.lab = '', y.breaks = seq(0,0.45,0.05), y.limits = c(0,0.45))
-p2 <- bar.function(data = subset(table4, mast.group == 'P: Export incentives'), fill.colour = gta_colour$harmful[1], x.lab = 'P: Export incentives', y.lab = '', y.breaks = seq(0,0.45,0.05), y.limits = c(0,0.45))
-p3 <- bar.function(data = subset(table4, mast.group == 'L: Subsidies (excl. export subsidies)'), fill.colour = gta_colour$harmful[1], x.lab = 'L: Subsidies (excl. export subsidies)', y.lab = '', y.breaks = seq(0,0.45,0.05), y.limits = c(0,0.45))
-p4 <- bar.function(data = subset(table4, mast.group == 'Tariff measures'), fill.colour = gta_colour$harmful[1], x.lab = 'Tariff measures', y.lab = '', y.breaks = seq(0,0.45,0.05), y.limits = c(0,0.45))
-p5 <- bar.function(data = subset(table4, mast.group == 'D: Contingent trade-protective measures'), fill.colour = gta_colour$harmful[1], x.lab = 'D: Contingent trade-protective measures', y.lab = '', y.breaks = seq(0,0.02,0.005), y.limits = c(0,0.02), y.labels = label_percent(accuracy = 0.1))
-p6 <- bar.function(data = subset(table4, mast.group == 'I: Trade-related investment measures '), fill.colour = gta_colour$harmful[1], x.lab = 'I: Trade-related investment measures', y.lab = '', y.breaks = seq(0,0.02,0.005), y.limits = c(0,0.02), y.labels = label_percent(accuracy = 0.1))
-p7 <- bar.function(data = subset(table4, mast.group == 'P: Export barriers'), fill.colour = gta_colour$harmful[1], x.lab = 'P: Export barriers', y.lab = '', y.breaks = seq(0,0.02,0.005), y.limits = c(0,0.02), y.labels = label_percent(accuracy = 0.1))
+p1 <- bar.function(data = subset(table4, mast.group == 'All harmful interventions'), fill.colour = gta_colour$harmful[1], x.lab = 'All harmful interventions', y.lab = 'Percentage of world trade covered', y.breaks = seq(0,0.45,0.05), y.limits = c(0,0.45))
+p2 <- bar.function(data = subset(table4, mast.group == 'P: Export incentives'), fill.colour = gta_colour$harmful[1], x.lab = 'P: Export incentives', y.lab = 'Percentage of world trade covered', y.breaks = seq(0,0.45,0.05), y.limits = c(0,0.45))
+p3 <- bar.function(data = subset(table4, mast.group == 'L: Subsidies (excl. export subsidies)'), fill.colour = gta_colour$harmful[1], x.lab = 'L: Subsidies (excl. export subsidies)', y.lab = 'Percentage of world trade covered', y.breaks = seq(0,0.45,0.05), y.limits = c(0,0.45))
+p4 <- bar.function(data = subset(table4, mast.group == 'Tariff measures'), fill.colour = gta_colour$harmful[1], x.lab = 'Tariff measures', y.lab = 'Percentage of world trade covered', y.breaks = seq(0,0.45,0.05), y.limits = c(0,0.45))
+p5 <- bar.function(data = subset(table4, mast.group == 'D: Contingent trade-protective measures'), fill.colour = gta_colour$harmful[1], x.lab = 'D: Contingent trade-protective measures', y.lab = 'Percentage of world trade covered', y.breaks = seq(0,0.02,0.005), y.limits = c(0,0.02), y.labels = label_percent(accuracy = 0.1))
+p6 <- bar.function(data = subset(table4, mast.group == 'I: Trade-related investment measures '), fill.colour = gta_colour$harmful[1], x.lab = 'I: Trade-related investment measures', y.lab = 'Percentage of world trade covered', y.breaks = seq(0,0.02,0.005), y.limits = c(0,0.02), y.labels = label_percent(accuracy = 0.1))
+p7 <- bar.function(data = subset(table4, mast.group == 'P: Export barriers'), fill.colour = gta_colour$harmful[1], x.lab = 'P: Export barriers', y.lab = 'Percentage of world trade covered', y.breaks = seq(0,0.02,0.005), y.limits = c(0,0.02), y.labels = label_percent(accuracy = 0.1))
 
 # # Plot with row 1 scale
 # for (i in c(1:3)){
@@ -289,6 +290,36 @@ gta_plot_saver(plot = fig4lag,
                height = 21)
 
 
+### Figure 4 - lag adjusted
+data.table::setnames(table4lag.special, old = "MAST chapter name", new = "mast.group")
+data.table::setnames(table4lag.special, old = "trade.share", new = "trade.coverage")
+
+# Plot for all measures
+p1 <- bar.function(data = subset(table4lag.special, mast.group == 'All harmful interventions'), fill.colour = gta_colour$harmful[1], x.lab = 'All harmful interventions', y.lab = 'Percentage of world trade covered', y.breaks = seq(0,0.4,0.05), y.limits = c(0,0.4), y.labels = label_percent(accuracy = 1L))
+p2 <- bar.function(data = subset(table4lag.special, mast.group == 'P: Export incentives'), fill.colour = gta_colour$harmful[1], x.lab = 'P: Export incentives', y.lab = 'Percentage of world trade covered', y.breaks = seq(0,0.4,0.05), y.limits = c(0,0.4), y.labels = label_percent(accuracy = 1L))
+p3 <- bar.function(data = subset(table4lag.special, mast.group == 'Tariff measures'), fill.colour = gta_colour$harmful[1], x.lab = 'Tariff measures', y.lab = 'Percentage of world trade covered', y.breaks = seq(0,0.4,0.05), y.limits = c(0,0.4), y.labels = label_percent(accuracy = 1L))
+p4 <- bar.function(data = subset(table4lag.special, mast.group == 'L: inward'), fill.colour = gta_colour$harmful[1], x.lab = 'L: inward', y.lab = 'Percentage of world trade covered', y.breaks = seq(0,0.04,0.005), y.limits = c(0,0.04), y.labels = label_percent(accuracy = 0.1))
+p5 <- bar.function(data = subset(table4lag.special, mast.group == 'P: Export barriers'), fill.colour = gta_colour$harmful[1], x.lab = 'P: Export barriers', y.lab = 'Percentage of world trade covered', y.breaks = seq(0,0.04,0.005), y.limits = c(0,0.04), y.labels = label_percent(accuracy = 0.1))
+p6 <- bar.function(data = subset(table4lag.special, mast.group == 'L: outward subsidy'), fill.colour = gta_colour$harmful[1], x.lab = 'L: outward operations subsidy', y.lab = 'Percentage of world trade covered', y.breaks = seq(0,0.04,0.005), y.limits = c(0,0.04), y.labels = label_percent(accuracy = 0.1))
+
+# # Plot
+# for (i in c(1:7)){
+#   eval(parse(text = paste0("p", i," <- bar.function(data = subset(table4lag, mast.group == '", unique(table4lag$mast.group)[i], "'), fill.colour = gta_colour$harmful[1], x.lab = '", unique(table4lag$mast.group)[i], "', y.lab = '', y.breaks = seq(0,0.40,0.05), y.limits = c(0,0.40))")))
+# }
+
+fig4lag.special <- grid.arrange(p1, p2, p3, p4, p5, p6, nrow = 2, bottom = text_grob("Source: Global Trade Alert.", family = "Open Sans", color = "#3f3f3f", size = 10))
+
+gta_plot_saver(plot = fig4lag.special,
+               path = paste0(gta26.path, out.path),
+               name = "Figure 4 - Trade covered by harmful interventions by MAST chapter - lag adjusted - special groups",
+               png = T,
+               pdf = T,
+               jpg = T,
+               eps = T,
+               width = 29,
+               height = 21)
+
+
 ### Figure 5
 # # Convert data to longer format
 # table4 <- pivot_longer(table5, cols = names(table5)[-1], names_to = "year", names_prefix = "Trade coverage estimate for ", values_to = "trade.coverage")
@@ -297,12 +328,12 @@ data.table::setnames(table5, old = "MAST chapter name", new = "mast.group")
 data.table::setnames(table5, old = "trade.share", new = "trade.coverage")
 
 # Plot for all measures
-p1 <- bar.function(data = subset(table5, mast.group == 'All liberalising interventions'), fill.colour = gta_colour$liberalising[1], x.lab = 'All liberalising interventions', y.lab = '', y.breaks = seq(0,0.3,0.05), y.limits = c(0,0.3))
-p2 <- bar.function(data = subset(table5, mast.group == 'P: Export incentives'), fill.colour = gta_colour$liberalising[1], x.lab = 'P: Export incentives', y.lab = '', y.breaks = seq(0,0.3,0.05), y.limits = c(0,0.3))
-p3 <- bar.function(data = subset(table5, mast.group == 'Tariff measures'), fill.colour = gta_colour$liberalising[1], x.lab = 'Tariff measures', y.lab = '', y.breaks = seq(0,0.3,0.05), y.limits = c(0,0.3))
-p4 <- bar.function(data = subset(table5, mast.group == 'L: Subsidies (excl. export subsidies)'), fill.colour = gta_colour$liberalising[1], x.lab = 'L: Subsidies (excl. export subsidies)', y.lab = '', y.breaks = seq(0,0.05,0.01), y.limits = c(0,0.05))
-p5 <- bar.function(data = subset(table5, mast.group == 'E: Non-automatic licensing, quotas etc.'), fill.colour = gta_colour$liberalising[1], x.lab = 'E: Non-automatic licensing, quotas etc.', y.lab = '', y.breaks = seq(0,0.02,0.005), y.limits = c(0,0.025))
-p6 <- bar.function(data = subset(table5, mast.group == 'P: Export barriers'), fill.colour = gta_colour$liberalising[1], x.lab = 'P: Export barriers', y.lab = '', y.breaks = seq(0,0.02,0.005), y.limits = c(0,0.025))
+p1 <- bar.function(data = subset(table5, mast.group == 'All liberalising interventions'), fill.colour = gta_colour$liberalising[1], x.lab = 'All liberalising interventions', y.lab = 'Percentage of world trade covered', y.breaks = seq(0,0.3,0.05), y.limits = c(0,0.3), y.labels = label_percent(accuracy = 1L))
+p2 <- bar.function(data = subset(table5, mast.group == 'P: Export incentives'), fill.colour = gta_colour$liberalising[1], x.lab = 'P: Export incentives', y.lab = 'Percentage of world trade covered', y.breaks = seq(0,0.3,0.05), y.limits = c(0,0.3), y.labels = label_percent(accuracy = 1L))
+p3 <- bar.function(data = subset(table5, mast.group == 'Tariff measures'), fill.colour = gta_colour$liberalising[1], x.lab = 'Tariff measures', y.lab = 'Percentage of world trade covered', y.breaks = seq(0,0.3,0.05), y.limits = c(0,0.3), y.labels = label_percent(accuracy = 1L))
+p4 <- bar.function(data = subset(table5, mast.group == 'L: Subsidies (excl. export subsidies)'), fill.colour = gta_colour$liberalising[1], x.lab = 'L: Subsidies (excl. export subsidies)', y.lab = 'Percentage of world trade covered', y.breaks = seq(0,0.06,0.01), y.limits = c(0,0.06), y.labels = label_percent(accuracy = 0.1))
+p5 <- bar.function(data = subset(table5, mast.group == 'E: Non-automatic licensing, quotas etc.'), fill.colour = gta_colour$liberalising[1], x.lab = 'E: Non-automatic licensing, quotas etc.', y.lab = 'Percentage of world trade covered', y.breaks = seq(0,0.06,0.01), y.limits = c(0,0.06), y.labels = label_percent(accuracy = 0.1))
+p6 <- bar.function(data = subset(table5, mast.group == 'P: Export barriers'), fill.colour = gta_colour$liberalising[1], x.lab = 'P: Export barriers', y.lab = 'Percentage of world trade covered', y.breaks = seq(0,0.06,0.01), y.limits = c(0,0.06), y.labels = label_percent(accuracy = 0.1))
 
 # # Plot
 # for (i in c(1:6)){
@@ -327,12 +358,12 @@ data.table::setnames(table5lag, old = "MAST chapter name", new = "mast.group")
 data.table::setnames(table5lag, old = "trade.share", new = "trade.coverage")
 
 # Plot for all measures
-p1 <- bar.function(data = subset(table5lag, mast.group == 'All liberalising interventions'), fill.colour = gta_colour$liberalising[1], x.lab = 'All liberalising interventions', y.lab = '', y.breaks = seq(0,0.3,0.05), y.limits = c(0,0.3))
-p2 <- bar.function(data = subset(table5lag, mast.group == 'P: Export incentives'), fill.colour = gta_colour$liberalising[1], x.lab = 'P: Export incentives', y.lab = '', y.breaks = seq(0,0.3,0.05), y.limits = c(0,0.3))
-p3 <- bar.function(data = subset(table5lag, mast.group == 'Tariff measures'), fill.colour = gta_colour$liberalising[1], x.lab = 'Tariff measures', y.lab = '', y.breaks = seq(0,0.3,0.05), y.limits = c(0,0.3))
-p4 <- bar.function(data = subset(table5lag, mast.group == 'L: Subsidies (excl. export subsidies)'), fill.colour = gta_colour$liberalising[1], x.lab = 'L: Subsidies (excl. export subsidies)', y.lab = '', y.breaks = seq(0,0.02,0.005), y.limits = c(0,0.025), y.labels = label_percent(accuracy = 0.1))
-p5 <- bar.function(data = subset(table5lag, mast.group == 'E: Non-automatic licensing, quotas etc.'), fill.colour = gta_colour$liberalising[1], x.lab = 'E: Non-automatic licensing, quotas etc.', y.lab = '', y.breaks = seq(0,0.02,0.005), y.limits = c(0,0.025), y.labels = label_percent(accuracy = 0.1))
-p6 <- bar.function(data = subset(table5lag, mast.group == 'P: Export barriers'), fill.colour = gta_colour$liberalising[1], x.lab = 'P: Export barriers', y.lab = '', y.breaks = seq(0,0.02,0.005), y.limits = c(0,0.025), y.labels = label_percent(accuracy = 0.1))
+p1 <- bar.function(data = subset(table5lag, mast.group == 'All liberalising interventions'), fill.colour = gta_colour$liberalising[1], x.lab = 'All liberalising interventions', y.lab = 'Percentage of world trade covered', y.breaks = seq(0,0.1,0.02), y.limits = c(0,0.1), y.labels = label_percent(accuracy = 1L))
+p2 <- bar.function(data = subset(table5lag, mast.group == 'P: Export incentives'), fill.colour = gta_colour$liberalising[1], x.lab = 'P: Export incentives', y.lab = 'Percentage of world trade covered', y.breaks = seq(0,0.1,0.02), y.limits = c(0,0.1), y.labels = label_percent(accuracy = 1L))
+p3 <- bar.function(data = subset(table5lag, mast.group == 'Tariff measures'), fill.colour = gta_colour$liberalising[1], x.lab = 'Tariff measures', y.lab = 'Percentage of world trade covered', y.breaks = seq(0,0.1,0.02), y.limits = c(0,0.1), y.labels = label_percent(accuracy = 1L))
+p4 <- bar.function(data = subset(table5lag, mast.group == 'L: Subsidies (excl. export subsidies)'), fill.colour = gta_colour$liberalising[1], x.lab = 'L: Subsidies (excl. export subsidies)', y.lab = 'Percentage of world trade covered', y.breaks = seq(0,0.025,0.005), y.limits = c(0,0.025), y.labels = label_percent(accuracy = 0.1))
+p5 <- bar.function(data = subset(table5lag, mast.group == 'E: Non-automatic licensing, quotas etc.'), fill.colour = gta_colour$liberalising[1], x.lab = 'E: Non-automatic licensing, quotas etc.', y.lab = 'Percentage of world trade covered', y.breaks = seq(0,0.025,0.005), y.limits = c(0,0.025), y.labels = label_percent(accuracy = 0.1))
+p6 <- bar.function(data = subset(table5lag, mast.group == 'P: Export barriers'), fill.colour = gta_colour$liberalising[1], x.lab = 'P: Export barriers', y.lab = 'Percentage of world trade covered', y.breaks = seq(0,0.025,0.005), y.limits = c(0,0.025), y.labels = label_percent(accuracy = 0.1))
 
 # # Plot
 # for (i in c(1:6)){
