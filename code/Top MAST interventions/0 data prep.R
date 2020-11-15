@@ -35,6 +35,13 @@ rm(list = ls())
 # the % of measures due to lapse in 2021, 
 # the % of measures due to lapse after 2021, 
 # and the % of measures without phase out dates.
+#
+# Addendum 2: Please calculate the non-duration adjusted world trade percentage for 2020 of all of the following harmful measures implemented by the G20 (not the world)
+# - L inward
+# - L outward
+# - P export incentive
+# I do not want an estimate for each of the three policy instruments. My request is for the total amount of trade affected (bearing in mind that some trade may be
+# affected by more than one of these policy instruments).
 
 library(gtalibrary)
 library(tidyverse)
@@ -125,7 +132,7 @@ for(yr in 2015:2020){
     
     
   } else{
-   
+    
     tce.replacement=data.frame(id=mast.groups[! mast.groups %in% odd.chapters],
                                name=NA,
                                year=yr,
@@ -152,8 +159,8 @@ for(yr in 2015:2020){
                        intra.year.duration = F,
                        trade.data = 2015)
     
-  
- 
+    
+    
     if("trade.coverage.estimates" %in% ls()){
       
       trade.coverage.estimates$`MAST chapter ID`="P - barriers"
@@ -190,7 +197,7 @@ for(yr in 2015:2020){
                        intra.year.duration = F,
                        trade.data = 2015)
     
-
+    
     
     if("trade.coverage.estimates" %in% ls()){
       
@@ -720,7 +727,7 @@ for(yr in 2015:2020){
     trade.coverage.estimates$`MAST chapter name`="L: inward"
     trade.coverage.estimates$year=yr
     table4lag.special <- rbind(table4lag.special, subset(select(trade.coverage.estimates, `MAST chapter ID`, `MAST chapter name`,year ,"trade.share"=names(trade.coverage.estimates)[grepl("Trade coverage",names(trade.coverage.estimates))]),
-                                         `MAST chapter ID`!="All included MAST chapters"))
+                                                         `MAST chapter ID`!="All included MAST chapters"))
     
     
   } else{
@@ -733,7 +740,7 @@ for(yr in 2015:2020){
     names(tce.replacement)=c("MAST chapter ID","MAST chapter name","year","trade.share")
     
     table4lag.special <- rbind(table4lag.special,
-                       tce.replacement)
+                               tce.replacement)
     rm(tce.replacement)
   }
   
@@ -755,7 +762,7 @@ for(yr in 2015:2020){
     trade.coverage.estimates$`MAST chapter name`="L: outward subsidy"
     trade.coverage.estimates$year=yr
     table4lag.special <- rbind(table4lag.special, subset(select(trade.coverage.estimates, `MAST chapter ID`, `MAST chapter name`,year ,"trade.share"=names(trade.coverage.estimates)[grepl("Trade coverage",names(trade.coverage.estimates))]),
-                                                 `MAST chapter ID`!="All included MAST chapters"))
+                                                         `MAST chapter ID`!="All included MAST chapters"))
     
     
   } else{
@@ -768,7 +775,7 @@ for(yr in 2015:2020){
     names(tce.replacement)=c("MAST chapter ID","MAST chapter name","year","trade.share")
     
     table4lag.special <- rbind(table4lag.special,
-                       tce.replacement)
+                               tce.replacement)
     rm(tce.replacement)
   }
   
@@ -793,7 +800,7 @@ for(yr in 2015:2020){
     trade.coverage.estimates$`MAST chapter name`="P: Export barriers"
     trade.coverage.estimates$year=yr
     table4lag.special <- rbind(table4lag.special, subset(select(trade.coverage.estimates, `MAST chapter ID`, `MAST chapter name`,year ,"trade.share"=names(trade.coverage.estimates)[grepl("Trade coverage",names(trade.coverage.estimates))]),
-                                         `MAST chapter ID`!="All included MAST chapters"))
+                                                         `MAST chapter ID`!="All included MAST chapters"))
     
     
   } else{
@@ -806,7 +813,7 @@ for(yr in 2015:2020){
     names(tce.replacement)=c("MAST chapter ID","MAST chapter name","year","trade.share")
     
     table4lag.special <- rbind(table4lag.special,
-                       tce.replacement)
+                               tce.replacement)
     rm(tce.replacement)
   }
   
@@ -828,7 +835,7 @@ for(yr in 2015:2020){
     trade.coverage.estimates$`MAST chapter name`="P: Export incentives"
     trade.coverage.estimates$year=yr
     table4lag.special <- rbind(table4lag.special, subset(select(trade.coverage.estimates, `MAST chapter ID`, `MAST chapter name`,year ,"trade.share"=names(trade.coverage.estimates)[grepl("Trade coverage",names(trade.coverage.estimates))]),
-                                         `MAST chapter ID`!="All included MAST chapters"))
+                                                         `MAST chapter ID`!="All included MAST chapters"))
     
     
     
@@ -842,7 +849,7 @@ for(yr in 2015:2020){
     names(tce.replacement)=c("MAST chapter ID","MAST chapter name","year","trade.share")
     
     table4lag.special <- rbind(table4lag.special,
-                       tce.replacement)
+                               tce.replacement)
     rm(tce.replacement)
   }
   
@@ -899,3 +906,56 @@ for(yr in 2015:2020){
 
 ### Save data
 save(table1, table3, table4, table5, table4lag, table4lag.special, table5lag, table6, file = paste0(gta26.path, data.path, "top MAST interventions.Rdata"))
+
+
+
+### Addendum 2
+# # Approach with first extracting relevant intervention ids
+# gta_data_slicer(gta.evaluation = c("Red", "Amber"),
+#                 implementing.country = country.names$un_code[country.names$is.g20],
+#                 keep.implementer = T,
+#                 mast.chapters = c("L", "P"),
+#                 keep.mast = T,
+#                 implementation.period = c(as.Date("2020-01-01"), as.Date("2020-12-31")),
+#                 keep.implementation.na = F,
+#                 lag.adjustment = format(as.Date(cutoff.date), "%m-%d"))
+# 
+# master.sliced$mast.chapter <- as.character(master.sliced$mast.chapter)
+# 
+# # Subset the data
+# master.sliced <- subset(master.sliced, (mast.chapter == "L" & affected.flow == "inward") | (mast.chapter == "L" & affected.flow == "outward subsidy") | (mast.chapter == "P" & affected.flow == "outward"))
+# 
+# # Get the IDs
+# intervention.ids <- unique(master.sliced$intervention.id)
+# 
+# # Get trade share
+# table.addendum2 <- data.frame()
+# for (id in intervention.ids){
+#   gta_trade_coverage(coverage.period = c(2020, 2020),
+#                      intervention.ids = id,
+#                      keep.interventions = T,
+#                      trade.data = 2015,
+#                      lag.adjustment = format(as.Date(cutoff.date), "%m-%d"),
+#                      intra.year.duration = F)
+#   
+#   table.addendum2 <- rbind(table.addendum2, trade.coverage.estimates)
+# }
+
+
+# Approach with simple trade coverage function
+gta_trade_coverage(coverage.period = c(2020, 2020),
+                   gta.evaluation = c("Red", "Green"),
+                   implementers = country.names$un_code[country.names$is.g20],
+                   keep.implementer = T,
+                   mast.chapters = c("P", "L"),
+                   keep.mast = T,
+                   group.mast = T,
+                   affected.flows = c("inward", "outward", "outward subsidy"),
+                   implementation.period = c(as.Date("2020-01-01"), as.Date("2020-10-31")),
+                   trade.data = 2015,
+                   lag.adjustment = format(as.Date(cutoff.date), "%m-%d"),
+                   intra.year.duration = F)
+
+table.addendum2 <- trade.coverage.estimates
+
+openxlsx::write.xlsx(table.addendum2, paste0(gta26.path, out.path, "Addendum 2 data.xlsx"))
